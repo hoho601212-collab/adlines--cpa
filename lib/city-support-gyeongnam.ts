@@ -1,4 +1,5 @@
 import type {RegionalSupportItem} from './regional-support';
+import {getJejuCitySupport} from './city-support-jeju';
 
 const DATA:Record<string,RegionalSupportItem[]>={
   창원태아보험:[
@@ -20,4 +21,8 @@ const DATA:Record<string,RegionalSupportItem[]>={
   ]
 };
 
-export function getGyeongnamCitySupport(citySlug?:string){return citySlug?DATA[citySlug]||[]:[];}
+export function getGyeongnamCitySupport(citySlug?:string){
+  if(!citySlug)return [];
+  const own=DATA[citySlug]||[];
+  return own.length?own:getJejuCitySupport(citySlug);
+}
