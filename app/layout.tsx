@@ -2,7 +2,9 @@ import './globals.css';
 import './home.css';
 import './insurance.css';
 import './support.css';
+import './inquiry.css';
 import './keyword.css';
+import './related-guides.css';
 import {site} from '@/lib/site';
 import SiteHeader from '@/components/SiteHeader';
 

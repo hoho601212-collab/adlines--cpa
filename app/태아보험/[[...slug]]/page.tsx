@@ -14,13 +14,14 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  const{slug=[]}=await params;
  if(!slug.length){
   const seo=getInsuranceSeo();
-  return{title:seo.title,description:seo.description,alternates:{canonical:'/태아보험'},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:'/태아보험',type:'website'}};
+  return{title:seo.title,description:seo.description,alternates:{canonical:'/태아보험'},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:'/태아보험',type:'website'},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription}};
  }
  const r=findRegion(slug[0]);if(!r)return{};
  const c=slug[1]?findCity(r,slug[1]):undefined;
+ if(slug[1]&&!c)return{};
  const canonical=`/태아보험/${r.slug}${c?`/${c.slug}`:''}`;
  const seo=getInsuranceSeo(r,c);
- return{title:seo.title,description:seo.description,alternates:{canonical},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website'}};
+ return{title:seo.title,description:seo.description,alternates:{canonical},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website'},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription}};
 }
 
 export default async function Page({params}:Props){
