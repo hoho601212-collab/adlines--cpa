@@ -1,4 +1,5 @@
 import type {RegionalSupportItem} from './regional-support';
+import {getGyeongnamCitySupport} from './city-support-gyeongnam';
 
 const DATA:Record<string,RegionalSupportItem[]>={
   포항태아보험:[
@@ -23,4 +24,8 @@ const DATA:Record<string,RegionalSupportItem[]>={
   ]
 };
 
-export function getEastCitySupport(citySlug?:string){return citySlug?DATA[citySlug]||[]:[];}
+export function getEastCitySupport(citySlug?:string){
+  if(!citySlug)return [];
+  const own=DATA[citySlug]||[];
+  return own.length?own:getGyeongnamCitySupport(citySlug);
+}
