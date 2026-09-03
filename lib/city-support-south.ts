@@ -27,6 +27,10 @@ const SOUTH_SUPPORT:Record<string,RegionalSupportItem[]>={
   ],
   광양태아보험:[
     {title:'광양시 출생축하금',summary:'광양시는 출생순위에 따라 출생축하금을 5회로 나눠 지급하며 2026년부터 후속 회차를 자동지급하는 제도를 시행합니다.',benefit:'신생아 1인당 총 500만원~2,000만원 · 출생순위별 차등',eligibility:'2022년 이후 출생아 중 광양시 출생축하금 지급요건 충족 가정',apply:'출생 시 최초 1회 읍면동사무소 신청 후 첫돌~네돌 지급분은 요건 확인 뒤 자동지급',sourceName:'광양시 2026 출생축하금 자동지급 안내',sourceUrl:'https://gwangyang.go.kr/kor/board.es?act=view&bid=0001&list_no=195068&mid=a11001000000',verifiedAt:'2026-09-03'}
+  ],
+  나주태아보험:[
+    {title:'2026 나주시 출산장려금·출산육아지원금',summary:'나주시는 출생 직후 현금성 출산장려금과 2세 이후 지역화폐 방식의 출산육아지원금을 나눠 장기간 지원합니다.',benefit:'총액 기준 첫째 300만원 · 둘째 500만원 · 셋째 이상 1,000만원',eligibility:'출생일 기준 부 또는 모가 나주시에 주민등록을 두고 실제 거주하며 나주시에 출생신고한 가정',apply:'출생신고 후 90일 이내 읍면동 주민센터 또는 정부24 행복출산 신청',sourceName:'복지로 나주시 출산장려금·출산육아지원금',sourceUrl:'https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00002195&wlfareInfoReldBztpCd=02',verifiedAt:'2026-09-03'},
+    {title:'나주시 출산장려금 지급구조',summary:'출산장려금은 6개월 단위 분할지급, 출산육아지원금은 2세 이후 지역화폐로 지급되어 총액만큼 지급시점도 중요합니다.',benefit:'출산장려금: 첫째 100 · 둘째 200 · 셋째+ 300만원 / 출산육아지원금: 첫째 200 · 둘째 300 · 셋째+ 700만원',eligibility:'지원기간 동안 나주시 거주 등 조례상 계속 지급요건 충족 가정',apply:'전출 시 이후 지급이 중단될 수 있으므로 지급기간 중 거주 유지조건 확인',sourceName:'나주시 출산장려지원에 관한 조례',sourceUrl:'https://www.law.go.kr/LSW/ordinInfoP.do?chrClsCd=010202&gubun=ELIS&ordinSeq=1946433',verifiedAt:'2026-09-03'}
   ]
 };
 
