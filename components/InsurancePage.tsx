@@ -4,6 +4,7 @@ import {site} from '@/lib/site';
 import {getInsuranceImages} from '@/lib/insurance-images';
 import {getInsuranceFaq,getUniqueGuide} from '@/lib/insurance-content';
 import {getRegionalSupport} from '@/lib/regional-support';
+import {getCitySupport} from '@/lib/city-support';
 import InsuranceImageTopics from './InsuranceImageTopics';
 import RegionalSupport from './RegionalSupport';
 import InsuranceInquiryForm from './InsuranceInquiryForm';
@@ -16,15 +17,15 @@ export default function InsurancePage({region,city}:{region?:Region;city?:City})
  const heroImage=imageItems[0]?.src;
  const faqs=getInsuranceFaq(region,city);
  const guide=getUniqueGuide(region,city);
- const regionalSupport=getRegionalSupport(region?.slug,city?.slug);
+ const citySupport=getCitySupport(city?.slug);
+ const regionalSupport=citySupport.length?citySupport:getRegionalSupport(region?.slug,city?.slug);
  const nearbyCities=region&&city?region.cities.filter(c=>c.slug!==city.slug).slice(0,6):[];
  const pagePath=!region?'/태아보험':`/태아보험/${region.slug}${city?`/${city.slug}`:''}`;
  const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:faqs.map(f=>({"@type":"Question",name:f.question,acceptedAnswer:{"@type":"Answer",text:f.answer}}))};
  const breadcrumbItems=[{name:'올바른',item:site.baseUrl},{name:'태아보험',item:`${site.baseUrl}/태아보험`},...(region?[{name:`${region.name} 태아보험`,item:`${site.baseUrl}/태아보험/${region.slug}`}]:[]),...(city?[{name:`${city.name} 태아보험`,item:`${site.baseUrl}${pagePath}`}]:[])];
  const breadcrumbSchema={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:breadcrumbItems.map((item,index)=>({"@type":"ListItem",position:index+1,name:item.name,item:item.item}))};
  return <main className="insurancePage">
-  <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqSchema)}}/>
-  <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumbSchema)}}/>
+  <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqSchema)}}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumbSchema)}}/>
   <section className="insuranceHero approvedHero"><div className="wrap approvedHeroGrid"><div className="approvedHeroCopy"><span className="insuranceBadge">올바른 보험</span><h1>{label?`${label} 태아보험 상담`:'태아보험 상담 전'}<br/><em>{label?'맞춤 정보를 확인하세요':'꼭 알아야 할 정보'}</em></h1><p>{lead}</p><div className="approvedBenefitRow"><div><span>🛡️</span><p><b>보장 확인</b><small>가입 전 주요 조건 체크</small></p></div><div><span>🗓️</span><p><b>가입 정보</b><small>시기 · 기간 · 특약 확인</small></p></div><div><span>🎧</span><p><b>상담 연결</b><small>정보 확인 후 상담 신청</small></p></div></div><div className="heroActions"><a className="btn btnPrimary btnLift" href={site.cpaUrl}>무료 상담 알아보기 →</a><a className="btn btnGhost" href="#지원정보">출산지원 정보 보기 →</a></div></div><div className="approvedHeroPhoto" style={{backgroundImage:`linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.05)),url('${heroImage}')`}}><div className="photoFallback"><span>🤰</span><strong>엄마와 아이의 첫 준비</strong><small>올바른 보험</small></div></div></div></section>
   <div className="insuranceCrumb"><div className="wrap breadcrumbs"><Link href="/">⌂ 홈</Link><span>›</span><Link href="/태아보험">태아보험</Link>{region&&<><span>›</span><Link href={`/태아보험/${region.slug}`}>{region.name} 태아보험</Link></>}{city&&<><span>›</span><b>{city.name} 태아보험</b></>}</div></div>
   <InsuranceImageTopics items={imageItems} title={`${keyword}, 어떤 정보가 필요하세요?`}/>
