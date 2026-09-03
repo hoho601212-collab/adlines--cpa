@@ -34,5 +34,9 @@ const DATA:Record<string,RegionalSupportItem[]>={
 
 export function getCentralCitySupport(citySlug?:string){
   if(!citySlug)return [];
-  return DATA[citySlug]||getSouthCitySupport(citySlug)||getEastCitySupport(citySlug);
+  const local=DATA[citySlug];
+  if(local?.length)return local;
+  const south=getSouthCitySupport(citySlug);
+  if(south.length)return south;
+  return getEastCitySupport(citySlug);
 }
