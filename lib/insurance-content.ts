@@ -2,6 +2,7 @@ import type {Region,City} from './insurance-data';
 
 export type FaqItem={question:string;answer:string};
 export type LocalEditorial={intro:string;checkpoints:string[];supportNote:string;faqExtra?:FaqItem};
+export type InsuranceSeoCopy={title:string;description:string;ogTitle:string;ogDescription:string;h1:string;h1Accent:string};
 
 const CITY_EDITORIAL:Record<string,LocalEditorial>={
   수원태아보험:{intro:'수원은 장안·권선·팔달·영통구로 생활권이 넓고 출산지원금과 산후조리 관련 지원을 함께 확인할 수 있습니다. 보험 상담에서는 거주지역 지원과 민간보험 보장을 서로 다른 제도로 구분해 준비하는 것이 좋습니다.',checkpoints:['수원시 출산지원금의 출생순위별 지급액과 거주기간','출산 후 산후조리 관련 지원의 신청시점','임신 주수에 따른 태아보험 가입 가능 조건'],supportNote:'수원 자체 지원은 출생순위와 거주기간 조건이 중요하므로 출생신고 전후 주소 요건을 먼저 확인하세요.'},
@@ -26,6 +27,15 @@ export function getLocalEditorial(region?:Region,city?:City):LocalEditorial{
  if(regionData)return regionData;
  const label=city?.name||region?.name||'전국';
  return {intro:`${label}에서 태아보험을 알아볼 때는 보험 보장과 공공 출산지원을 같은 혜택으로 혼동하지 않는 것이 중요합니다. 보험의 가입조건은 상품 기준으로 확인하고, 지역 지원은 실제 주민등록 주소지와 신청시점을 기준으로 따로 확인하세요.`,checkpoints:[`${label}의 최신 출산·육아 지원사업`,`임신 주수와 상품별 가입 가능시기`,`보장기간·특약·면책 및 감액조건`],supportNote:`${label} 지원사업은 거주기간과 출생순위, 신청기한에 따라 달라질 수 있으므로 공식 출처의 최신 기준을 확인하세요.`};
+}
+
+export function getInsuranceSeo(region?:Region,city?:City):InsuranceSeoCopy{
+ const label=city?.name||region?.name;
+ if(!label)return {title:'태아보험 상담 | 가입시기·보장·지역별 지원정보 - 올바른 보험',description:'태아보험 가입시기와 보장·특약 체크사항, 전국 지역별 출산·육아 지원정보를 함께 확인하세요. 민간보험과 공공지원 제도를 구분해 정리했습니다.',ogTitle:'태아보험 상담 전 비교 가이드 | 올바른 보험',ogDescription:'가입시기·보장내용과 지역별 출산·육아 지원정보를 한 번에 확인하세요.',h1:'태아보험 상담 전',h1Accent:'꼭 알아야 할 정보'};
+ const local=getLocalEditorial(region,city);
+ const focus=local.checkpoints.slice(0,2).join(' · ');
+ const citySuffix=city?`${region?.name||''} ${city.name}`:region?.fullName||label;
+ return {title:`${label} 태아보험 | 가입시기·출산지원·보장 체크 - 올바른 보험`,description:`${citySuffix} 태아보험 상담 전 ${focus}를 확인하세요. 가입 가능시기, 보장·특약과 2026 지역 출산·육아 지원을 공식 출처 기준으로 정리했습니다.`,ogTitle:`${label} 태아보험 상담 전 체크 | 올바른 보험`,ogDescription:`${label} 태아보험 가입 전 확인사항과 지역 출산·육아 지원을 함께 정리했습니다.`,h1:`${label} 태아보험 상담`,h1Accent:city?'지역 지원까지 함께 확인하세요':'지역별 지원과 보장을 확인하세요'};
 }
 
 export function getInsuranceFaq(region?:Region,city?:City):FaqItem[]{
