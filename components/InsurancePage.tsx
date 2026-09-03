@@ -5,6 +5,7 @@ import {getInsuranceImages} from '@/lib/insurance-images';
 import {getInsuranceFaq,getUniqueGuide} from '@/lib/insurance-content';
 import {getRegionalSupport} from '@/lib/regional-support';
 import {getCitySupport} from '@/lib/city-support';
+import {getCentralCitySupport} from '@/lib/city-support-central';
 import InsuranceImageTopics from './InsuranceImageTopics';
 import RegionalSupport from './RegionalSupport';
 import InsuranceInquiryForm from './InsuranceInquiryForm';
@@ -18,7 +19,8 @@ export default function InsurancePage({region,city}:{region?:Region;city?:City})
  const faqs=getInsuranceFaq(region,city);
  const guide=getUniqueGuide(region,city);
  const citySupport=getCitySupport(city?.slug);
- const regionalSupport=citySupport.length?citySupport:getRegionalSupport(region?.slug,city?.slug);
+ const centralCitySupport=getCentralCitySupport(city?.slug);
+ const regionalSupport=citySupport.length?citySupport:(centralCitySupport.length?centralCitySupport:getRegionalSupport(region?.slug,city?.slug));
  const nearbyCities=region&&city?region.cities.filter(c=>c.slug!==city.slug).slice(0,6):[];
  const pagePath=!region?'/태아보험':`/태아보험/${region.slug}${city?`/${city.slug}`:''}`;
  const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:faqs.map(f=>({"@type":"Question",name:f.question,acceptedAnswer:{"@type":"Answer",text:f.answer}}))};
