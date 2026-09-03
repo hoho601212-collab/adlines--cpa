@@ -4,6 +4,7 @@ import {site} from '@/lib/site';
 import {getInsuranceImages} from '@/lib/insurance-images';
 import {getInsuranceFaq,getUniqueGuide,getLocalEditorial,getInsuranceSeo} from '@/lib/insurance-content';
 import {getContextualFaq,getRelatedLinks,getChecklistDetail} from '@/lib/insurance-page-variants';
+import {getInsuranceStructuredData} from '@/lib/insurance-structured-data';
 import {getRegionalSupport} from '@/lib/regional-support';
 import {getCitySupport} from '@/lib/city-support';
 import {getCentralCitySupport} from '@/lib/city-support-central';
@@ -22,16 +23,13 @@ export default function InsurancePage({region,city}:{region?:Region;city?:City})
  const faqs=[...getInsuranceFaq(region,city),...getContextualFaq(region,city)];
  const guide=getUniqueGuide(region,city);
  const relatedLinks=getRelatedLinks(region,city);
+ const structured=getInsuranceStructuredData({region,city,faqs,relatedLinks});
  const citySupport=getCitySupport(city?.slug);
  const centralCitySupport=getCentralCitySupport(city?.slug);
  const regionalSupport=citySupport.length?citySupport:(centralCitySupport.length?centralCitySupport:getRegionalSupport(region?.slug,city?.slug));
  const nearbyCities=region&&city?region.cities.filter(c=>c.slug!==city.slug).slice(0,6):[];
- const pagePath=!region?'/태아보험':`/태아보험/${region.slug}${city?`/${city.slug}`:''}`;
- const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:faqs.map(f=>({"@type":"Question",name:f.question,acceptedAnswer:{"@type":"Answer",text:f.answer}}))};
- const breadcrumbItems=[{name:'올바른',item:site.baseUrl},{name:'태아보험',item:`${site.baseUrl}/태아보험`},...(region?[{name:`${region.name} 태아보험`,item:`${site.baseUrl}/태아보험/${region.slug}`}]:[]),...(city?[{name:`${city.name} 태아보험`,item:`${site.baseUrl}${pagePath}`}]:[])];
- const breadcrumbSchema={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:breadcrumbItems.map((item,index)=>({"@type":"ListItem",position:index+1,name:item.name,item:item.item}))};
  return <main className="insurancePage">
-  <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqSchema)}}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumbSchema)}}/>
+  {[structured.webpage,structured.faq,structured.breadcrumb,structured.related].map((schema,index)=><script key={index} type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/>)}
   <section className="insuranceHero approvedHero"><div className="wrap approvedHeroGrid"><div className="approvedHeroCopy"><span className="insuranceBadge">올바른 보험</span><h1>{seo.h1}<br/><em>{seo.h1Accent}</em></h1><p>{lead}</p><div className="approvedBenefitRow"><div><span>🛡️</span><p><b>보장 확인</b><small>가입 전 주요 조건 체크</small></p></div><div><span>🗓️</span><p><b>가입 정보</b><small>시기 · 기간 · 특약 확인</small></p></div><div><span>🎧</span><p><b>상담 연결</b><small>정보 확인 후 상담 신청</small></p></div></div><div className="heroActions"><a className="btn btnPrimary btnLift" href={site.cpaUrl}>무료 상담 알아보기 →</a><a className="btn btnGhost" href="#지원정보">출산지원 정보 보기 →</a></div></div><div className="approvedHeroPhoto" style={{backgroundImage:`linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.05)),url('${heroImage}')`}}><div className="photoFallback"><span>🤰</span><strong>엄마와 아이의 첫 준비</strong><small>올바른 보험</small></div></div></div></section>
   <div className="insuranceCrumb"><div className="wrap breadcrumbs"><Link href="/">⌂ 홈</Link><span>›</span><Link href="/태아보험">태아보험</Link>{region&&<><span>›</span><Link href={`/태아보험/${region.slug}`}>{region.name} 태아보험</Link></>}{city&&<><span>›</span><b>{city.name} 태아보험</b></>}</div></div>
   <InsuranceImageTopics items={imageItems} title={`${keyword}, 어떤 정보가 필요하세요?`}/>
@@ -45,7 +43,7 @@ export default function InsurancePage({region,city}:{region?:Region;city?:City})
   <RegionalSupport items={regionalSupport} label={label||'지역'}/>
   {region&&<section className="section localInfo"><div className="wrap infoSplit"><div className="infoPanel"><span className="insuranceBadge">{label} 지역 고유 정보</span><h2>{label}에서 함께 확인하세요</h2><p>{localEditorial.intro}</p><ul className="checks">{localEditorial.checkpoints.map(item=><li key={item}>{item}</li>)}</ul></div><div className="infoPanel infoPanelAccent"><span>📍</span><h3>{region.fullName}</h3><h2>{city?`${city.name} 출산·육아 체크` : region.accent}</h2><p>{localEditorial.supportNote}</p></div></div></section>}
   {region&&city&&nearbyCities.length>0&&<section className="section nearbySection"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">함께 보는 지역</span><h2>{region.name} 다른 지역 태아보험 정보</h2><p>{city.name} 인근 생활권이나 가족의 거주지가 다른 경우 관련 지역 페이지도 함께 확인해 보세요.</p></div><div className="nearbyLinks">{nearbyCities.map(c=><Link key={c.slug} href={`/태아보험/${region.slug}/${c.slug}`}><span>{c.name}</span><b>태아보험 →</b></Link>)}</div></div></section>}
-  <section className="section relatedGuideSection"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">관련 가이드</span><h2>{label?`${label} 상담 전 같이 보면 좋은 정보`:'태아보험 준비에 같이 보면 좋은 정보'}</h2><p>지역 지원정보만 반복하지 않고 가입시기·비교기준·임신 준비 정보로 이어지는 내부 가이드를 함께 확인할 수 있습니다.</p></div><div className="nearbyLinks">{relatedLinks.map(item=><Link key={item.href} href={item.href}><span>{item.title}</span><small>{item.description}</small><b>보기 →</b></Link>)}</div></div></section>
+  <section className="section relatedGuideSection"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">관련 가이드</span><h2>{label?`${label} 상담 전 같이 보면 좋은 정보`:'태아보험 준비에 같이 보면 좋은 정보'}</h2><p>지역 지원정보만 반복하지 않고 가입시기·비교기준·임신 준비 정보로 이어지는 내부 가이드를 함께 확인할 수 있습니다.</p></div><div className="relatedGuideGrid">{relatedLinks.map(item=><Link className="relatedGuideCard" key={item.href} href={item.href}><span>GUIDE</span><h3>{item.title}</h3><p>{item.description}</p><b>가이드 보기 →</b></Link>)}</div></div></section>
   {region&&<InsuranceInquiryForm position="secondary" label={label||region.name}/>} 
   <section className="section faqSection"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">FAQ</span><h2>{keyword} 자주 묻는 질문</h2><p>{label?`${label} 지역 지원과 태아보험 상담 전에 자주 확인하는 내용을 정리했습니다.`:'상담 신청 전에 많이 확인하는 내용을 정리했습니다.'}</p></div><div className="faqList">{faqs.map(f=><details key={f.question}><summary>{f.question}</summary><p>{f.answer}</p></details>)}</div></div></section>
   <section className="section"><div className="wrap"><div className="ctaBox insuranceCta"><div><span className="darkEyebrow">올바른 보험</span><h2>{keyword}, 충분히 알아본 뒤 상담하세요</h2><p>{label?`${localEditorial.checkpoints[0]}부터 확인하고, 가입시기와 보장내용까지 함께 비교한 뒤 상담을 진행하세요.`:'가입시기와 보장내용, 지역별 출산지원 정보를 확인한 후 상담을 진행할 수 있습니다.'}</p></div><a className="btn ctaWhite" href={site.cpaUrl}>무료 상담 알아보기 →</a></div></div></section>

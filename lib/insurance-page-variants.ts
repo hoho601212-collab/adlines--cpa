@@ -15,9 +15,9 @@ export function getContextualFaq(region?:Region,city?:City):FaqItem[]{
   if(!region)return [];
   const label=city?.name||region.name;
   const seed=hash(`${region.slug}/${city?.slug||'hub'}`);
-  const first=faqPools[seed%faqPools.length](label,region.name);
-  const second=faqPools[(seed+2)%faqPools.length](label,region.name);
-  return first.question===second.question?[first]:[first,second];
+  const picks=[seed%faqPools.length,(seed+2)%faqPools.length,(seed+4)%faqPools.length];
+  const unique=[...new Set(picks)].slice(0,2);
+  return unique.map(i=>faqPools[i](label,region.name));
 }
 
 export type RelatedLink={href:string;title:string;description:string};
@@ -27,19 +27,23 @@ const keywordLinks:RelatedLink[]=[
   {href:'/현대해상태아보험',title:'현대해상 태아보험 정보',description:'특정 상품을 독립적인 정보 관점에서 확인합니다.'},
   {href:'/태아보험순위비교',title:'태아보험 비교 기준',description:'순위를 단정하기보다 비교할 항목을 정리합니다.'},
   {href:'/임신5-14주차증상',title:'임신 5~14주차 정보',description:'초기 임신 시기에 참고할 일반적인 정보를 확인합니다.'},
+  {href:'/임신초기증상',title:'임신 초기 정보',description:'초기 임신에 흔한 변화와 진료가 필요한 신호를 살펴봅니다.'},
   {href:'/임산부선물',title:'임산부 선물 가이드',description:'임신·출산 준비 과정에서 참고할 실용 정보를 살펴봅니다.'}
 ];
 
 export function getRelatedLinks(region?:Region,city?:City):RelatedLink[]{
   const seed=hash(`${region?.slug||'national'}/${city?.slug||'hub'}`);
-  const chosen=[keywordLinks[seed%keywordLinks.length],keywordLinks[(seed+2)%keywordLinks.length]];
-  const links:RelatedLink[]=[...chosen];
-  if(region&&city){
-    links.unshift({href:`/태아보험/${region.slug}`,title:`${region.name} 태아보험 전체`,description:`${region.name} 공통 출산·육아 지원과 주요 도시 정보를 함께 봅니다.`});
-  }else if(region){
-    links.unshift({href:'/태아보험',title:'전국 태아보험 가이드',description:'전국 공통 가입정보와 17개 광역지역 정보를 확인합니다.'});
+  const picked:RelatedLink[]=[];
+  for(let i=0;i<keywordLinks.length&&picked.length<3;i++){
+    const item=keywordLinks[(seed+i*2)%keywordLinks.length];
+    if(!picked.some(x=>x.href===item.href))picked.push(item);
   }
-  return links;
+  if(region&&city){
+    picked.unshift({href:`/태아보험/${region.slug}`,title:`${region.name} 태아보험 전체`,description:`${region.name} 공통 출산·육아 지원과 주요 도시 정보를 함께 봅니다.`});
+  }else if(region){
+    picked.unshift({href:'/태아보험',title:'전국 태아보험 가이드',description:'전국 공통 가입정보와 17개 광역지역 정보를 확인합니다.'});
+  }
+  return picked.slice(0,4);
 }
 
 export function getChecklistDetail(item:string,index:number,label?:string){
