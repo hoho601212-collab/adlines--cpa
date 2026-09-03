@@ -1,7 +1,7 @@
 import './globals.css';
 import './insurance.css';
-import Link from 'next/link';
 import {site} from '@/lib/site';
+import SiteHeader from '@/components/SiteHeader';
 
 export const metadata = {
   metadataBase: new URL(site.baseUrl),
@@ -13,11 +13,7 @@ export const metadata = {
 
 export default function RootLayout({children}:{children:React.ReactNode}){
   return <html lang="ko"><body>
-    <header className="header"><div className="wrap nav">
-      <Link href="/" className="logo"><b>올바른</b></Link>
-      <nav className="navlinks"><Link href="/태아보험">올바른 보험</Link><span>올바른 회생</span><span>올바른 웨딩</span></nav>
-      <Link className="navcta" href="/태아보험">보험 알아보기</Link>
-    </div></header>
+    <SiteHeader/>
     {children}
     <footer className="footer"><div className="wrap">
       <b>올바른</b><p>생활에 필요한 비교와 상담 정보를 한 곳에서 확인할 수 있도록 돕는 정보 플랫폼입니다.</p>
