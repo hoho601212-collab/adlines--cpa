@@ -13,9 +13,19 @@ export default function InsurancePage({region,city}:{region?:Region;city?:City})
  const heroImage=imageItems[0]?.src;
  const faqs=getInsuranceFaq(region,city);
  const guide=getUniqueGuide(region,city);
+ const nearbyCities=region&&city?region.cities.filter(c=>c.slug!==city.slug).slice(0,6):[];
+ const pagePath=!region?'/태아보험':`/태아보험/${region.slug}${city?`/${city.slug}`:''}`;
  const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:faqs.map(f=>({"@type":"Question",name:f.question,acceptedAnswer:{"@type":"Answer",text:f.answer}}))};
+ const breadcrumbItems=[
+  {name:'올바른',item:site.baseUrl},
+  {name:'태아보험',item:`${site.baseUrl}/태아보험`},
+  ...(region?[{name:`${region.name} 태아보험`,item:`${site.baseUrl}/태아보험/${region.slug}`}]:[]),
+  ...(city?[{name:`${city.name} 태아보험`,item:`${site.baseUrl}${pagePath}`}]:[])
+ ];
+ const breadcrumbSchema={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:breadcrumbItems.map((item,index)=>({"@type":"ListItem",position:index+1,name:item.name,item:item.item}))};
  return <main className="insurancePage">
   <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqSchema)}}/>
+  <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumbSchema)}}/>
   <section className="insuranceHero approvedHero"><div className="wrap approvedHeroGrid">
    <div className="approvedHeroCopy"><span className="insuranceBadge">올바른 보험</span><h1>{label?`${label} 태아보험 상담`:'태아보험 상담 전'}<br/><em>{label?'맞춤 정보를 확인하세요':'꼭 알아야 할 정보'}</em></h1><p>{lead}</p>
     <div className="approvedBenefitRow"><div><span>🛡️</span><p><b>보장 확인</b><small>가입 전 주요 조건 체크</small></p></div><div><span>🗓️</span><p><b>가입 정보</b><small>시기 · 기간 · 특약 확인</small></p></div><div><span>🎧</span><p><b>상담 연결</b><small>정보 확인 후 상담 신청</small></p></div></div>
@@ -33,6 +43,7 @@ export default function InsurancePage({region,city}:{region?:Region;city?:City})
   <section className="section sectionAlt" id="비교가이드"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">상담 전 체크리스트</span><h2>{keyword} 가입 전 확인할 3가지</h2></div><div className="facts"><div className="fact"><span className="factIcon">01</span><b>가입 가능한 시기</b><p>임신 주수와 상품별 인수기준이 다를 수 있으므로 실제 가입 가능 여부와 조건을 확인합니다.</p></div><div className="fact"><span className="factIcon">02</span><b>보장기간과 특약</b><p>보장기간, 갱신 여부, 면책·감액 조건과 필요한 특약의 범위를 함께 확인합니다.</p></div><div className="fact"><span className="factIcon">03</span><b>보험료와 계약조건</b><p>보험료만 보지 않고 상품설명서와 약관, 보장 제외사항까지 함께 비교합니다.</p></div></div></div></section>
   <section className="section supportSection" id="지원정보"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">2026 공식자료 중심</span><h2>{label||'전국'} 출산·육아 지원정보</h2><p>보험과 별도로 받을 수 있는 공공지원도 함께 확인하세요. 전국 공통제도와 지자체 자체사업은 구분해서 안내합니다.</p></div><div className="supportGrid">{nationalPrograms.map(p=><article className="support" key={p.title}><div className="supportTop"><span className="pill">{p.category}</span><span className="meta">확인 {p.verifiedAt}</span></div><h3>{p.title}</h3><p>{p.summary}</p><p className="muted"><b>대상</b> {p.target}</p><p className="muted"><b>신청</b> {p.apply}</p><a className="source" href={p.sourceUrl} target="_blank" rel="noreferrer">공식 출처 확인 →</a></article>)}</div><div className="notice">지원사업은 거주기간, 출생순위, 소득기준, 신청시점 등에 따라 달라질 수 있습니다. 신청 전 해당 지자체와 공식기관의 최신 공고를 확인하세요.</div></div></section>
   {region&&<section className="section localInfo"><div className="wrap infoSplit"><div className="infoPanel"><span className="insuranceBadge">{label} 지역 고유 정보</span><h2>{label}에서 함께 확인하세요</h2><p>{city?.note||region.summary}</p><ul className="checks"><li>지역 출산지원 사업과 지급조건</li><li>거주기간·출생순위·신청기한</li><li>산모·신생아 건강관리와 보건소 지원</li><li>다자녀·보육·가족센터 연계 지원</li></ul></div><div className="infoPanel infoPanelAccent"><span>📍</span><h3>{region.fullName}</h3><h2>{region.accent}</h2><p>지역명만 바꾼 페이지가 아니라 실제 지역의 지원정책과 생활권 정보를 확인해 페이지별 고유 콘텐츠로 확장합니다.</p></div></div></section>}
+  {region&&city&&nearbyCities.length>0&&<section className="section nearbySection"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">함께 보는 지역</span><h2>{region.name} 다른 지역 태아보험 정보</h2><p>{city.name} 인근 생활권이나 가족의 거주지가 다른 경우 관련 지역 페이지도 함께 확인해 보세요.</p></div><div className="nearbyLinks">{nearbyCities.map(c=><Link key={c.slug} href={`/태아보험/${region.slug}/${c.slug}`}><span>{c.name}</span><b>태아보험 →</b></Link>)}</div></div></section>}
   <section className="section faqSection"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">FAQ</span><h2>{keyword} 자주 묻는 질문</h2><p>상담 신청 전에 많이 확인하는 내용을 정리했습니다.</p></div><div className="faqList">{faqs.map(f=><details key={f.question}><summary>{f.question}</summary><p>{f.answer}</p></details>)}</div></div></section>
   <section className="section"><div className="wrap"><div className="ctaBox insuranceCta"><div><span className="darkEyebrow">올바른 보험</span><h2>{keyword}, 충분히 알아본 뒤 상담하세요</h2><p>가입시기와 보장내용, 지역별 출산지원 정보를 확인한 후 상담을 진행할 수 있습니다.</p></div><a className="btn ctaWhite" href={site.cpaUrl}>무료 상담 알아보기 →</a></div></div></section>
  </main>
