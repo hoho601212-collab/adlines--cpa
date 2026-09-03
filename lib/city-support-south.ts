@@ -1,0 +1,33 @@
+import type {RegionalSupportItem} from './regional-support';
+
+const SOUTH_SUPPORT:Record<string,RegionalSupportItem[]>={
+  전주태아보험:[
+    {title:'2026 전주시 출생축하금',summary:'전주시는 2026년 1월 1일 이후 출생아부터 출생순위와 관계없이 동일한 출생축하금을 지급합니다.',benefit:'모든 출생아 100만원 일시금',eligibility:'2026년 1월 1일 이후 전주시에 출생신고한 출생아 가정 등 공식 세부요건 확인',apply:'출생신고 시 주소지 동 주민센터 등 전주시 최신 안내에 따라 신청',sourceName:'전주시 2026 출생축하금 확대 안내',sourceUrl:'https://www.jeonju.go.kr/deokjingu/planweb/board/view.9is?boardUid=ff8080818b5bc5cf018ba8cd8d0a6444&contentUid=ff8080818990c349018b041a883d3963&dataUid=9be517a89b212afa019bb26195e45081',verifiedAt:'2026-09-03'}
+  ],
+  익산태아보험:[
+    {title:'익산시 출산장려사업',summary:'익산시는 2026년 세부사업계획에 출산장려금 지원을 포함한 저출산·고령화 대응사업을 계속사업으로 편성했습니다.',benefit:'출산장려금 등 연례 지원 · 세부 금액은 최신 공고 확인',eligibility:'익산시민 및 익산시 출생아 가정 중 사업별 거주요건 충족',apply:'주소지 행정복지센터 및 익산시 최신 출산지원 안내 확인',sourceName:'익산시 2026 세부사업계획서',sourceUrl:'https://www.iksan.go.kr/resource/www/file/budget/plan/2026.pdf',verifiedAt:'2026-09-03'}
+  ],
+  군산태아보험:[
+    {title:'군산시 출산지원금',summary:'군산시는 출생순위별로 출산지원금을 지급하며 셋째 이상부터는 분할 지급합니다.',benefit:'첫째 100만원 · 둘째 200만원 · 셋째 400만원 · 넷째 600만원 · 다섯째 이상 1,500만원',eligibility:'출생일 기준 부 또는 모가 군산시에 주민등록을 두고 1년 이상 거주하며 관내 출생신고한 가정 등',apply:'출생일로부터 12개월 이내 읍·면·동 주민센터 신청',sourceName:'군산시 출산지원',sourceUrl:'https://www.gunsan.go.kr/main/m190',verifiedAt:'2026-09-03'},
+    {title:'군산 셋째아 이상 육아용품 지원',summary:'셋째 이상 출산가정의 초기 육아비 부담을 줄이기 위한 별도 현물성 지원입니다.',benefit:'25만원 상당 육아용품 구입비',eligibility:'해당 연도 셋째아 이상 출산가정',apply:'출생일로부터 12개월 이내 구입 증빙과 함께 신청',sourceName:'군산시 출산지원',sourceUrl:'https://www.gunsan.go.kr/main/m190',verifiedAt:'2026-09-03'}
+  ],
+  정읍태아보험:[
+    {title:'정읍시 출산장려금',summary:'정읍시는 출생순위에 따라 출산장려금을 차등 지원해 온 제도를 운영하고 있으며, 신청 전 최신 조례·공고를 확인해야 합니다.',benefit:'공식 안내 기준 첫째 30만원 · 둘째 100만원 · 셋째 300만원 · 넷째 이상 1,000만원',eligibility:'출생일 기준 부 또는 모가 정읍시에 1년 전부터 계속 주민등록을 두고 거주하는 가정 등',apply:'거주지 읍·면·동에 출생일로부터 12개월 이내 신청',sourceName:'정읍시 보건소 출산장려금 안내',sourceUrl:'https://www.jeongeup.go.kr/board/view.jeongeup?boardId=BBS_0000012&dataSid=361430',verifiedAt:'2026-09-03'}
+  ],
+  김제태아보험:[
+    {title:'김제시 출산장려금',summary:'김제시는 행복출산 통합서비스를 통해 출산장려금을 포함한 지역 출산지원 서비스를 함께 신청할 수 있도록 운영합니다.',benefit:'첫째 1,000만원 · 둘째 1,500만원 · 셋째 1,700만원 · 넷째 1,900만원 · 다섯째 2,000만원(첫만남이용권 200만원 포함 안내)',eligibility:'김제시 출생가정 중 조례상 거주·출생신고 요건 충족',apply:'출생자 주민등록주소지 읍·면·동 주민센터 또는 출생신고 후 정부24',sourceName:'김제시 행복출산 통합서비스',sourceUrl:'https://www.gimje.go.kr/index.gimje?menuCd=DOM_000000103002010000',verifiedAt:'2026-09-03'},
+    {title:'김제 출산축하용품 마더박스',summary:'김제시는 출산가정에 육아용품과 지역상품권을 혼합한 출산축하용품도 함께 지원합니다.',benefit:'50만원 상당 육아용품·지역상품권 혼합지원',eligibility:'김제시 출산가정 중 사업요건 충족',apply:'행복출산 통합신청 시 지역서비스와 함께 확인',sourceName:'김제시 행복출산 통합서비스',sourceUrl:'https://www.gimje.go.kr/index.gimje?menuCd=DOM_000000103002010000',verifiedAt:'2026-09-03'}
+  ],
+  목포태아보험:[
+    {title:'목포시 출산축하금',summary:'목포시는 첫째부터 출생순위별로 출산축하금을 지급하고 둘째 이상은 일부 금액을 나눠 지급합니다.',benefit:'첫째 150만원 · 둘째 250만원 · 셋째 350만원 · 넷째 450만원 · 다섯째 이상 550만원',eligibility:'출산일 기준 목포시에 주민등록을 두고 거주하는 출산가정 등',apply:'출생신고 시 관할 동 주민센터에 신청, 출생일로부터 100일 이내 제출',sourceName:'목포시 보건소 출산축하금 안내',sourceUrl:'https://biz.mokpo.go.kr/health/medical_expense/promote_childbirth/child_maintenance',verifiedAt:'2026-09-03'}
+  ],
+  순천태아보험:[
+    {title:'순천시 출산장려금',summary:'순천시는 출생순위에 따라 비교적 장기간에 걸쳐 출산장려금을 분할 지원합니다.',benefit:'첫째 500만원 · 둘째 1,000만원 · 셋째 1,500만원 · 넷째 이상 2,000만원',eligibility:'순천시 출생가정 중 거주·출생신고 등 사업 세부요건 충족',apply:'주소지 읍면동 행정복지센터에서 최신 신청방법과 분할지급 일정 확인',sourceName:'순천시 출산·양육 지원 안내',sourceUrl:'https://www.suncheon.go.kr/kr/news/0006/0001/?mode=view&seq=67577',verifiedAt:'2026-09-03'},
+    {title:'순천 출생기본수당',summary:'2025년부터 전남도와 순천시가 함께 모든 대상 출생아에게 월 단위 수당을 지원하고 있습니다.',benefit:'월 20만원',eligibility:'2024년 1월 1일 이후 전남에서 출생신고하고 출생아와 보호자가 순천시에 주민등록을 두고 계속 거주하는 세대 등',apply:'아이가 1세가 되기 1개월 전 주소지 행정복지센터 또는 정부24',sourceName:'순천시 출생기본수당 안내',sourceUrl:'https://www.suncheon.go.kr/kr/news/0006/0001/?mode=view&seq=67607',verifiedAt:'2026-09-03'}
+  ],
+  광양태아보험:[
+    {title:'광양시 출생축하금',summary:'광양시는 출생순위에 따라 출생축하금을 5회로 나눠 지급하며 2026년부터 후속 회차를 자동지급하는 제도를 시행합니다.',benefit:'신생아 1인당 총 500만원~2,000만원 · 출생순위별 차등',eligibility:'2022년 이후 출생아 중 광양시 출생축하금 지급요건 충족 가정',apply:'출생 시 최초 1회 읍면동사무소 신청 후 첫돌~네돌 지급분은 요건 확인 뒤 자동지급',sourceName:'광양시 2026 출생축하금 자동지급 안내',sourceUrl:'https://gwangyang.go.kr/kor/board.es?act=view&bid=0001&list_no=195068&mid=a11001000000',verifiedAt:'2026-09-03'}
+  ]
+};
+
+export function getSouthCitySupport(citySlug?:string){return citySlug?SOUTH_SUPPORT[citySlug]||[]:[];}
