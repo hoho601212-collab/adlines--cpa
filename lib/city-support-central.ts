@@ -1,5 +1,6 @@
 import type {RegionalSupportItem} from './regional-support';
 import {getSouthCitySupport} from './city-support-south';
+import {getEastCitySupport} from './city-support-east';
 
 const DATA:Record<string,RegionalSupportItem[]>={
   청주태아보험:[
@@ -33,5 +34,5 @@ const DATA:Record<string,RegionalSupportItem[]>={
 
 export function getCentralCitySupport(citySlug?:string){
   if(!citySlug)return [];
-  return DATA[citySlug]||getSouthCitySupport(citySlug);
+  return DATA[citySlug]||getSouthCitySupport(citySlug)||getEastCitySupport(citySlug);
 }
