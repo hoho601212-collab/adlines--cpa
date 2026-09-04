@@ -12,6 +12,8 @@ const keywordPages=read('lib/keyword-pages.ts');
 const regionalSupport=read('components/RegionalSupport.tsx');
 const timeline=read('components/InsuranceTimeline.tsx');
 const inquiry=read('components/InsuranceInquiryForm.tsx');
+const standards=read('components/InsuranceEditorialStandards.tsx');
+const insuranceLayout=read('app/태아보험/layout.tsx');
 const layout=read('app/layout.tsx');
 
 const regionSlugs=[...data.matchAll(/slug:\s*['"]([^'"]+태아보험)['"]/g)].map(m=>m[1]);
@@ -33,6 +35,8 @@ const checks={
   inquiryPreparation:inquiry.includes('상담 전에 준비하면 좋아요')&&inquiry.includes('현재 임신 주수'),
   inquiryMobileJump:inquiry.includes('상담 신청서 바로 보기')&&inquiry.includes('inquiryMobileJump'),
   inquiryLazySecondary:inquiry.includes("loading={position==='secondary'?'lazy':'eager'}"),
+  editorialStandards:standards.includes('정보 작성 원칙')&&standards.includes('지역지원 정보 기준')&&standards.includes('상담·광고 구분'),
+  editorialStandardsMounted:insuranceLayout.includes('<InsuranceEditorialStandards/>')&&insuranceLayout.includes("import './editorial-standards.css'"),
   itemListSchema:structured.includes("'@type':'ItemList'"),
   webPageSchema:structured.includes("'@type':'WebPage'"),
   faqSchema:structured.includes("'@type':'FAQPage'"),
@@ -44,7 +48,7 @@ const checks={
 };
 const failed=Object.entries(checks).filter(([,ok])=>!ok).map(([name])=>name);
 
-console.log('\n=== 보험 내부링크·Schema·전환요소 감사 ===');
+console.log('\n=== 보험 내부링크·Schema·신뢰요소 감사 ===');
 console.log(`지역 slug 스캔: ${regionSlugs.length}개`);
 console.log(`키워드 페이지 slug 스캔: ${keywordSlugs.length}개`);
 console.log(`관련 가이드 링크: ${relatedHrefs.length}개`);
@@ -52,8 +56,9 @@ console.log(`유효하지 않은 관련 링크: ${badRelated.length?badRelated.j
 console.log(`지역 정책 최신성 UI: ${checks.freshnessIntegrated?'연결':'누락'}`);
 console.log(`출산 전후 일정표: ${checks.timelineIntegrated&&checks.timelineStages&&checks.timelineCss?'연결':'누락'}`);
 console.log(`상담 신뢰·모바일 전환: ${checks.inquiryDisclosure&&checks.inquiryPreparation&&checks.inquiryMobileJump&&checks.inquiryLazySecondary?'연결':'누락'}`);
+console.log(`정보 작성 원칙: ${checks.editorialStandards&&checks.editorialStandardsMounted?'연결':'누락'}`);
 console.log(`WebPage 최신성·발행주체 Schema: ${checks.schemaModified&&checks.schemaPublisher?'연결':'누락'}`);
 console.log(`구조화데이터/내부링크 검사: ${failed.length?failed.join(', '):'통과'}`);
 
 if(badRelated.length||failed.length){process.exitCode=1;console.log('감사 결과: 보완 필요');}
-else console.log('감사 결과: 내부링크·Schema·정책표시·일정표·상담 전환 핵심 항목 통과');
+else console.log('감사 결과: 내부링크·Schema·정책표시·일정표·상담·작성원칙 핵심 항목 통과');
