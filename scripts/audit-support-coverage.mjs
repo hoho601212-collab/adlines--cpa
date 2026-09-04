@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd();const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const data=read('lib/insurance-data.ts');
+const supportFiles=['lib/regional-support.ts','lib/city-support.ts','lib/city-support-central.ts','lib/city-support-south.ts','lib/city-support-east.ts','lib/city-support-gyeongnam.ts','lib/city-support-jeju.ts','lib/city-support-gangwon.ts'].map(read).join('\n');
+const citySlugs=[...data.matchAll(/slug:\s*['"]([^'"]+태아보험)['"]/g)].map(m=>m[1]);
+const unique=[...new Set(citySlugs)];
+const regionSlugs=new Set(['서울태아보험','부산태아보험','대구태아보험','인천태아보험','광주태아보험','대전태아보험','울산태아보험','세종태아보험','경기태아보험','강원태아보험','충북태아보험','충남태아보험','전북태아보험','전남태아보험','경북태아보험','경남태아보험','제주태아보험']);
+const cities=unique.filter(s=>!regionSlugs.has(s));
+const missing=cities.filter(s=>!supportFiles.includes(s));
+console.log('\n=== 도시 지원정보 커버리지 ===');
+console.log(`도시 페이지: ${cities.length}개`);console.log(`별도 지원데이터 미확인: ${missing.length}개`);console.log(missing.length?missing.join(', '):'모든 도시 지원데이터 연결');
+console.log('※ 미확인 도시는 페이지에서 최신 공식공고 재확인 안내를 노출하며 오래된 금액을 임의 표시하지 않습니다.');
