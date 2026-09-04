@@ -2,6 +2,7 @@ import './globals.css';
 import './home.css';
 import './insurance.css';
 import './support.css';
+import './support-freshness.css';
 import './inquiry.css';
 import './keyword.css';
 import './related-guides.css';
