@@ -5,7 +5,8 @@ export const site = {
   description: '보험, 회생, 웨딩, 이사, 청소, 인터넷, 렌트카, 렌탈 등 생활에 필요한 비교·상담 정보를 한 곳에서 확인하는 올바른 생활정보 플랫폼',
   cpaUrl: process.env.NEXT_PUBLIC_INSURANCE_CPA_URL || '#상담신청',
   baseUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://adlines.co.kr',
-  allowIndexing: process.env.NEXT_PUBLIC_ALLOW_INDEXING === 'true'
+  allowIndexing: process.env.NEXT_PUBLIC_ALLOW_INDEXING === 'true',
+  contentReviewedAt: '2026-09-05'
 };
 
 export const serviceBrands = {

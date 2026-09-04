@@ -15,9 +15,8 @@ export function getInsuranceStructuredData({region,city,faqs,relatedLinks}:{regi
     ...(region?[{name:`${region.name} 태아보험`,item:`${site.baseUrl}/태아보험/${region.slug}`}]:[]),
     ...(city?[{name:`${city.name} 태아보험`,item:url}]:[])
   ];
-  const dateModified='2026-09-04';
   return {
-    webpage:{'@context':'https://schema.org','@type':'WebPage','@id':`${url}#webpage`,url,name:title,description,isPartOf:{'@id':`${site.baseUrl}#website`},inLanguage:'ko-KR',dateModified,about:[{'@type':'Thing',name:'태아보험'},{'@type':'Thing',name:'출산·육아 지원정보'}],publisher:{'@type':'Organization',name:'올바른 보험',url:site.baseUrl}},
+    webpage:{'@context':'https://schema.org','@type':'WebPage','@id':`${url}#webpage`,url,name:title,description,isPartOf:{'@id':`${site.baseUrl}#website`},inLanguage:'ko-KR',dateModified:site.contentReviewedAt,about:[{'@type':'Thing',name:'태아보험'},{'@type':'Thing',name:'출산·육아 지원정보'}],publisher:{'@type':'Organization',name:'올바른 보험',url:site.baseUrl}},
     faq:{'@context':'https://schema.org','@type':'FAQPage',mainEntity:faqs.map(f=>({'@type':'Question',name:f.question,acceptedAnswer:{'@type':'Answer',text:f.answer}}))},
     breadcrumb:{'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:breadcrumbItems.map((item,index)=>({'@type':'ListItem',position:index+1,name:item.name,item:item.item}))},
     related:{'@context':'https://schema.org','@type':'ItemList',name:`${label||'태아보험'} 관련 가이드`,itemListElement:relatedLinks.map((item,index)=>({'@type':'ListItem',position:index+1,url:`${site.baseUrl}${item.href}`,name:item.title}))}
