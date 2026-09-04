@@ -19,6 +19,9 @@ const DATA:Record<string,RegionalSupportItem[]>={
   거제태아보험:[
     {title:'2026 거제시 출산장려금',summary:'거제시는 2026년 예산에 출산가정의 경제적 부담 완화를 위한 출산장려금을 연례사업으로 편성했습니다.',benefit:'첫째 100만원 · 둘째 300만원 · 셋째 이상 800만원',eligibility:'거제시 출생가정 중 출생순위 및 조례상 거주·출생신고 요건 충족',apply:'출생신고 후 주소지 면·동에서 최신 지급회차와 신청요건 확인',sourceName:'거제시 2026 주민참여예산 사업정보',sourceUrl:'https://geoje.go.kr/index.geoje?dbiz_cd=5370000202430015&fis_year=2026&menuCd=DOM_000009308003002001',verifiedAt:'2026-09-03'}
   ],
+  통영태아보험:[
+    {title:'2026 통영 출산가정 영양꾸러미 바우처',summary:'통영시는 2026년 출산가정의 초기 양육 부담을 줄이고 영아의 건강한 성장을 돕기 위해 경남 출산가정 영양꾸러미 바우처를 운영합니다.',benefit:'e경남몰 바우처 30만원 · 자부담 6만원 포함',eligibility:'통영시에 주민등록상 주소를 둔 2025년 7월~2026년 6월 출생 영아 가정 등 모집기준 충족',apply:'2026.2.26~10.31 경남바로서비스 온라인 또는 보건소 방문 신청',sourceName:'경남바로서비스 통영시 출산가정 영양꾸러미',sourceUrl:'https://baro.gyeongnam.go.kr/baro/serviceView.es?mid=a10202000000&service_no=490',verifiedAt:'2026-09-05'}
+  ],
   사천태아보험:[
     {title:'2026 사천시 출산지원금',summary:'사천시는 출생순위에 따라 출산지원금을 지급하며 셋째 이상은 출생 직후부터 만 4세까지 분할 지급합니다.',benefit:'첫째 100만원 · 둘째 200만원 · 셋째 이상 800만원',eligibility:'출생신고일 기준 부 또는 모가 사천시에 주민등록을 두고 거주하며 출생아도 사천시에 주민등록을 둔 가정',apply:'출생신고 시 읍면동 행정복지센터에서 출산서비스 통합처리 신청 또는 정부24 신청',sourceName:'복지로 사천시 출산지원금 지원사업',sourceUrl:'https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?policy=WLF00004472&wlfareInfoId=WLF00004472&wlfareInfoReldBztpCd=02',verifiedAt:'2026-09-03'},
     {title:'사천 셋째 이상 분할지급 구조',summary:'셋째 이상 출산지원금은 출생 직후 200만원 지급 후 매년 거주요건을 확인해 150만원씩 네 차례 지급합니다.',benefit:'출생 직후 200만원 + 12·24·36·48개월 각 150만원',eligibility:'각 후속 지급시점까지 부모와 출생자녀의 사천시 거주요건 등 공식 기준 충족',apply:'최초 신청 후 후속 회차는 지급시점별 거주요건 확인',sourceName:'복지로 사천시 출산지원금 지원사업',sourceUrl:'https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?policy=WLF00004472&wlfareInfoId=WLF00004472&wlfareInfoReldBztpCd=02',verifiedAt:'2026-09-03'}
