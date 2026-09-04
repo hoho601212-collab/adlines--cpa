@@ -11,6 +11,8 @@ const structured=read('lib/insurance-structured-data.ts');
 const keywordPages=read('lib/keyword-pages.ts');
 const regionalSupport=read('components/RegionalSupport.tsx');
 const timeline=read('components/InsuranceTimeline.tsx');
+const inquiry=read('components/InsuranceInquiryForm.tsx');
+const inquiryCss=read('app/inquiry.css');
 const layout=read('app/layout.tsx');
 
 const regionSlugs=[...data.matchAll(/slug:\s*['"]([^'"]+태아보험)['"]/g)].map(m=>m[1]);
@@ -33,18 +35,26 @@ const checks={
   faqSchema:structured.includes("'@type':'FAQPage'"),
   breadcrumbSchema:structured.includes("'@type':'BreadcrumbList'"),
   sitemapRegions:sitemap.includes('regions.flatMap'),
-  sitemapKeywords:sitemap.includes('keywordPages')
+  sitemapKeywords:sitemap.includes('keywordPages'),
+  inquiryExactSource:inquiry.includes('https://replyalba.com/intros/_frm/index.php?code=IOu2jC2SUJ'),
+  inquiryUniqueIds:inquiry.includes('ifrCCAl-${position}'),
+  inquiryDisclosure:inquiry.includes('보험상품을 직접 판매하거나 가입을 확정하지 않습니다')&&inquiry.includes('약관에 따라 달라질 수 있습니다'),
+  inquiryPreparation:inquiry.includes('현재 임신 주수 확인')&&inquiry.includes('원하는 보장기간 정리')&&inquiry.includes('월 보험료 범위 생각하기'),
+  inquiryMobileCta:inquiry.includes('mobileInquiryJump')&&inquiryCss.includes('.mobileInquiryJump'),
+  inquiryLoading:inquiry.includes("loading={position==='primary'?'eager':'lazy'}"),
+  inquiryCss:layout.includes("import './inquiry.css'")
 };
 const failed=Object.entries(checks).filter(([,ok])=>!ok).map(([name])=>name);
 
-console.log('\n=== 보험 내부링크·Schema·일정표 감사 ===');
+console.log('\n=== 보험 내부링크·Schema·상담전환 감사 ===');
 console.log(`지역 slug 스캔: ${regionSlugs.length}개`);
 console.log(`키워드 페이지 slug 스캔: ${keywordSlugs.length}개`);
 console.log(`관련 가이드 링크: ${relatedHrefs.length}개`);
 console.log(`유효하지 않은 관련 링크: ${badRelated.length?badRelated.join(', '):'없음'}`);
 console.log(`지역 정책 최신성 UI: ${checks.freshnessIntegrated?'연결':'누락'}`);
 console.log(`출산 전후 일정표: ${checks.timelineIntegrated&&checks.timelineStages&&checks.timelineCss?'연결':'누락'}`);
+console.log(`상담폼 신뢰·전환 요소: ${checks.inquiryDisclosure&&checks.inquiryPreparation&&checks.inquiryMobileCta?'연결':'누락'}`);
 console.log(`구조화데이터/내부링크 검사: ${failed.length?failed.join(', '):'통과'}`);
 
 if(badRelated.length||failed.length){process.exitCode=1;console.log('감사 결과: 보완 필요');}
-else console.log('감사 결과: 내부링크·Schema·정책표시·일정표 핵심 항목 통과');
+else console.log('감사 결과: 내부링크·Schema·정책표시·상담전환 핵심 항목 통과');
