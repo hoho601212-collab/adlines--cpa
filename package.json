@@ -9,7 +9,8 @@
     "audit:insurance": "node scripts/audit-insurance-pages.mjs",
     "audit:links": "node scripts/audit-internal-links.mjs",
     "audit:policy": "node scripts/audit-policy-freshness.mjs",
-    "audit:release": "npm run audit:insurance && npm run audit:links && npm run audit:policy && npm run build"
+    "audit:coverage": "node scripts/audit-support-coverage.mjs",
+    "audit:release": "npm run audit:insurance && npm run audit:links && npm run audit:policy && npm run audit:coverage && npm run build"
   },
   "dependencies": {
     "next": "^15.5.2",
