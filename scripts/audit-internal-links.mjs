@@ -40,7 +40,7 @@ const checks={
  inquiryDisclosure:inquiry.includes('보험상품을 직접 판매하거나 가입을 확정하지 않습니다'),
  inquiryPreparation:inquiry.includes('inquiryTrustRow')&&inquiry.includes('현재 임신 주수 확인')&&inquiry.includes('원하는 보장기간 정리'),
  inquiryMobileJump:inquiry.includes('상담 신청서 바로 보기')&&inquiry.includes('mobileInquiryJump'),
- inquiryLazySecondary:inquiry.includes("loading={position==='primary'?'eager':'lazy'}"),
+ inquiryLazySecondary:inquiry.includes("loading={position==='primary'?'eager':'lazy'}")||inquiry.includes("loading={isPrimary?'eager':'lazy'}"),
  inquiryExternalForm:inquiry.includes('replyalba.com/intros/_frm/index.php?code=IOu2jC2SUJ'),
  editorialStandards:standards.includes('정보 작성 원칙')&&standards.includes('지역지원 정보 기준')&&standards.includes('상담·광고 구분'),
  editorialStandardsMounted:insuranceLayout.includes('<InsuranceEditorialStandards/>')&&insuranceLayout.includes("import './editorial-standards.css'")&&insuranceLayout.includes("import './support-icons.css'"),
