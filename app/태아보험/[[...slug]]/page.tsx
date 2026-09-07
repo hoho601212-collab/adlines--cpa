@@ -9,7 +9,7 @@ import {getInsuranceSeo} from '@/lib/insurance-content';
 import {site} from '@/lib/site';
 
 type Props={params:Promise<{slug?:string[]}>};
-export function generateStaticParams(){return [{slug:[]},...regions.map(r=>({slug:[r.slug]})),...regions.flatMap(r=>r.cities.map(c=>({slug:[r.slug,c.slug]})),...busanDistricts.map(d=>({slug:['부산태아보험',d.slug]}))]}
+export function generateStaticParams(){return [{slug:[]},...regions.map(r=>({slug:[r.slug]})),...regions.flatMap(r=>r.cities.map(c=>({slug:[r.slug,c.slug]}))),...busanDistricts.map(d=>({slug:['부산태아보험',d.slug]}))]}
 const robots=site.allowIndexing?{index:true,follow:true}:{index:false,follow:false,nocache:true};
 const polishSeoDescription=(description:string)=>description.replace(/태아보험 상담 전 (.+?)를 확인하세요\./,'태아보험 상담 전 확인할 항목: $1.');
 export async function generateMetadata({params}:Props):Promise<Metadata>{
