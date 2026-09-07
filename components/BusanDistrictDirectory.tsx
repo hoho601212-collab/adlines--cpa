@@ -1,0 +1,3 @@
+import Link from 'next/link';
+import {busanDistricts} from '@/lib/busan-insurance';
+export default function BusanDistrictDirectory(){return <aside className="section regionDirectory" aria-label="부산 16개 구군 태아보험"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">부산 16개 구·군 세부 가이드</span><h2>거주 구·군별 태아보험·출산정보를 이어서 확인하세요</h2><p>보험상품의 조건은 지역 때문에 달라지는 것이 아니지만, 출산·육아 공공지원은 주소지에 따라 달라질 수 있습니다. 각 페이지는 서로 다른 보험 비교 주제와 지역 체크포인트로 구성했습니다.</p></div><div className="grid">{busanDistricts.map(d=><Link className="card regionCard" key={d.slug} href={`/태아보험/부산태아보험/${d.slug}`}><span className="pill">부산광역시 {d.name}</span><h3>{d.name} 태아보험</h3><p>{d.theme}</p><b>세부 가이드 보기 →</b></Link>)}</div></div></aside>}
