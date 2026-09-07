@@ -36,6 +36,18 @@ export function getSupportContext(region:Region|undefined,city:City|undefined,it
   };
  }
  const caution=items.some(item=>getPolicyEvidence(item).tone==='watch');
+ const nonCash=hasNonCashSupport(items);
+ if(caution&&nonCash){
+  return {
+   tone:'caution',
+   badge:'🟠 근거 연도·지급방식 함께 확인',
+   title:`${label} 지원은 시행연도와 지급형태를 함께 확인하세요`,
+   summary:`공식 출처가 확인된 항목 중 이전 연도 자료 또는 계획·예산 성격의 근거가 포함될 수 있고, 혜택도 현금이 아니라 바우처·서비스·지역화폐·물품형일 수 있습니다. 카드의 근거 배지와 지급방식을 함께 확인하세요.`,
+   checklist:[`지원카드의 자료연도·시행상태 확인`,`현금·바우처·서비스·지역화폐 지급형태 구분`,`2026년 실제 신청조건과 사용기한 재확인`],
+   faq:{question:`${label} 지원에 재확인 안내와 바우처 표시가 함께 있으면 어떻게 봐야 하나요?`,answer:`먼저 2026년 실제 시행 여부와 조건을 확인한 뒤 지급형태를 따로 보세요. 이전 연도 공식자료나 계획자료를 현재 제도처럼 단정하지 않고, 바우처·서비스·지역화폐·물품 지원도 현금성 출산지원금으로 합산해 해석하지 않는 것이 중요합니다.`},
+   ctaNote:`${label} 지원은 근거연도와 지급형태를 모두 확인하고, 태아보험 상담은 공공지원과 별도로 가입시기·보장조건·보험료 범위를 기준으로 비교하세요.`
+  };
+ }
  if(caution){
   return {
    tone:'caution',badge:'🟠 근거 연도·시행상태 확인',title:`${label} 지원은 공식자료의 기준연도까지 확인하세요`,
@@ -45,7 +57,7 @@ export function getSupportContext(region:Region|undefined,city:City|undefined,it
    ctaNote:`${label} 지원의 근거연도와 시행상태를 확인한 뒤, 태아보험은 공공지원과 별개로 필요한 보장과 가입조건을 비교하세요.`
   };
  }
- if(hasNonCashSupport(items)){
+ if(nonCash){
   return {
    tone:'verified',badge:'🎫 지급방식 함께 확인',title:`${label} 지원은 금액뿐 아니라 지급형태도 확인하세요`,
    summary:`현재 확인된 지역지원에는 바우처·서비스·지역화폐·물품형 지원이 포함될 수 있습니다. 표시된 혜택을 모두 현금성 출산지원금으로 해석하지 말고 각 카드의 지급방식과 사용처를 확인하세요.`,
