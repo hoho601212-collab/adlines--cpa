@@ -4,6 +4,7 @@ import {busanDistricts,type BusanDistrict} from '@/lib/busan-insurance';
 import {withBusanDistrictEvidence} from '@/lib/busan-district-evidence';
 import {getBusanEvidenceState,getBusanSeoIntent,getBusanTopicFaq} from '@/lib/busan-page-context';
 import {getBusanPageFlow} from '@/lib/busan-page-flow';
+import {getBusanFocusNotes} from '@/lib/busan-focus-notes';
 import InsuranceInquiryForm from './InsuranceInquiryForm';
 
 export default function BusanDistrictPage({district:rawDistrict}:{district:BusanDistrict}){
@@ -13,6 +14,7 @@ export default function BusanDistrictPage({district:rawDistrict}:{district:Busan
  const evidence=getBusanEvidenceState(district);
  const seoIntent=getBusanSeoIntent(district);
  const flow=getBusanPageFlow(district);
+ const focusNotes=getBusanFocusNotes(district);
  const topicFaq=getBusanTopicFaq(district);
  const faq=[
   topicFaq,
@@ -29,7 +31,7 @@ export default function BusanDistrictPage({district:rawDistrict}:{district:Busan
   <div className="insuranceCrumb"><div className="wrap breadcrumbs"><Link href="/">⌂ 홈</Link><span>›</span><Link href="/태아보험">태아보험</Link><span>›</span><Link href="/태아보험/부산태아보험">부산 태아보험</Link><span>›</span><b>{district.name} 태아보험</b></div></div>
   <section className="section editorialGuide"><div className="wrap editorialGuideGrid"><div><span className="insuranceBadge">이 페이지의 보험 주제</span><h2>{district.name}에서는 ‘{district.theme}’를 중심으로 봅니다</h2></div><div><p>16개 구·군 페이지가 지역명만 바뀐 복제 페이지가 되지 않도록, 이 페이지는 <b>{district.theme}</b>을 독립적인 보험 비교 소재로 사용합니다. 공공지원은 보험상품과 분리해 공식자료 기준으로 확인합니다.</p><p><b>함께 보는 검색 주제:</b> {seoIntent.related.join(' · ')}</p></div></div></section>
   <InsuranceInquiryForm position="primary" label={district.name}/>
-  <section className="section sectionAlt" id="보험체크"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">보험 상담 전 체크</span><h2>{flow.checkHeading}</h2><p>{seoIntent.descriptionLead}</p></div><div className="facts">{district.insuranceFocus.map((item,i)=><div className="fact" key={item}><span className="factIcon">{String(i+1).padStart(2,'0')}</span><b>{item}</b><p>{i===0?'가입 전 현재 임신 주수와 심사조건을 확인하고, 가능한 보장과 제한되는 항목을 구분하세요.':i===1?'비슷해 보이는 특약도 지급사유·보장기간·면책조건이 다를 수 있으므로 약관 기준으로 비교하세요.':'출생 후에도 유지할 계약이라면 단기 혜택보다 장기 보험료와 보장구조를 함께 확인하세요.'}</p></div>)}</div></div></section>
+  <section className="section sectionAlt" id="보험체크"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">보험 상담 전 체크</span><h2>{flow.checkHeading}</h2><p>{seoIntent.descriptionLead}</p></div><div className="facts">{district.insuranceFocus.map((item,i)=><div className="fact" key={item}><span className="factIcon">{String(i+1).padStart(2,'0')}</span><b>{item}</b><p>{focusNotes[i]}</p></div>)}</div></div></section>
   <section className="section" id="지역체크"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">2026 부산 · {district.name}</span><h2>{flow.supportHeading}</h2><p>부산시 공통지원과 구·군 자체사업은 지급주체·신청기한이 다를 수 있습니다. 아래 항목은 보험 혜택이 아니라 별도로 확인해야 할 공공지원 체크리스트입니다.</p></div><div className="facts">{district.localChecks.map((item,i)=><div className="fact" key={item}><span className="factIcon">{['📍','🗓️','🏛️'][i]}</span><b>{item}</b><p>대상, 주민등록·거주요건, 신청기간, 지급수단을 최신 공식 안내에서 확인하세요.</p></div>)}</div><div className="notice" role="note" aria-label={`${district.name} 공공지원 근거 수준`}><span className="pill">{evidence.badge}</span><br/><b>공식자료 확인 기준 · {district.source?.verified}</b><br/>{evidence.summary}<br/>{district.source?.note}<br/><a className="source" href={district.source?.url} target="_blank" rel="noreferrer">{district.source?.name} 공식 안내 확인 →</a></div></div></section>
   <section className="section localInfo"><div className="wrap infoSplit"><div className="infoPanel"><span className="insuranceBadge">{district.name} 보험·지원 구분</span><h2>{flow.localHeading}</h2><p>태아보험 자체를 {district.name} 전용 상품처럼 설명하지 않습니다. 보험은 보험회사·상품·피보험자 상태에 따라 판단하고, 부산시와 {district.name}의 공공지원은 주민등록과 신청시점을 기준으로 별도 확인합니다.</p></div><div className="infoPanel infoPanelAccent"><span>💡</span><h3>{district.name} 페이지 고유 소재</h3><h2>{district.theme}</h2><p>{district.intro}</p></div></div></section>
   <section className="section nearbySection"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">부산 16개 구·군 연결</span><h2>부산 다른 지역 태아보험 페이지</h2><p>이사 예정지나 가족의 실제 주민등록 주소지가 다른 경우 해당 구·군의 공공지원 조건도 비교해 보세요.</p></div><div className="nearbyLinks">{siblings.map(d=><Link key={d.slug} href={`/태아보험/부산태아보험/${d.slug}`}><span>{d.name}</span><b>태아보험 →</b></Link>)}</div></div></section>
