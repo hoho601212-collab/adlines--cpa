@@ -9,19 +9,20 @@ type Props={params:Promise<{slug?:string[]}>};
 export function generateStaticParams(){return [{slug:[]},...regions.map(r=>({slug:[r.slug]})),...regions.flatMap(r=>r.cities.map(c=>({slug:[r.slug,c.slug]})))]}
 
 const robots=site.allowIndexing?{index:true,follow:true}:{index:false,follow:false,nocache:true};
+const polishSeoDescription=(description:string)=>description.replace(/태아보험 상담 전 (.+?)를 확인하세요\./,'태아보험 상담 전 확인할 항목: $1.');
 
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const{slug=[]}=await params;
  if(!slug.length){
   const seo=getInsuranceSeo();
-  return{title:seo.title,description:seo.description,alternates:{canonical:'/태아보험'},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:'/태아보험',type:'website'},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription}};
+  return{title:seo.title,description:polishSeoDescription(seo.description),alternates:{canonical:'/태아보험'},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:'/태아보험',type:'website'},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription}};
  }
  const r=findRegion(slug[0]);if(!r)return{};
  const c=slug[1]?findCity(r,slug[1]):undefined;
  if(slug[1]&&!c)return{};
  const canonical=`/태아보험/${r.slug}${c?`/${c.slug}`:''}`;
  const seo=getInsuranceSeo(r,c);
- return{title:seo.title,description:seo.description,alternates:{canonical},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website'},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription}};
+ return{title:seo.title,description:polishSeoDescription(seo.description),alternates:{canonical},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website'},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription}};
 }
 
 export default async function Page({params}:Props){
