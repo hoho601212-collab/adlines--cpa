@@ -15,9 +15,9 @@ const ctaLabels=[...flow.matchAll(/ctaLabel:'([^']+)'/g)].map(m=>m[1]);
 
 const checks={
  districtFlowCount:slugs.length===16&&new Set(slugs).size===16,
- uniqueCheckHeadings:checkHeadings.length===17&&new Set(checkHeadings.slice(0,16)).size===16,
- uniqueSupportHeadings:supportHeadings.length===17&&new Set(supportHeadings.slice(0,16)).size===16,
- uniqueFinalTitles:finalTitles.length===17&&new Set(finalTitles.slice(0,16)).size===16,
+ uniqueCheckHeadings:checkHeadings.length===16&&new Set(checkHeadings).size===16,
+ uniqueSupportHeadings:supportHeadings.length===16&&new Set(supportHeadings).size===16,
+ uniqueFinalTitles:finalTitles.length===16&&new Set(finalTitles).size===16,
  uniqueCtaLabels:ctaLabels.length===17&&new Set(ctaLabels.slice(0,16)).size===16,
  flowMounted:page.includes("getBusanPageFlow")&&page.includes('flow.checkHeading')&&page.includes('flow.supportHeading')&&page.includes('flow.localHeading')&&page.includes('flow.finalTitle')&&page.includes('flow.ctaLabel'),
  seoAligned:page.includes('getBusanSeoIntent')&&page.includes('seoIntent.descriptionLead')&&page.includes('seoIntent.related'),
