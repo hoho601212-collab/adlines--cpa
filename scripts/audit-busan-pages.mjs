@@ -13,8 +13,9 @@ const checkHeadings=[...flow.matchAll(/checkHeading:'([^']+)'/g)].map(m=>m[1]);
 const supportHeadings=[...flow.matchAll(/supportHeading:'([^']+)'/g)].map(m=>m[1]);
 const finalTitles=[...flow.matchAll(/finalTitle:'([^']+)'/g)].map(m=>m[1]);
 const ctaLabels=[...flow.matchAll(/ctaLabel:'([^']+)'/g)].map(m=>m[1]);
-const focusGroups=[...focus.matchAll(/^\s*'([^']+(?:구|군)태아보험)':\[(.*?)\],$/gm)].map(m=>({slug:m[1],body:m[2]}));
+const focusGroups=[...focus.matchAll(/^\s*'([^']+(?:구|군)태아보험)':\[(.*?)\],?\s*$/gm)].map(m=>({slug:m[1],body:m[2]}));
 const focusNotes=focusGroups.flatMap(g=>[...g.body.matchAll(/'([^']+)'/g)].map(m=>m[1]));
+const eachFocusGroupHasThree=focusGroups.every(g=>(g.body.match(/'[^']+'/g)||[]).length===3);
 
 const checks={
  districtFlowCount:slugs.length===16&&new Set(slugs).size===16,
@@ -28,7 +29,7 @@ const checks={
  evidenceMounted:page.includes('getBusanEvidenceState')&&page.includes('evidence.badge'),
  seoIntentCoverage:(context.match(/titleTail:/g)||[]).length>=17,
  focusDistrictCoverage:focusGroups.length===16&&new Set(focusGroups.map(x=>x.slug)).size===16,
- focusNotesCount:focusNotes.length===48,
+ focusNotesCount:focusNotes.length===48&&eachFocusGroupHasThree,
  focusNotesUnique:new Set(focusNotes).size===48,
  focusNotesMounted:page.includes("getBusanFocusNotes")&&page.includes('const focusNotes=')&&page.includes('<p>{focusNotes[i]}</p>'),
  genericFocusRemoved:!page.includes("i===0?'가입 전 현재 임신 주수와 심사조건을 확인하고")
