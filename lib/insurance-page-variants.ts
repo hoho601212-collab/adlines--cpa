@@ -47,7 +47,7 @@ function modeFaq(mode:HeadingMode,label:string):FaqItem|null{
 export function getContextualFaq(region?:Region,city?:City):FaqItem[]{
  if(!region)return [];
  const label=city?.name||region.name;const wanted=city?3:2;const result:FaqItem[]=[];
- const specific=modeFaq(headingMode(region,city),label);if(city&&specific)result.push(specific);
+ const specific=modeFaq(headingMode(region,city),label);if(specific)result.push(specific);
  const seed=hash(`${region.slug}/${city?.slug||'hub'}`);const used=new Set<number>();
  for(let step=0;step<faqPools.length&&result.length<wanted;step++){
   const idx=(seed+step*5)%faqPools.length;if(used.has(idx))continue;used.add(idx);result.push(faqPools[idx](label,region.name));
@@ -91,8 +91,8 @@ const modeHeadings:Record<HeadingMode,{check:string;support:string;local:string}
 };
 export function getSectionHeadings(region?:Region,city?:City){
  const label=city?.name||region?.name||'태아보험';
- if(city){const set=modeHeadings[headingMode(region,city)];return {checkTitle:`${label} ${set.check}`,supportTitle:`${label}, ${set.support}`,localTitle:`${label} ${set.local}`,faqTitle:`❓ ${label}에서 자주 확인하는 질문`};}
- const set=headingSets[hash(`${region?.slug||'national'}:${city?.slug||'hub'}:headings`)%headingSets.length];
+ if(region){const set=modeHeadings[headingMode(region,city)];return {checkTitle:`${label} ${set.check}`,supportTitle:`${label}, ${set.support}`,localTitle:`${label} ${set.local}`,faqTitle:`❓ ${label}에서 자주 확인하는 질문`};}
+ const set=headingSets[hash('national:hub:headings')%headingSets.length];
  return {checkTitle:`${label} ${set[0]}`,supportTitle:`${label}, ${set[1]}`,localTitle:`${label} ${set[2]}`,faqTitle:`❓ ${label}에서 자주 확인하는 질문`};
 }
 
