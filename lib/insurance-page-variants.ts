@@ -17,14 +17,16 @@ const faqPools=[
  (label:string):FaqItem=>({question:`${label} 공식 지원금액이 오래된 자료와 다르면 무엇을 기준으로 봐야 하나요?`,answer:`가장 최근의 지자체 시행공고·조례·정부 포털 안내를 우선하세요. 오래된 블로그나 과거 보도자료의 금액이 현재 기준과 다를 수 있으므로 게시일·수정일·사업연도를 함께 확인하는 것이 좋습니다.`})
 ];
 
-type HeadingMode='housing'|'transport'|'health'|'voucher'|'installment'|'evidence'|'cash';
+type HeadingMode='housing'|'transport'|'health'|'voucher'|'installment'|'evidence'|'deadline'|'birthorder'|'cash';
 const cityModes:Partial<Record<HeadingMode,string[]>>={
  housing:['창원태아보험','청주태아보험','제천태아보험'],
  transport:['충주태아보험'],
  health:['원주태아보험','춘천태아보험','강릉태아보험','양산태아보험'],
  voucher:['통영태아보험','나주태아보험','공주태아보험'],
  installment:['파주태아보험','안양태아보험','시흥태아보험','당진태아보험','서산태아보험','여수태아보험','광양태아보험','경주태아보험','안동태아보험','구미태아보험','진주태아보험','사천태아보험','서귀포태아보험'],
- evidence:['김해태아보험','동해태아보험','경산태아보험','익산태아보험','정읍태아보험','포항태아보험','김천태아보험']
+ evidence:['김해태아보험','동해태아보험','경산태아보험','익산태아보험','정읍태아보험','포항태아보험','김천태아보험'],
+ deadline:['고양태아보험','김포태아보험','의정부태아보험','천안태아보험','아산태아보험','논산태아보험','목포태아보험'],
+ birthorder:['수원태아보험','성남태아보험','화성태아보험','부천태아보험','평택태아보험','안산태아보험','군산태아보험','전주태아보험','거제태아보험']
 };
 function headingMode(region?:Region,city?:City):HeadingMode{
  if(city){for(const [mode,slugs] of Object.entries(cityModes) as [HeadingMode,string[]][])if(slugs.includes(city.slug))return mode;}
@@ -41,6 +43,8 @@ function modeFaq(mode:HeadingMode,label:string):FaqItem|null{
  if(mode==='voucher')return {question:`${label} 바우처·지역화폐 지원은 금액만 확인하면 되나요?`,answer:`사용처·유효기간·본인부담 여부·지급수단까지 확인해야 합니다. 표시 금액이 같아도 현금과 실제 활용범위가 다를 수 있으므로 현금성 장려금과 구분해서 보세요.`};
  if(mode==='installment')return {question:`${label} 분할지급형 지원은 최초 신청 후 자동으로 계속 받나요?`,answer:`사업마다 다릅니다. 후속 지급시점마다 계속 거주나 연령·출생순위 조건을 다시 확인하는 경우가 있으므로 첫 회차 금액보다 전체 지급일정과 유지조건을 함께 확인하세요.`};
  if(mode==='evidence')return {question:`${label} 페이지에 재확인 안내가 있는 금액은 그대로 신청 기준으로 보면 되나요?`,answer:`아닙니다. 이전 연도 공식자료나 계획·예산 자료를 근거로 한 항목은 2026년 실제 시행조건과 달라질 수 있습니다. 최신 시행공고에서 금액·대상·신청기간을 다시 확인하세요.`};
+ if(mode==='deadline')return {question:`${label} 지원은 출생신고만 하면 신청기한을 놓치지 않나요?`,answer:`아닙니다. 출생신고와 별도로 신청해야 하거나 출생 후 수개월 안에 접수해야 하는 사업이 있을 수 있습니다. 출생 전 필요한 서류를 정리하고 신고 직후 담당기관의 접수기한을 확인하세요.`};
+ if(mode==='birthorder')return {question:`${label} 출산지원은 첫째와 둘째 이상이 같은 기준인가요?`,answer:`출생순위에 따라 지원액·지급횟수·대상사업이 달라질 수 있습니다. 총액만 비교하지 말고 첫째·둘째·셋째 이상 기준과 다태아 산정방식을 함께 확인하세요.`};
  return null;
 }
 
@@ -87,6 +91,8 @@ const modeHeadings:Record<HeadingMode,{check:string;support:string;local:string}
  voucher:{check:'🎫 바우처·지역화폐와 현금지원을 구분하세요',support:'💳 금액보다 지급수단·사용처를 함께 확인하세요',local:'🧾 사용기한·자부담까지 확인할 내용'},
  installment:{check:'🗓️ 분할지급 일정과 계속 거주조건을 확인하세요',support:'⏳ 첫 지급액보다 전체 회차를 함께 봐야 합니다',local:'🏠 후속 회차까지 놓치지 않을 체크포인트'},
  evidence:{check:'🔎 2026 시행 여부와 근거연도를 먼저 확인하세요',support:'🏛️ 이전 자료와 최신 시행공고를 구분해 봅니다',local:'📌 확정된 정보와 재확인 항목을 나눠 보세요'},
+ deadline:{check:'⏰ 출생신고 후 신청기한을 먼저 확인하세요',support:'🗓️ 받을 수 있어도 기한을 놓치면 신청이 어려울 수 있습니다',local:'📝 신고 직후 준비할 신청 순서와 서류'},
+ birthorder:{check:'👨‍👩‍👧 출생순위별 지원 차이를 먼저 확인하세요',support:'🎁 첫째·둘째·셋째 이상 기준을 나눠 봅니다',local:'📊 출생순위와 다태아 기준까지 확인할 내용'},
  cash:{check:'🎁 출생순위·거주기간·신청기한을 확인하세요',support:'💰 현금성 지원은 총액보다 지급조건이 중요합니다',local:'✅ 실제 수령 전에 확인할 지역 조건'}
 };
 export function getSectionHeadings(region?:Region,city?:City){
