@@ -26,5 +26,9 @@ export const nationalPrograms:SupportProgram[]=[
 {title:'첫만남이용권',category:'전국공통',summary:'출생 초기 양육 부담을 줄이기 위한 이용권 제도입니다.',target:'출생아 기준 최신 세부 요건 확인',apply:'정부24·복지로 공식 안내에서 신청방법 확인',sourceName:'복지로',sourceUrl:'https://www.bokjiro.go.kr/',verifiedAt:'2026-09-03'},
 {title:'부모급여',category:'전국공통',summary:'영아기 돌봄을 지원하는 전국 공통 제도입니다.',target:'아동 연령 및 보육 형태 등에 따른 기준 확인',apply:'정부24·복지로에서 최신 기준 확인',sourceName:'정부24',sourceUrl:'https://www.gov.kr/',verifiedAt:'2026-09-03'},
 {title:'아동수당',category:'전국공통',summary:'아동 양육에 따른 경제적 부담을 줄이기 위한 지원입니다.',target:'아동 연령 등 법정 요건 확인',apply:'정부24·복지로에서 신청 및 상세요건 확인',sourceName:'복지로',sourceUrl:'https://www.bokjiro.go.kr/',verifiedAt:'2026-09-03'}];
-export const findRegion=(slug:string)=>regions.find(r=>r.slug===slug);
-export const findCity=(region:Region,slug:string)=>region.cities.find(c=>c.slug===slug);
+
+const normalizeSlug=(slug:string)=>{
+ try{return decodeURIComponent(slug);}catch{return slug;}
+};
+export const findRegion=(slug:string)=>regions.find(r=>r.slug===normalizeSlug(slug));
+export const findCity=(region:Region,slug:string)=>region.cities.find(c=>c.slug===normalizeSlug(slug));
