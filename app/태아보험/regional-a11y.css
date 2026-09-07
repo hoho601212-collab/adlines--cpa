@@ -1,0 +1,20 @@
+.verifiedSupportSource:focus-visible,
+.supportEmptyLinks a:focus-visible,
+.supportSection .source:focus-visible,
+.localInfo a:focus-visible{
+ outline:3px solid rgba(13,122,69,.32);
+ outline-offset:3px;
+ border-radius:10px;
+ box-shadow:0 0 0 2px #fff;
+}
+
+.verifiedSupportSource:focus-visible,
+.supportSection .source:focus-visible{
+ text-decoration:underline;
+ text-decoration-thickness:2px;
+ text-underline-offset:3px;
+}
+
+@media (prefers-reduced-motion:reduce){
+ .supportEmptyLinks a{transition:none}
+}
