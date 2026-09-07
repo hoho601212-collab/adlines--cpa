@@ -6,6 +6,7 @@ import BusanDistrictDirectory from '@/components/BusanDistrictDirectory';
 import {regions,findRegion,findCity} from '@/lib/insurance-data';
 import {findBusanDistrict,busanDistricts} from '@/lib/busan-insurance';
 import {withBusanDistrictEvidence} from '@/lib/busan-district-evidence';
+import {getBusanSeoIntent} from '@/lib/busan-page-context';
 import {getInsuranceSeo} from '@/lib/insurance-content';
 import {site} from '@/lib/site';
 
@@ -17,7 +18,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  const{slug=[]}=await params;
  if(!slug.length){const seo=getInsuranceSeo();return{title:seo.title,description:polishSeoDescription(seo.description),alternates:{canonical:'/태아보험'},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:'/태아보험',type:'website'},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription}};}
  const r=findRegion(slug[0]);if(!r)return{};
- if(r.slug==='부산태아보험'&&slug[1]){const raw=findBusanDistrict(slug[1]);if(!raw)return{};const d=withBusanDistrictEvidence(raw);const title=`${d.name} 태아보험 상담 | 가입시기·보장·부산 출산지원`;const description=`${d.name} 태아보험 상담 전 ${d.theme}을 중심으로 가입시기와 보장조건을 확인하고, 2026 부산시 공통지원과 ${d.name} 출산·육아 체크사항을 구분해 살펴보세요.`;const canonical=`/태아보험/부산태아보험/${d.slug}`;return{title,description,alternates:{canonical},robots,openGraph:{title,description,url:canonical,type:'website'},twitter:{card:'summary_large_image',title,description}};}
+ if(r.slug==='부산태아보험'&&slug[1]){const raw=findBusanDistrict(slug[1]);if(!raw)return{};const d=withBusanDistrictEvidence(raw);const intent=getBusanSeoIntent(d);const title=`${d.name} 태아보험 상담 | ${intent.titleTail}`;const description=`${d.name} 태아보험 상담 전 ${intent.descriptionLead} 2026 부산시·${d.name} 출산·육아 지원은 보험 보장과 구분해 공식자료 기준으로 확인하세요.`;const canonical=`/태아보험/부산태아보험/${d.slug}`;return{title,description,alternates:{canonical},robots,openGraph:{title,description,url:canonical,type:'website'},twitter:{card:'summary_large_image',title,description}};}
  const c=slug[1]?findCity(r,slug[1]):undefined;if(slug[1]&&!c)return{};const canonical=`/태아보험/${r.slug}${c?`/${c.slug}`:''}`;const seo=getInsuranceSeo(r,c);return{title:seo.title,description:polishSeoDescription(seo.description),alternates:{canonical},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website'},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription}};
 }
 export default async function Page({params}:Props){

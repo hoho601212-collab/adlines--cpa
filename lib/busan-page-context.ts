@@ -1,6 +1,30 @@
 import type {BusanDistrict} from './busan-insurance';
 
 export type BusanEvidenceState={tone:'district'|'guide'|'citywide';badge:string;summary:string};
+export type BusanSeoIntent={titleTail:string;descriptionLead:string;related:string[]};
+
+const seoIntents:Record<string,BusanSeoIntent>={
+ '해운대구태아보험':{titleTail:'가입시기·출생순위·산모특약',descriptionLead:'임신 주수별 가입 가능조건과 출생순위별 지역지원, 산모특약의 역할을 함께 정리합니다.',related:['해운대구 태아보험 가입시기','해운대구 산모특약','해운대구 출산지원']},
+ '부산진구태아보험':{titleTail:'가입시기·신생아보장·계약전환',descriptionLead:'임신 초기·중기 가입시기와 신생아 입원·수술 보장, 출생 후 계약전환 절차를 중심으로 봅니다.',related:['부산진구 태아보험 가입시기','부산진구 신생아보장','부산진구 어린이보험 전환']},
+ '동래구태아보험':{titleTail:'산모특약·가입주수·보장기간',descriptionLead:'산모특약과 태아 관련 특약의 가입 가능 주수, 출생 후 장기 보장기간을 구분해 확인합니다.',related:['동래구 산모특약','동래구 태아보험 가입주수','동래구 어린이보험 보장기간']},
+ '수영구태아보험':{titleTail:'바우처·보험금·정액형보장',descriptionLead:'지역 바우처·현물성 지원과 정액형·실손형 보험금의 차이를 중심으로 비교합니다.',related:['수영구 태아보험 비교','수영구 임산부 바우처','수영구 정액형 보장']},
+ '남구태아보험':{titleTail:'산후조리비·보장기간·보험료',descriptionLead:'산후조리 관련 공공지원과 장기 보장기간, 갱신 여부와 보험료 구조를 따로 점검합니다.',related:['남구 태아보험 보험료','남구 산후조리비','남구 태아보험 보장기간']},
+ '연제구태아보험':{titleTail:'고지사항·심사조건·가입서류',descriptionLead:'임신 주수와 검사·치료 이력, 고지사항과 실제 청약 심사조건을 상담 전에 정리합니다.',related:['연제구 태아보험 고지사항','연제구 태아보험 심사','연제구 태아보험 준비서류']},
+ '금정구태아보험':{titleTail:'산모특약·출산축하금·보장유지',descriptionLead:'출산축하금 같은 공공지원과 산모특약, 출생 후 어린이보험 보장 유지조건을 분리해 봅니다.',related:['금정구 태아보험 산모특약','금정구 출산축하금','금정구 어린이보험']},
+ '북구태아보험':{titleTail:'보험료·분할지원·거주조건',descriptionLead:'장기 보험료 납입과 출산장려금 분할지급, 계속 거주조건을 서로 다른 기준으로 관리합니다.',related:['북구 태아보험 보험료','북구 출산장려금','북구 태아보험 비교']},
+ '사하구태아보험':{titleTail:'필수보장·보험료예산·납입면제',descriptionLead:'출산 후 생활비까지 고려해 필수보장과 선택특약, 월 보험료와 납입면제 조건을 점검합니다.',related:['사하구 태아보험 필수보장','사하구 태아보험 보험료','사하구 납입면제']},
+ '사상구태아보험':{titleTail:'보험비교·갱신조건·면책기간',descriptionLead:'여러 설계안을 같은 가입금액·보장기간·갱신조건·면책기간 기준으로 맞춰 비교합니다.',related:['사상구 태아보험 비교','사상구 태아보험 갱신형','사상구 태아보험 면책기간']},
+ '강서구태아보험':{titleTail:'주소변경·거주조건·출생후등록',descriptionLead:'출산 전후 이사 예정 가정이 보험계약 주소변경과 공공지원 거주요건, 출생 후 자녀등록을 구분해 확인합니다.',related:['강서구 태아보험 주소변경','강서구 출산지원 거주요건','강서구 태아보험 자녀등록']},
+ '기장군태아보험':{titleTail:'공공보험·민간보험·중복보장',descriptionLead:'지자체 안전보험과 개인 태아·어린이보험의 보장 목적, 중복 가능성과 약관 차이를 구분합니다.',related:['기장군 태아보험','기장군 군민안전보험','기장군 어린이보험 비교']},
+ '서구태아보험':{titleTail:'신생아보장·선천성보장·청구서류',descriptionLead:'출생 직후 입원·수술, 선천성 관련 약관 범위와 보험금 청구서류를 중심으로 확인합니다.',related:['서구 신생아보험','서구 태아보험 선천성보장','서구 보험금 청구서류']},
+ '동구태아보험':{titleTail:'보장공백·출생순위·납입면제',descriptionLead:'특약 개수보다 질병·상해·수술의 보장공백과 출생순위별 지원, 납입면제 조건을 먼저 봅니다.',related:['동구 태아보험 보장공백','동구 출산지원','동구 태아보험 납입면제']},
+ '중구태아보험':{titleTail:'장기보험·분할지원·계속거주',descriptionLead:'7년 분할 공공지원과 장기 보험계약의 지급기간·유지조건을 서로 섞지 않고 비교합니다.',related:['중구 태아보험 장기보장','중구 출산축하금','중구 태아보험 보험료']},
+ '영도구태아보험':{titleTail:'보험료·현물지원·보장기간',descriptionLead:'기저귀 같은 현물지원의 실제 가치와 장기 보험료, 보장기간·납입기간을 별도로 계산합니다.',related:['영도구 태아보험 보험료','영도구 출산축하용품','영도구 태아보험 보장기간']}
+};
+
+export function getBusanSeoIntent(district:BusanDistrict):BusanSeoIntent{
+ return seoIntents[district.slug]||{titleTail:'가입시기·보장·출산지원',descriptionLead:`${district.theme}을 중심으로 가입조건과 지역지원 정보를 함께 확인합니다.`,related:[`${district.name} 태아보험`,`${district.name} 태아보험 상담`,`${district.name} 출산지원`]};
+}
 
 export function getBusanEvidenceState(district:BusanDistrict):BusanEvidenceState{
  const sourceName=district.source?.name||'';
