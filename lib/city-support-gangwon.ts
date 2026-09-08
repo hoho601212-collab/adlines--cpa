@@ -15,7 +15,7 @@ const DATA:Record<string,RegionalSupportItem[]>={
     {title:'강릉 산모·신생아 건강관리사 지원',summary:'출산가정에 건강관리사가 방문해 산모 회복과 신생아 돌봄을 지원하는 서비스입니다.',benefit:'소득수준·태아유형·서비스기간에 따라 정부지원금 차등',eligibility:'신청일 기준 건강보험료 본인부담액이 기준중위소득 150% 이하 등 공식 기준 충족 임산부',apply:'강릉시보건소 건강증진과에서 최신 신청기간과 구비서류 확인',sourceName:'강릉시 임신·출산지원',sourceUrl:'https://www.gangneung.go.kr/www/contents.do?key=369',verifiedAt:'2026-09-03'}
   ],
   동해태아보험:[
-    {title:'2026 동해시 출산장려금',summary:'복지로 2026년 지자체 복지서비스에서 동해시 출산장려금의 출생순위별 분할지급 구조와 현재 거주요건을 확인했습니다.',benefit:'첫째 60만원(10만원×6개월) · 둘째 120만원(10만원×12개월) · 셋째 이상 180만원(10만원×18개월)',eligibility:'출산일 또는 입양일 현재 동해시에 주민등록을 두고 거주하는 영아의 부 또는 모 등 공식 기준 충족 가정',apply:'주소지 행정복지센터 방문 신청 · 실제 신청 시 지급개시 시점과 구비서류 재확인',sourceName:'복지로 · 동해시 출산장려금 지원',sourceUrl:'https://www.bokjiro.go.kr/ssis-tbu/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00003777',verifiedAt:'2026-09-07'}
+    {title:'2026 동해시 출산장려금',summary:'복지로 지자체 복지서비스의 2026년 7월 10일 최종수정 기준으로 동해시 출산장려금의 출생순위별 월 분할지급 구조와 현재 거주요건을 확인했습니다.',benefit:'첫째 60만원(월 10만원×6개월) · 둘째 120만원(월 10만원×12개월) · 셋째 이상 180만원(월 10만원×18개월) · 매월 20일 개인계좌 지급',eligibility:'출산일 또는 입양일 현재 동해시에 주민등록을 두고 거주하는 영아의 부 또는 모(법정대리인 포함)',apply:'주소지 동 행정복지센터에서 방문 신청. 지급은 월 10만원씩 매월 20일 기준으로 진행되므로 최초 지급 개시월과 구비서류는 신청 시 확인',sourceName:'복지로 · 동해시 출산장려금 지원',sourceUrl:'https://www.bokjiro.go.kr/ssis-tbu/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00003777',verifiedAt:'2026-09-08'}
   ]
 };
 
