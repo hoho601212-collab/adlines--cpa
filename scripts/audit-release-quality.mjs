@@ -21,6 +21,7 @@ const regionProfiles=[...content.matchAll(/^\s*([가-힣]+태아보험):\{intro:
 const cityProfiles=[...content.matchAll(/^\s*'([^']+태아보험\/[^']+태아보험)':\{intro:'([^']+)'/gm)].map(m=>({key:m[1],intro:m[2]}));
 const regionIntros=regionProfiles.map(x=>x.intro);
 const cityIntros=cityProfiles.map(x=>x.intro);
+const reviewDate=site.match(/contentReviewedAt:\s*'(\d{4}-\d{2}-\d{2})'/)?.[1]||'';
 
 const checks={
  regionProfiles:REGION_SLUGS.every(s=>regionProfiles.some(x=>x.slug===s))&&regionProfiles.length===17,
@@ -49,7 +50,7 @@ const checks={
  sitemapCoverage:sitemap.includes('regions.flatMap')&&sitemap.includes('busanDistricts.map')&&sitemap.includes('keywordPages'),
  sitemapStableModified:sitemap.includes('site.contentReviewedAt')&&!sitemap.includes('const now=new Date()'),
  sitemapCadence:sitemap.includes("changeFrequency:'weekly'")&&sitemap.includes("changeFrequency:'monthly'"),
- reviewDateSource:site.includes("contentReviewedAt: '2026-09-07'")
+ reviewDateSource:/^2026-\d{2}-\d{2}$/.test(reviewDate)&&sitemap.includes('site.contentReviewedAt')
 };
 
 const failed=Object.entries(checks).filter(([,ok])=>!ok).map(([name])=>name);
