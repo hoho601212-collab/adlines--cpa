@@ -6,6 +6,7 @@ const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const data=read('lib/insurance-data.ts');
 const variants=read('lib/insurance-page-variants.ts');
 const busan=read('lib/busan-insurance.ts');
+const busanRelated=read('lib/busan-related-districts.ts');
 const sitemap=read('app/sitemap.ts');
 const route=read('app/태아보험/[[...slug]]/page.tsx');
 const page=read('components/InsurancePage.tsx');
@@ -31,6 +32,8 @@ const badRelated=relatedHrefs.filter(h=>h!=='/태아보험'&&!h.startsWith('/태
 const busanDistrictSlugs=[...busan.matchAll(/slug:'([^']+(?:구|군)태아보험)'/g)].map(m=>m[1]);
 const busanThemes=[...busan.matchAll(/theme:'([^']+)'/g)].map(m=>m[1]);
 const busanVerified=[...busan.matchAll(/verified:'(\d{4}-\d{2}-\d{2})'/g)].map(m=>m[1]);
+const relatedGroups=[...busanRelated.matchAll(/^\s*'([^']+(?:구|군)태아보험)':\[(.*?)\n\s*\],?$/gms)].map(m=>({slug:m[1],body:m[2]}));
+const relatedTargets=relatedGroups.flatMap(g=>[...g.body.matchAll(/slug:'([^']+)'/g)].map(m=>({from:g.slug,to:m[1]})));
 
 const checks={
  regionDirectory:page.includes('region.cities.map'),
@@ -70,8 +73,9 @@ const checks={
  busanRouteGeneration:route.includes('busanDistricts.map')&&route.includes("['부산태아보험',d.slug]")&&route.includes("findBusanDistrict(slug[1])"),
  busanEncodedSlug:busan.includes('decodeURIComponent(slug)'),
  busanSitemap:sitemap.includes('busanDistricts.map')&&sitemap.includes('/태아보험/부산태아보험/${d.slug}'),
- busanDirectoryLinks:busanDirectory.includes('busanDistricts.map')&&busanDirectory.includes('/태아보험/부산태아보험/${d.slug}'),
- busanSiblingLinks:busanPage.includes('siblings.map')&&busanPage.includes('/태아보험/부산태아보험/${d.slug}'),
+ busanDirectoryLinks:busanDirectory.includes('group.districtSlugs.map')&&busanDirectory.includes('/태아보험/부산태아보험/${d.slug}'),
+ busanRelatedCoverage:relatedGroups.length===16&&relatedGroups.every(g=>(g.body.match(/slug:'/g)||[]).length===4)&&relatedTargets.every(x=>x.from!==x.to&&busanDistrictSlugs.includes(x.to)),
+ busanRelatedMounted:busanPage.includes('getBusanRelatedDistricts')&&busanPage.includes('relatedDistricts.map')&&busanPage.includes('/태아보험/부산태아보험/${item.slug}')&&busanPage.includes('부산 16개 구·군 전체 보기'),
  busanInquiryStages:busanPage.includes('position="primary"')&&busanPage.includes('position="secondary"'),
  busanOfficialEvidence:busan.includes("source:{name:'해운대구청")&&busan.includes("source:{name:'동래구")&&busan.includes("source:{name:'사하구청")&&busan.includes("source:{name:'서구청")&&busan.includes("source:{name:'부산 동구")&&busan.includes("source:{name:'사상구")&&busanVerified.every(v=>/^2026-\d{2}-\d{2}$/.test(v))
 };
@@ -96,7 +100,8 @@ console.log(`편집 기준일 중앙관리: ${checks.centralizedReviewDate?'연�
 console.log(`WebPage 최신성·발행주체 Schema: ${checks.schemaModified&&checks.schemaPublisher?'연결':'누락'}`);
 console.log(`부산 16개 구·군 페이지: ${checks.busanDistrictCount?'16/16':'누락 또는 중복'}`);
 console.log(`부산 구·군 고유 보험주제: ${checks.busanUniqueThemes?'16개 고유':'중복 있음'}`);
-console.log(`부산 한글 route·sitemap·내부링크: ${checks.busanRouteGeneration&&checks.busanEncodedSlug&&checks.busanSitemap&&checks.busanDirectoryLinks&&checks.busanSiblingLinks?'연결':'누락'}`);
+console.log(`부산 한글 route·sitemap·내부링크: ${checks.busanRouteGeneration&&checks.busanEncodedSlug&&checks.busanSitemap&&checks.busanDirectoryLinks&&checks.busanRelatedCoverage&&checks.busanRelatedMounted?'연결':'누락'}`);
+console.log(`부산 관련지역 추천: ${checks.busanRelatedCoverage&&checks.busanRelatedMounted?'16개 페이지 × 4개 관련링크':'보완 필요'}`);
 console.log(`부산 구·군 상담 2단계: ${checks.busanInquiryStages?'연결':'누락'}`);
 console.log(`부산 공식 지역근거 확장: ${checks.busanOfficialEvidence?'확인':'보완 필요'}`);
 console.log(`구조화데이터/내부링크 검사: ${failed.length?failed.join(', '):'통과'}`);

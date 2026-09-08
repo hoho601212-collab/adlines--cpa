@@ -11,7 +11,8 @@
     "audit:policy": "node scripts/audit-policy-freshness.mjs",
     "audit:coverage": "node scripts/audit-support-coverage.mjs",
     "audit:busan": "node scripts/audit-busan-pages.mjs",
-    "audit:release": "npm run audit:insurance && npm run audit:links && npm run audit:policy && npm run audit:coverage && npm run audit:busan && npm run build"
+    "audit:quality": "node scripts/audit-release-quality.mjs",
+    "audit:release": "npm run audit:insurance && npm run audit:links && npm run audit:policy && npm run audit:coverage && npm run audit:busan && npm run audit:quality && npm run build"
   },
   "dependencies": {
     "next": "^15.5.2",
