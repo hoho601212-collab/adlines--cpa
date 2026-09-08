@@ -14,7 +14,8 @@
     "audit:quality": "node scripts/audit-release-quality.mjs",
     "audit:seo": "node scripts/audit-seo-output.mjs",
     "audit:schema": "node scripts/audit-schema-alignment.mjs",
-    "audit:release": "npm run audit:insurance && npm run audit:links && npm run audit:policy && npm run audit:coverage && npm run audit:busan && npm run audit:quality && npm run audit:seo && npm run audit:schema && npm run build"
+    "audit:index": "node scripts/audit-index-readiness.mjs",
+    "audit:release": "npm run audit:insurance && npm run audit:links && npm run audit:policy && npm run audit:coverage && npm run audit:busan && npm run audit:quality && npm run audit:seo && npm run audit:schema && npm run audit:index && npm run build"
   },
   "dependencies": {
     "next": "^15.5.2",
