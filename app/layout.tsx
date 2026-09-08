@@ -1,6 +1,7 @@
 import './globals.css';
 import './home.css';
 import './insurance.css';
+import './insurance-mobile.css';
 import './support.css';
 import './support-freshness.css';
 import './timeline.css';
