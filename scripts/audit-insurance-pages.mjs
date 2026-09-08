@@ -4,7 +4,7 @@ import path from 'node:path';
 const root=process.cwd();
 const read=(p)=>fs.readFileSync(path.join(root,p),'utf8');
 const files={
- data:read('lib/insurance-data.ts'),content:read('lib/insurance-content.ts'),variants:read('lib/insurance-page-variants.ts'),images:read('lib/insurance-images.ts'),region:read('lib/regional-support.ts'),gyeonggi:read('lib/city-support.ts'),central:read('lib/city-support-central.ts'),south:read('lib/city-support-south.ts'),east:read('lib/city-support-east.ts'),gyeongnam:read('lib/city-support-gyeongnam.ts'),jeju:read('lib/city-support-jeju.ts'),gangwon:read('lib/city-support-gangwon.ts'),page:read('components/InsurancePage.tsx'),route:read('app/태아보험/[[...slug]]/page.tsx'),sitemap:read('app/sitemap.ts'),site:read('lib/site.ts')
+ data:read('lib/insurance-data.ts'),content:read('lib/insurance-content.ts'),seo:read('lib/insurance-seo-variants.ts'),variants:read('lib/insurance-page-variants.ts'),images:read('lib/insurance-images.ts'),region:read('lib/regional-support.ts'),gyeonggi:read('lib/city-support.ts'),central:read('lib/city-support-central.ts'),south:read('lib/city-support-south.ts'),east:read('lib/city-support-east.ts'),gyeongnam:read('lib/city-support-gyeongnam.ts'),jeju:read('lib/city-support-jeju.ts'),gangwon:read('lib/city-support-gangwon.ts'),page:read('components/InsurancePage.tsx'),route:read('app/태아보험/[[...slug]]/page.tsx'),sitemap:read('app/sitemap.ts'),site:read('lib/site.ts')
 };
 
 const REGION_SLUGS=['서울태아보험','부산태아보험','대구태아보험','인천태아보험','광주태아보험','대전태아보험','울산태아보험','세종태아보험','경기태아보험','강원태아보험','충북태아보험','충남태아보험','전북태아보험','전남태아보험','경북태아보험','경남태아보험','제주태아보험'];
@@ -28,14 +28,14 @@ const sourceUrls=[...supportCorpus.matchAll(/sourceUrl:'([^']+)'/g)].map(m=>m[1]
 const verifiedDates=[...supportCorpus.matchAll(/verifiedAt:'([^']+)'/g)].map(m=>m[1]);
 const badSourceUrls=sourceUrls.filter(url=>!/^https:\/\//.test(url));
 const badVerifiedDates=verifiedDates.filter(date=>!/^2026-\d{2}-\d{2}$/.test(date));
-const requiredPageTokens=['getLocalEditorial','getInsuranceSeo','getContextualFaq','getRelatedLinks','getChecklistDetail','getSectionHeadings','<InsuranceInquiryForm','getInsuranceImages','relatedGuideSection'];
+const requiredPageTokens=['getLocalEditorial','getLocalizedInsuranceSeo','getContextualFaq','getRelatedLinks','getChecklistDetail','getSectionHeadings','<InsuranceInquiryForm','getInsuranceImages','relatedGuideSection'];
 const missingPageTokens=requiredPageTokens.filter(t=>!files.page.includes(t));
 const inquiryCount=(files.page.match(/<InsuranceInquiryForm/g)||[]).length;
-const missingRouteTokens=['generateMetadata','canonical','getInsuranceSeo'].filter(t=>!files.route.includes(t));
+const missingRouteTokens=['generateMetadata','canonical','getLocalizedInsuranceSeo'].filter(t=>!files.route.includes(t));
 const missingSitemapTokens=['regions.flatMap','keywordPages','/태아보험'].filter(t=>!files.sitemap.includes(t));
 const imageChecks={webp:files.images.includes(".webp`"),fiveSlots:files.images.includes("padStart(2,'0')")&&files.images.includes('hubKeywords'),localSceneAlt:files.images.includes('sceneSets')&&files.images.includes('scenes[index]'),regionFolder:files.images.includes('${region.slug}/${city.slug}')};
 const failedImageChecks=Object.entries(imageChecks).filter(([,v])=>!v).map(([k])=>k);
-const seoChecks={localizedTitle:files.content.includes('태아보험 상담 | 가입시기·출산지원·보장 비교'),localizedDescription:files.content.includes('2026 지역 출산·육아 지원'),localizedH1:files.content.includes('태아보험 상담`'),baseFaq:files.content.includes('export function getInsuranceFaq'),contextualFaq:files.variants.includes('export function getContextualFaq'),relatedLinks:files.variants.includes('export function getRelatedLinks'),sectionHeadings:files.variants.includes('export function getSectionHeadings'),regionAwareEditorial:files.content.includes('CITY_PROFILES')&&files.content.includes('REGION_PROFILES')&&files.content.includes('cityKey')};
+const seoChecks={localizedHelper:files.seo.includes('export function getLocalizedInsuranceSeo'),localizedDescription:files.seo.includes('finalizeInsuranceSeoDescription'),localizedH1:files.seo.includes('태아보험 상담`'),baseFaq:files.content.includes('export function getInsuranceFaq'),contextualFaq:files.variants.includes('export function getContextualFaq'),relatedLinks:files.variants.includes('export function getRelatedLinks'),sectionHeadings:files.variants.includes('export function getSectionHeadings'),regionAwareEditorial:files.content.includes('CITY_PROFILES')&&files.content.includes('REGION_PROFILES')&&files.content.includes('cityKey')};
 const failedSeoChecks=Object.entries(seoChecks).filter(([,v])=>!v).map(([k])=>k);
 const collisionHandled=files.content.includes("'경기태아보험/광주태아보험'");
 const noindexControl=files.site.includes('allowIndexing');
@@ -47,9 +47,9 @@ if(missingRegions.length)errors.push(`광역지역 데이터 누락 ${missingReg
 if(cityEntries.length===0)errors.push('도시 데이터 파싱 실패');
 if(missingEditorial.length)errors.push(`도시 고유문구 누락 ${missingEditorial.length}`);
 if(missingRegionEditorial.length)errors.push(`광역 고유문구 누락 ${missingRegionEditorial.length}`);
-if(missingPageTokens.length)errors.push(`InsurancePage 연결 누락 ${missingPageTokens.length}`);
+if(missingPageTokens.length)errors.push(`InsurancePage 연결 누락 ${missingPageTokens.length}: ${missingPageTokens.join(', ')}`);
 if(inquiryCount<2)errors.push('지역 페이지 상담폼 2개 배치 확인 실패');
-if(missingRouteTokens.length)errors.push(`메타데이터 연결 누락 ${missingRouteTokens.length}`);
+if(missingRouteTokens.length)errors.push(`메타데이터 연결 누락 ${missingRouteTokens.length}: ${missingRouteTokens.join(', ')}`);
 if(missingSitemapTokens.length)errors.push(`사이트맵 연결 누락 ${missingSitemapTokens.length}`);
 if(failedSeoChecks.length)errors.push(`SEO 생성 규칙 누락 ${failedSeoChecks.length}`);
 if(failedImageChecks.length)errors.push(`이미지 규칙 누락 ${failedImageChecks.length}`);
