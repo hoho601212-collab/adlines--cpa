@@ -14,7 +14,8 @@ const invalid=rows.filter(r=>!/^2026-\d{2}-\d{2}$/.test(r.verifiedAt)||!/^https:
 const aged=rows.map(r=>({...r,days:Math.max(0,Math.floor((now.getTime()-new Date(`${r.verifiedAt}T00:00:00+09:00`).getTime())/day))})).filter(r=>Number.isFinite(r.days)&&r.days>120).sort((a,b)=>b.days-a.days);
 const planning=rows.filter(r=>/계획|예산|업무계획|방향/.test(`${r.title} ${r.sourceName}`));
 const legislative=rows.filter(r=>/조례|심사자료|의회/.test(r.sourceName));
-const legislativeUnclear=legislative.filter(r=>!/조례안 기준|시행공고|시행 여부|공포|시행일/.test(r.block));
+const legislativeDisclosure=/조례안 기준|시행공고|시행 여부|공포|시행일|계획 단계|확정 전|공고 확인|예산 확정|최신 조례/;
+const legislativeUnclear=legislative.filter(r=>!legislativeDisclosure.test(r.block));
 const sourceYear=(row)=>{const m=`${row.title} ${row.sourceName} ${row.url}`.match(/20(?:1\d|2\d)/g)||[];const years=m.map(Number).filter(y=>y>=2015&&y<=2099);return years.length?Math.max(...years):null};
 const legacy=rows.map(r=>({...r,sourceYear:sourceYear(r)})).filter(r=>r.sourceYear&&r.sourceYear<currentYear&&!`${r.title} ${r.sourceName}`.includes(String(currentYear)));
 
