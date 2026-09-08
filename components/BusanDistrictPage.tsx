@@ -7,12 +7,14 @@ import {getBusanPageFlow} from '@/lib/busan-page-flow';
 import {getBusanFocusNotes} from '@/lib/busan-focus-notes';
 import {getBusanSupportNotes} from '@/lib/busan-support-notes';
 import {getBusanDistrictFaqs} from '@/lib/busan-district-faqs';
+import {getBusanRelatedDistricts} from '@/lib/busan-related-districts';
 import InsuranceInquiryForm from './InsuranceInquiryForm';
 
 export default function BusanDistrictPage({district:rawDistrict}:{district:BusanDistrict}){
  const district=withBusanDistrictEvidence(rawDistrict);
  const keyword=`${district.name} 태아보험`;
- const siblings=busanDistricts.filter(d=>d.slug!==district.slug);
+ const districtMap=new Map(busanDistricts.map(d=>[d.slug,d]));
+ const relatedDistricts=getBusanRelatedDistricts(district.slug);
  const evidence=getBusanEvidenceState(district);
  const seoIntent=getBusanSeoIntent(district);
  const flow=getBusanPageFlow(district);
@@ -33,7 +35,7 @@ export default function BusanDistrictPage({district:rawDistrict}:{district:Busan
   <section className="section sectionAlt" id="보험체크"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">보험 상담 전 체크</span><h2>{flow.checkHeading}</h2><p>{seoIntent.descriptionLead}</p></div><div className="facts">{district.insuranceFocus.map((item,i)=><div className="fact" key={item}><span className="factIcon">{String(i+1).padStart(2,'0')}</span><b>{item}</b><p>{focusNotes[i]}</p></div>)}</div></div></section>
   <section className="section" id="지역체크"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">2026 부산 · {district.name}</span><h2>{flow.supportHeading}</h2><p>부산시 공통지원과 구·군 자체사업은 지급주체·신청기한이 다를 수 있습니다. 아래 항목은 보험 혜택이 아니라 별도로 확인해야 할 공공지원 체크리스트입니다.</p></div><div className="facts">{district.localChecks.map((item,i)=><div className="fact" key={item}><span className="factIcon">{['📍','🗓️','🏛️'][i]}</span><b>{item}</b><p>{supportNotes[i]}</p></div>)}</div><div className="notice" role="note" aria-label={`${district.name} 공공지원 근거 수준`}><span className="pill">{evidence.badge}</span><br/><b>공식자료 확인 기준 · {district.source?.verified}</b><br/>{evidence.summary}<br/>{district.source?.note}<br/><a className="source" href={district.source?.url} target="_blank" rel="noreferrer">{district.source?.name} 공식 안내 확인 →</a></div></div></section>
   <section className="section localInfo"><div className="wrap infoSplit"><div className="infoPanel"><span className="insuranceBadge">{district.name} 보험·지원 구분</span><h2>{flow.localHeading}</h2><p>태아보험 자체를 {district.name} 전용 상품처럼 설명하지 않습니다. 보험은 보험회사·상품·피보험자 상태에 따라 판단하고, 부산시와 {district.name}의 공공지원은 주민등록과 신청시점을 기준으로 별도 확인합니다.</p></div><div className="infoPanel infoPanelAccent"><span>💡</span><h3>{district.name} 페이지 고유 소재</h3><h2>{district.theme}</h2><p>{district.intro}</p></div></div></section>
-  <section className="section nearbySection"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">부산 16개 구·군 연결</span><h2>부산 다른 지역 태아보험 페이지</h2><p>이사 예정지나 가족의 실제 주민등록 주소지가 다른 경우 해당 구·군의 공공지원 조건도 비교해 보세요.</p></div><div className="nearbyLinks">{siblings.map(d=><Link key={d.slug} href={`/태아보험/부산태아보험/${d.slug}`}><span>{d.name}</span><b>태아보험 →</b></Link>)}</div></div></section>
+  <section className="section nearbySection"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">관련 부산 지역 가이드</span><h2>{district.name}와 함께 비교할 부산 지역</h2><p>모든 구·군을 한꺼번에 나열하지 않고, 현재 페이지의 보험 주제·지원방식·거주조건과 연결되는 지역을 먼저 제안합니다.</p></div><div className="nearbyLinks">{relatedDistricts.map(item=>{const d=districtMap.get(item.slug);if(!d)return null;return <Link key={item.slug} href={`/태아보험/부산태아보험/${item.slug}`}><span><b>{d.name} 태아보험</b><small>{item.reason}</small></span><b>비교하기 →</b></Link>})}</div><div className="notice" role="note"><b>부산 16개 구·군 전체를 보려면</b><br/>관심사별로 정리한 부산 태아보험 허브에서 나머지 지역까지 확인할 수 있습니다. <Link className="source" href="/태아보험/부산태아보험">부산 16개 구·군 전체 보기 →</Link></div></div></section>
   <section className="section faqSection"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">FAQ</span><h2>{district.name} 태아보험 상담 전 자주 묻는 질문</h2></div><div className="faqList">{faq.map(x=><details key={x.q}><summary>{x.q}</summary><p>{x.a}</p></details>)}</div></div></section>
   <InsuranceInquiryForm position="secondary" label={district.name}/>
   <section className="section finalCta"><div className="wrap"><h2>{flow.finalTitle}</h2><p>{flow.finalBody}</p><a className="btn ctaWhite" href="#보험상담-secondary">{flow.ctaLabel}</a></div></section>
