@@ -11,6 +11,13 @@
  box-shadow:0 0 0 2px #fff;
 }
 
+/* Insurance routes own their branding at the route-layout level so the
+   insurance logo is present in the initial server-rendered HTML. */
+body:has(> .insuranceRouteShell) > header.header,
+body:has(> .insuranceRouteShell) > footer.footer{
+ display:none!important;
+}
+
 .insurancePage .faqList summary:focus-visible{
  outline-offset:-3px;
  border-radius:14px;
