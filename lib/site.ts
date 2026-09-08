@@ -6,7 +6,7 @@ export const site = {
   cpaUrl: process.env.NEXT_PUBLIC_INSURANCE_CPA_URL || '#상담신청',
   baseUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.adlines.co.kr',
   allowIndexing: process.env.NEXT_PUBLIC_ALLOW_INDEXING === 'true',
-  contentReviewedAt: '2026-09-07'
+  contentReviewedAt: '2026-09-08'
 };
 
 export const serviceBrands = {
