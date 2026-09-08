@@ -21,7 +21,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  const c=slug[1]?findCity(r,slug[1]):undefined;if(slug[1]&&!c)return{};const canonical=`/태아보험/${r.slug}${c?`/${c.slug}`:''}`;const seo=getLocalizedInsuranceSeo(r,c);return{title:seo.title,description:seo.description,alternates:{canonical},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website'},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription}};
 }
 export default async function Page({params}:Props){
- const{slug=[]}=await params;if(!slug.length)return <InsurancePage/>;if(slug.length>2)return notFound();const region=findRegion(slug[0]);if(!region)return notFound();
+ const{slug=[]}=await params;if(!slug.length)return <div className="rootInsuranceLanding"><InsurancePage/></div>;if(slug.length>2)return notFound();const region=findRegion(slug[0]);if(!region)return notFound();
  if(region.slug==='부산태아보험'&&slug[1]){const district=findBusanDistrict(slug[1]);if(!district)return notFound();return <BusanDistrictPage district={district}/>;}
  const city=slug[1]?findCity(region,slug[1]):undefined;if(slug[1]&&!city)return notFound();
  if(region.slug==='부산태아보험'&&!city)return <><InsurancePage region={region}/><BusanDistrictDirectory/></>;
