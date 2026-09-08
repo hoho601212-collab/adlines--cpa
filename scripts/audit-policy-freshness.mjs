@@ -16,7 +16,7 @@ const planning=rows.filter(r=>/계획|예산|업무계획|방향/.test(`${r.titl
 const planningDisclosure=/예산상|예산 편성|시행공고|시행 여부|계획 단계|확정 전|공고 확인|예산 확정|조례 개정|접수 여부|신청 개시|시행지침/;
 const planningUnclear=planning.filter(r=>!planningDisclosure.test(r.block));
 const legislative=rows.filter(r=>/조례|심사자료|의회/.test(r.sourceName));
-const legislativeDisclosure=/조례안 기준|시행공고|시행 여부|공포|시행일|계획 단계|확정 전|공고 확인|예산 확정|최신 조례|조례 개정/;
+const legislativeDisclosure=/조례안 기준|시행공고|시행 여부|공포|시행일|계획 단계|확정 전|공고 확인|예산 확정|최신 조례|조례 개정|현행 조례|조례 기준/;
 const legislativeUnclear=legislative.filter(r=>!legislativeDisclosure.test(r.block));
 const sourceYear=(row)=>{const m=`${row.title} ${row.sourceName} ${row.url}`.match(/20(?:1\d|2\d)/g)||[];const years=m.map(Number).filter(y=>y>=2015&&y<=2099);return years.length?Math.max(...years):null};
 const legacy=rows.map(r=>({...r,sourceYear:sourceYear(r)})).filter(r=>r.sourceYear&&r.sourceYear<currentYear&&!`${r.title} ${r.sourceName}`.includes(String(currentYear)));
@@ -30,6 +30,7 @@ console.log(`계획·예산 시행상태 고지 누락: ${planningUnclear.length
 console.log(`조례·의회 근거 항목: ${legislative.length}개`);
 console.log(`조례 시행상태 고지 누락: ${legislativeUnclear.length}개`);
 console.log(`이전 연도 근거 후보: ${legacy.length}개`);
+if(invalid.length)console.log('형식 오류 상세: '+invalid.map(r=>`${r.title}[url=${r.url||'EMPTY'}, verifiedAt=${r.verifiedAt||'EMPTY'}]`).join(' | '));
 if(aged.length)console.log('재확인 우선: '+aged.slice(0,15).map(r=>`${r.title}(${r.days}일)`).join(', '));
 if(planning.length)console.log('계획·예산 근거 확인: '+planning.slice(0,15).map(r=>r.title).join(', '));
 if(planningUnclear.length)console.log('계획·예산 시행상태 보완 우선: '+planningUnclear.slice(0,15).map(r=>r.title).join(', '));
