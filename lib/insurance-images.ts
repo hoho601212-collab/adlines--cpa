@@ -10,6 +10,13 @@ const hubTags=[
  ['보험상담','상담준비','체크리스트'],
  ['산모보험','임신중보장','출산준비']
 ];
+const hubImages=[
+ '/images/insurance/fetal-insurance-enrollment-timing.webp',
+ '/images/insurance/fetal-insurance-coverage.webp',
+ '/images/insurance/fetal-insurance-plan-design.webp',
+ '/images/insurance/fetal-insurance-consultation.webp',
+ '/images/insurance/maternity-insurance-guide.webp'
+];
 
 const keywordSets=[
   ['태아보험 가입시기','출산 전 보험 준비','태아보험 보장 확인','산모특약 확인','태아보험 상담 준비'],
@@ -42,7 +49,7 @@ export function getInsuranceImages(region?:Region,city?:City):InsuranceImageItem
   const keywords=!label?hubKeywords:keywordSets[seed%keywordSets.length].map(k=>`${label} ${k}`);
   const scenes=sceneSets[seed%sceneSets.length];
   return keywords.map((keyword,index)=>({
-    src:`/images/insurance/${folder}/${String(index+1).padStart(2,'0')}.webp`,
+    src:!label?hubImages[index]:`/images/insurance/${folder}/${String(index+1).padStart(2,'0')}.webp`,
     keyword,
     alt:label?`${label} ${scenes[index]} - ${keyword}`:`${scenes[index]} - ${keyword}`,
     tags:!label?hubTags[index]:tagSets[(index+seed)%tagSets.length].map(t=>`${label} ${t}`)
