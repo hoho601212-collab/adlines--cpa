@@ -12,6 +12,7 @@ const a11y=read('app/태아보험/regional-a11y.css');
 const releasePolish=read('app/태아보험/release-polish.css');
 const supportContext=read('lib/support-context.ts');
 const variants=read('lib/insurance-page-variants.ts');
+const seoVariants=read('lib/insurance-seo-variants.ts');
 const sitemap=read('app/sitemap.ts');
 const site=read('lib/site.ts');
 
@@ -28,11 +29,16 @@ const checks={
  cityIntroDiversity:new Set(cityIntros).size>=50,
  localizedSeo:content.includes('태아보험 상담 | 가입시기·출산지원·보장 비교')&&content.includes('2026 지역 출산·육아 지원'),
  localizedH1:content.includes('태아보험 상담`'),
+ seoIntentVariants:seoVariants.includes('getLocalizedInsuranceSeo')&&seoVariants.includes('주거지원·가입시기·보장 비교')&&seoVariants.includes('출생순위별 지원·가입시기·보장 비교')&&seoVariants.includes('2026 지원확인·가입시기·보장 비교'),
+ seoVariantConnected:route.includes('getLocalizedInsuranceSeo')&&page.includes('getLocalizedInsuranceSeo(region,city)'),
  canonicalRoute:route.includes('canonical')&&route.includes('generateMetadata'),
  encodedSlugRegression:data.includes('decodeURIComponent(slug)')&&route.includes('findRegion')&&route.includes('findCity'),
  supportContext:page.includes('getSupportContext')&&supportContext.includes("tone:'verified'|'caution'|'unverified'"),
  faqVariation:variants.includes('getContextualFaq')&&page.includes('mergeUniqueFaqs'),
  twoStageInquiry:(page.match(/<InsuranceInquiryForm/g)||[]).length>=2&&page.includes("#보험상담-primary")&&page.includes("#보험상담-secondary"),
+ ctaIntentLabels:page.includes('무료 상담 신청 영역으로 이동')&&page.includes('1차 상담 신청 영역으로 이동')&&page.includes('최종 상담 신청 영역으로 이동'),
+ balancedNearbyLinks:seoVariants.includes('getRotatingNearbyCities')&&seoVariants.includes('(index+step)%region.cities.length')&&page.includes('getRotatingNearbyCities(region,city)'),
+ neutralNearbyCopy:page.includes('같은 광역권의 다른 도시')&&!page.includes('인근 생활권이나 가족의 거주지가 다른 경우'),
  accessibilityImport:layout.includes("import './regional-a11y.css'")&&layout.includes("import './release-polish.css'"),
  focusVisible:a11y.includes(':focus-visible')&&releasePolish.includes('.nearbyLinks a:focus-visible')&&releasePolish.includes('.faqList summary:focus-visible')&&releasePolish.includes('.mobileInquiryJump:focus-visible'),
  reducedMotion:a11y.includes('prefers-reduced-motion:reduce')&&releasePolish.includes('@media(prefers-reduced-motion:reduce)')&&releasePolish.includes('transform:none!important'),
@@ -50,10 +56,11 @@ const failed=Object.entries(checks).filter(([,ok])=>!ok).map(([name])=>name);
 console.log('\n=== 태아보험 출시 전 품질 감사 ===');
 console.log(`광역 고유 프로필: ${checks.regionProfiles&&checks.uniqueRegionIntros?'17/17 고유':'보완 필요'}`);
 console.log(`도시 고유 프로필: ${cityProfiles.length}개 · 고유 intro ${new Set(cityIntros).size}개`);
-console.log(`메타·H1·canonical: ${checks.localizedSeo&&checks.localizedH1&&checks.canonicalRoute?'연결':'보완 필요'}`);
+console.log(`메타·H1·canonical: ${checks.localizedSeo&&checks.localizedH1&&checks.seoIntentVariants&&checks.seoVariantConnected&&checks.canonicalRoute?'연결':'보완 필요'}`);
 console.log(`한글 URL 회귀 방지: ${checks.encodedSlugRegression?'확인':'보완 필요'}`);
 console.log(`지역지원 근거 상태: ${checks.supportContext?'연결':'보완 필요'}`);
-console.log(`FAQ·상담 2단계: ${checks.faqVariation&&checks.twoStageInquiry?'연결':'보완 필요'}`);
+console.log(`FAQ·상담 2단계: ${checks.faqVariation&&checks.twoStageInquiry&&checks.ctaIntentLabels?'연결':'보완 필요'}`);
+console.log(`도시 내부링크 분산: ${checks.balancedNearbyLinks&&checks.neutralNearbyCopy?'적용':'보완 필요'}`);
 console.log(`접근성 focus/reduced-motion: ${checks.accessibilityImport&&checks.focusVisible&&checks.reducedMotion&&checks.supportA11y?'통과':'보완 필요'}`);
 console.log(`모바일 탭·관련링크 가독성: ${checks.mobileTapTargets&&checks.relatedLinkMarkup&&checks.relatedLinkReadability?'통과':'보완 필요'}`);
 console.log(`사이트맵 커버리지: ${checks.sitemapCoverage?'확인':'보완 필요'}`);
