@@ -29,12 +29,16 @@ const planningUnclear=planning.filter(r=>!planningDisclosure.test(r.block));
 const legislative=rows.filter(r=>/조례|심사자료|의회/.test(r.sourceName));
 const legislativeDisclosure=/조례안 기준|조례상|조례 기준|현행 조례|시행공고|시행 여부|공포|시행일|계획 단계|확정 전|공고 확인|예산 확정|최신 조례|조례 개정/;
 const legislativeUnclear=legislative.filter(r=>!legislativeDisclosure.test(r.block));
-const indirectPatterns=[
- ['복지로',/bokjiro\.go\.kr|복지로/],
- ['광역 통합자료',/경기도청 시군별|경남바로서비스|가치자람/],
- ['조례·법령 DB',/law\.go\.kr|조례/]
-];
-const indirect=rows.filter(r=>indirectPatterns.some(([,pattern])=>pattern.test(`${r.sourceName} ${r.url}`)));
+
+const nationalWelfare=rows.filter(r=>/bokjiro\.go\.kr|복지로/.test(`${r.sourceName} ${r.url}`));
+const officialIntegrated=rows.filter(r=>/경남바로서비스|가치자람/.test(`${r.sourceName} ${r.url}`));
+const aggregate=rows.filter(r=>/경기도청 시군별|시군별 출산장려금 현황/.test(`${r.sourceName} ${r.url}`));
+const legislativeEvidence=rows.filter(r=>/law\.go\.kr|조례|의회|심사자료/.test(`${r.sourceName} ${r.url}`));
+const upgradeCandidates=rows.filter(r=>
+ /bokjiro\.go\.kr|복지로|경기도청 시군별|시군별 출산장려금 현황/.test(`${r.sourceName} ${r.url}`)
+ && !/계획|조례|의회|심사자료/.test(`${r.title} ${r.sourceName}`)
+);
+
 const sourceYear=(row)=>{const m=`${row.title} ${row.sourceName} ${row.url}`.match(/20(?:1\d|2\d)/g)||[];const years=m.map(Number).filter(y=>y>=2015&&y<=2099);return years.length?Math.max(...years):null};
 const legacy=rows.map(r=>({...r,sourceYear:sourceYear(r)})).filter(r=>r.sourceYear&&r.sourceYear<currentYear&&!`${r.title} ${r.sourceName}`.includes(String(currentYear)));
 
@@ -46,13 +50,18 @@ console.log(`계획·예산 근거 항목: ${planning.length}개`);
 console.log(`계획·예산 시행상태 고지 누락: ${planningUnclear.length}개`);
 console.log(`조례·의회 근거 항목: ${legislative.length}개`);
 console.log(`조례 시행상태 고지 누락: ${legislativeUnclear.length}개`);
-console.log(`간접·통합 출처 의존 항목: ${indirect.length}개`);
+console.log(`복지로 기반 항목: ${nationalWelfare.length}개`);
+console.log(`광역 공식 신청플랫폼 기반 항목: ${officialIntegrated.length}개`);
+console.log(`광역 취합자료 기반 항목: ${aggregate.length}개`);
+console.log(`조례·의회 근거 사용 항목: ${legislativeEvidence.length}개`);
+console.log(`직접 지자체 출처 승격 우선후보: ${upgradeCandidates.length}개`);
 console.log(`이전 연도 근거 후보: ${legacy.length}개`);
 if(invalid.length)console.log('형식 오류 상세: '+invalid.map(r=>`${r.title}[url=${r.url||'EMPTY'}, verifiedAt=${r.verifiedAt||'EMPTY'}]`).join(' | '));
 if(aged.length)console.log('재확인 우선: '+aged.slice(0,15).map(r=>`${r.title}(${r.days}일)`).join(', '));
 if(planning.length)console.log('계획·예산 근거 확인: '+planning.slice(0,15).map(r=>r.title).join(', '));
 if(planningUnclear.length)console.log('계획·예산 시행상태 보완 우선: '+planningUnclear.slice(0,15).map(r=>r.title).join(', '));
 if(legislativeUnclear.length)console.log('조례 시행상태 보완 우선: '+legislativeUnclear.slice(0,15).map(r=>r.title).join(', '));
-if(indirect.length)console.log('직접 지자체 출처 승격 후보: '+indirect.slice(0,20).map(r=>`${r.title}(${r.sourceName})`).join(', '));
+if(officialIntegrated.length)console.log('유지 가능한 공식 통합플랫폼: '+officialIntegrated.slice(0,15).map(r=>`${r.title}(${r.sourceName})`).join(', '));
+if(upgradeCandidates.length)console.log('직접 지자체 출처 승격 우선: '+upgradeCandidates.slice(0,20).map(r=>`${r.title}(${r.sourceName})`).join(', '));
 if(legacy.length)console.log('최신 연도 공고 확인 우선: '+legacy.slice(0,15).map(r=>`${r.title}(${r.sourceYear})`).join(', '));
-if(invalid.length||planningUnclear.length||legislativeUnclear.length){console.log('감사 결과: 근거 표현 보완 필요');process.exitCode=1;}else console.log('감사 결과: 기본 형식 통과 · 조례/계획/예산 근거는 시행상태를 별도 표시');
+if(invalid.length||planningUnclear.length||legislativeUnclear.length){console.log('감사 결과: 근거 표현 보완 필요');process.exitCode=1;}else console.log('감사 결과: 기본 형식 통과 · 출처 강도는 직접/복지로/공식 통합플랫폼/조례·계획으로 구분 추적');
