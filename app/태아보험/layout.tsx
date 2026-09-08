@@ -5,7 +5,14 @@ import './support-context.css';
 import './regional-a11y.css';
 import './release-polish.css';
 import InsuranceEditorialStandards from '@/components/InsuranceEditorialStandards';
+import {InsuranceHeader} from '@/components/SiteHeader';
+import {InsuranceFooter} from '@/components/SiteFooter';
 
 export default function InsuranceLayout({children}:{children:React.ReactNode}){
- return <>{children}<InsuranceEditorialStandards/></>;
+ return <div className="insuranceRouteShell">
+  <InsuranceHeader/>
+  {children}
+  <InsuranceEditorialStandards/>
+  <InsuranceFooter/>
+ </div>;
 }
