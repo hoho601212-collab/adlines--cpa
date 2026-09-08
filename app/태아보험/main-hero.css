@@ -1,0 +1,28 @@
+.rootInsuranceLanding .approvedHeroPhoto{
+ background-image:url('/images/insurance/hero-fetal-insurance-family.webp')!important;
+ background-position:center center;
+ background-size:cover;
+}
+.rootInsuranceLanding .approvedHeroPhoto .photoFallback{display:none}
+
+@media(max-width:840px){
+ .rootInsuranceLanding .approvedHeroPhoto{
+  background-position:center 42%;
+  min-height:420px;
+ }
+}
+
+@media(max-width:680px){
+ .rootInsuranceLanding .approvedHeroPhoto{
+  display:block!important;
+  min-height:clamp(360px,108vw,520px);
+  background-image:url('/images/insurance/hero-fetal-insurance-family-mobile.webp')!important;
+  background-position:center 42%;
+  background-size:cover;
+  border-left:0;
+  border-top:1px solid #e6ece8;
+ }
+ .rootInsuranceLanding .approvedHeroPhoto:before{
+  background:linear-gradient(180deg,rgba(248,252,250,.18),rgba(255,255,255,0) 32%);
+ }
+}
