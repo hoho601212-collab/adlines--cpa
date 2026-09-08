@@ -15,14 +15,20 @@ function getSeoIntent(text:string):SeoIntent{
  return {titleTail:'2026 출산지원·가입시기·보장 비교',h1Accent:'지역 지원과 가입조건을 함께 확인하세요',ogTail:'2026 출산지원 체크'};
 }
 
+export function finalizeInsuranceSeoDescription(description:string){
+ return description.replace(/태아보험 상담 전 (.+?)를 확인하세요\./,'태아보험 상담 전 확인할 항목: $1.');
+}
+
 export function getLocalizedInsuranceSeo(region?:Region,city?:City):InsuranceSeoCopy{
  const base=getInsuranceSeo(region,city);
- if(!region)return base;
+ const description=finalizeInsuranceSeoDescription(base.description);
+ if(!region)return {...base,description};
  const label=city?.name||region.name;
  const local=getLocalEditorial(region,city);
  const intent=getSeoIntent(local.checkpoints.join(' '));
  return {
   ...base,
+  description,
   title:`${label} 태아보험 상담 | ${intent.titleTail}`,
   ogTitle:`${label} 태아보험 ${intent.ogTail} | 올바른 보험`,
   h1:`${label} 태아보험 상담`,
