@@ -3,6 +3,7 @@ import {site} from '@/lib/site';
 import {busanDistricts,type BusanDistrict} from '@/lib/busan-insurance';
 import {withBusanDistrictEvidence} from '@/lib/busan-district-evidence';
 import {getBusanEvidenceState,getBusanSeoIntent,getBusanTopicFaq} from '@/lib/busan-page-context';
+import {getBusanSeoCopy} from '@/lib/busan-seo';
 import {getBusanPageFlow} from '@/lib/busan-page-flow';
 import {getBusanFocusNotes} from '@/lib/busan-focus-notes';
 import {getBusanSupportNotes} from '@/lib/busan-support-notes';
@@ -17,13 +18,14 @@ export default function BusanDistrictPage({district:rawDistrict}:{district:Busan
  const relatedDistricts=getBusanRelatedDistricts(district.slug);
  const evidence=getBusanEvidenceState(district);
  const seoIntent=getBusanSeoIntent(district);
+ const seo=getBusanSeoCopy(district);
  const flow=getBusanPageFlow(district);
  const focusNotes=getBusanFocusNotes(district);
  const supportNotes=getBusanSupportNotes(district);
  const topicFaq=getBusanTopicFaq(district);
  const faq=[topicFaq,...getBusanDistrictFaqs(district)];
  const canonical=`${site.baseUrl}/태아보험/부산태아보험/${district.slug}`;
- const webPageSchema={"@context":"https://schema.org","@type":"WebPage",name:`${keyword} 상담 전 가이드`,description:district.intro,url:canonical,dateModified:site.contentReviewedAt,about:['태아보험','부산 출산지원',`${district.name} 출산·육아 지원`,...seoIntent.related],publisher:{"@type":"Organization",name:site.insuranceName,url:site.baseUrl}};
+ const webPageSchema={"@context":"https://schema.org","@type":"WebPage","@id":`${canonical}#webpage`,name:seo.schemaName,description:seo.description,url:canonical,isPartOf:{"@id":`${site.baseUrl}#website`},inLanguage:'ko-KR',dateModified:site.contentReviewedAt,about:['태아보험','부산 출산지원',`${district.name} 출산·육아 지원`,...seoIntent.related],publisher:{"@type":"Organization",name:site.insuranceName,url:site.baseUrl}};
  const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:faq.map(x=>({"@type":"Question",name:x.q,acceptedAnswer:{"@type":"Answer",text:x.a}}))};
  const breadcrumbSchema={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[['홈',site.baseUrl],['태아보험',`${site.baseUrl}/태아보험`],['부산 태아보험',`${site.baseUrl}/태아보험/부산태아보험`],[keyword,canonical]].map(([name,item],i)=>({"@type":"ListItem",position:i+1,name,item}))};
  return <main className="insurancePage">
