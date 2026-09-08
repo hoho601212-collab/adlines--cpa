@@ -13,6 +13,7 @@ const releasePolish=read('app/태아보험/release-polish.css');
 const supportContext=read('lib/support-context.ts');
 const variants=read('lib/insurance-page-variants.ts');
 const sitemap=read('app/sitemap.ts');
+const site=read('lib/site.ts');
 
 const REGION_SLUGS=['서울태아보험','부산태아보험','대구태아보험','인천태아보험','광주태아보험','대전태아보험','울산태아보험','세종태아보험','경기태아보험','강원태아보험','충북태아보험','충남태아보험','전북태아보험','전남태아보험','경북태아보험','경남태아보험','제주태아보험'];
 const regionProfiles=[...content.matchAll(/^\s*([가-힣]+태아보험):\{intro:'([^']+)'/gm)].map(m=>({slug:m[1],intro:m[2]}));
@@ -38,7 +39,10 @@ const checks={
  mobileTapTargets:releasePolish.includes('.heroActions .btn{min-height:48px}')&&releasePolish.includes('.nearbyLinks a{')&&releasePolish.includes('min-height:72px'),
  relatedLinkReadability:releasePolish.includes('.nearbyLinks a>span')&&releasePolish.includes('.nearbyLinks a small')&&releasePolish.includes('word-break:keep-all'),
  supportA11y:page.includes('role="note"')&&page.includes('출산지원 근거 상태'),
- sitemapCoverage:sitemap.includes('regions.flatMap')&&sitemap.includes('busanDistricts.map')&&sitemap.includes('keywordPages')
+ sitemapCoverage:sitemap.includes('regions.flatMap')&&sitemap.includes('busanDistricts.map')&&sitemap.includes('keywordPages'),
+ sitemapStableModified:sitemap.includes('site.contentReviewedAt')&&!sitemap.includes('const now=new Date()'),
+ sitemapCadence:sitemap.includes("changeFrequency:'weekly'")&&sitemap.includes("changeFrequency:'monthly'"),
+ reviewDateSource:site.includes("contentReviewedAt: '2026-09-07'")
 };
 
 const failed=Object.entries(checks).filter(([,ok])=>!ok).map(([name])=>name);
@@ -52,4 +56,5 @@ console.log(`FAQ·상담 2단계: ${checks.faqVariation&&checks.twoStageInquiry?
 console.log(`접근성 focus/reduced-motion: ${checks.accessibilityImport&&checks.focusVisible&&checks.reducedMotion&&checks.supportA11y?'통과':'보완 필요'}`);
 console.log(`모바일 탭·관련링크 가독성: ${checks.mobileTapTargets&&checks.relatedLinkReadability?'통과':'보완 필요'}`);
 console.log(`사이트맵 커버리지: ${checks.sitemapCoverage?'확인':'보완 필요'}`);
+console.log(`사이트맵 수정일·갱신주기: ${checks.sitemapStableModified&&checks.sitemapCadence&&checks.reviewDateSource?'안정화':'보완 필요'}`);
 if(failed.length){console.log(`실패 항목: ${failed.join(', ')}`);process.exitCode=1;}else console.log('감사 결과: 이미지 제외 태아보험 출시 전 핵심 품질 기준 통과');
