@@ -1,0 +1,71 @@
+.insurancePage .btn:focus-visible,
+.insurancePage .nearbyLinks a:focus-visible,
+.insurancePage .quickGuide a:focus-visible,
+.insurancePage .breadcrumbs a:focus-visible,
+.insurancePage .faqList summary:focus-visible,
+.insurancePage .source:focus-visible,
+.mobileInquiryJump:focus-visible{
+ outline:3px solid rgba(13,122,69,.36);
+ outline-offset:3px;
+ border-radius:12px;
+ box-shadow:0 0 0 2px #fff;
+}
+
+.insurancePage .faqList summary:focus-visible{
+ outline-offset:-3px;
+ border-radius:14px;
+}
+
+.insurancePage .nearbyLinks a{
+ min-height:76px;
+ gap:14px;
+}
+
+.insurancePage .nearbyLinks a>span{
+ display:grid;
+ gap:4px;
+ min-width:0;
+}
+
+.insurancePage .nearbyLinks a>span>b{
+ font-size:15px;
+ color:#18231d;
+ line-height:1.35;
+}
+
+.insurancePage .nearbyLinks a small{
+ display:block;
+ color:#69746d;
+ font-size:11.5px;
+ font-weight:650;
+ line-height:1.5;
+ word-break:keep-all;
+}
+
+@media(max-width:680px){
+ .insurancePage .nearbyLinks a{
+  align-items:flex-start;
+  min-height:72px;
+  padding:16px;
+ }
+ .insurancePage .nearbyLinks a>span>b{font-size:14.5px}
+ .insurancePage .nearbyLinks a small{font-size:11px}
+ .insurancePage .heroActions .btn{min-height:48px}
+}
+
+@media(prefers-reduced-motion:reduce){
+ .insurancePage .support,
+ .insurancePage .fact,
+ .insurancePage .regionCard,
+ .insurancePage .infoPanel,
+ .insurancePage .nearbyLinks a{
+  transition:none!important;
+ }
+ .insurancePage .support:hover,
+ .insurancePage .fact:hover,
+ .insurancePage .regionCard:hover,
+ .insurancePage .infoPanel:hover,
+ .insurancePage .nearbyLinks a:hover{
+  transform:none!important;
+ }
+}
