@@ -6,12 +6,15 @@ import InsuranceInquiryForm from './InsuranceInquiryForm';
 function imageItems(page:KeywordPage){
  const isEnrollmentTiming=page.slug==='태아보험가입시기';
  const isHyundaiFetal=page.slug==='현대해상태아보험';
+ const isComparisonSite=page.slug==='태아보험비교사이트순위';
  return Array.from({length:5},(_,i)=>({
   src:isEnrollmentTiming
    ?`/images/insurance/enrollment-timing/${String(i+1).padStart(2,'0')}.webp`
    :isHyundaiFetal
     ?`/images/insurance/hyundai-fetal-insurance/hyundai-fetal-insurance-${String(i+1).padStart(2,'0')}.webp`
-    :`/images/insurance/keywords/${page.slug}/${String(i+1).padStart(2,'0')}.webp`,
+    :isComparisonSite
+     ?`/images/insurance/fetal-insurance-comparison-site/${String(i+1).padStart(2,'0')}.webp`
+     :`/images/insurance/keywords/${page.slug}/${String(i+1).padStart(2,'0')}.webp`,
   keyword:[page.title.split('|')[0].trim(),...(page.sections.map(s=>s.title))][i]||page.slug,
   alt:`${page.slug} 정보 이미지 ${i+1}`,
   tags:[`#${page.slug}`,i===0?'#핵심정리':'#상세정보',page.category==='pregnancy'?'#임신정보':'#보험가이드']
