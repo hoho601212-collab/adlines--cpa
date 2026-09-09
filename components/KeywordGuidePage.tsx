@@ -5,10 +5,13 @@ import InsuranceInquiryForm from './InsuranceInquiryForm';
 
 function imageItems(page:KeywordPage){
  const isEnrollmentTiming=page.slug==='태아보험가입시기';
+ const isHyundaiFetal=page.slug==='현대해상태아보험';
  return Array.from({length:5},(_,i)=>({
   src:isEnrollmentTiming
    ?`/images/insurance/enrollment-timing/${String(i+1).padStart(2,'0')}.webp`
-   :`/images/insurance/keywords/${page.slug}/${String(i+1).padStart(2,'0')}.webp`,
+   :isHyundaiFetal
+    ?`/images/insurance/hyundai-fetal-insurance/hyundai-fetal-insurance-${String(i+1).padStart(2,'0')}.webp`
+    :`/images/insurance/keywords/${page.slug}/${String(i+1).padStart(2,'0')}.webp`,
   keyword:[page.title.split('|')[0].trim(),...(page.sections.map(s=>s.title))][i]||page.slug,
   alt:`${page.slug} 정보 이미지 ${i+1}`,
   tags:[`#${page.slug}`,i===0?'#핵심정리':'#상세정보',page.category==='pregnancy'?'#임신정보':'#보험가이드']
@@ -19,10 +22,15 @@ export default function KeywordGuidePage({page}:{page:KeywordPage}){
  const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:page.faqs.map(f=>({"@type":"Question",name:f.q,acceptedAnswer:{"@type":"Answer",text:f.a}}))};
  const insurance=page.category==='insurance';
  const isEnrollmentTiming=page.slug==='태아보험가입시기';
- return <main className={`keywordPage ${isEnrollmentTiming?'enrollmentTimingPage':''}`}>
+ const isHyundaiFetal=page.slug==='현대해상태아보험';
+ const hasCustomHero=isEnrollmentTiming||isHyundaiFetal;
+ const heroImage=isEnrollmentTiming?'/images/insurance/enrollment-timing/hero.webp':'/images/insurance/hyundai-fetal-insurance/hero.webp';
+ const heroMobileImage=isEnrollmentTiming?'/images/insurance/enrollment-timing/hero-mobile.webp':'/images/insurance/hyundai-fetal-insurance/hero-mobile.webp';
+ const customHeroClass=isEnrollmentTiming?'enrollmentTimingHero':isHyundaiFetal?'hyundaiFetalHero':'';
+ return <main className={`keywordPage ${isEnrollmentTiming?'enrollmentTimingPage':''} ${isHyundaiFetal?'hyundaiFetalPage':''}`}>
   <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqSchema)}}/>
-  <section className={`keywordHero ${insurance?'keywordHeroInsurance':'keywordHeroPregnancy'} ${isEnrollmentTiming?'enrollmentTimingHero':''}`} style={isEnrollmentTiming?{backgroundImage:"linear-gradient(90deg,rgba(247,250,255,.94) 0%,rgba(247,250,255,.82) 42%,rgba(247,250,255,.25) 72%,rgba(247,250,255,.08) 100%),url('/images/insurance/enrollment-timing/hero.webp')",backgroundSize:'cover',backgroundPosition:'center'}:undefined}><div className="wrap keywordHeroInner"><div><span className="insuranceBadge">{insurance?'올바른 보험 가이드':'임신·출산 정보'}</span><h1>{page.title.split('|')[0].trim()}</h1><p>{page.intro}</p><div className="keywordHeroLinks"><Link href="/태아보험">태아보험 메인 보기 →</Link><a href="#핵심내용">핵심 내용 보기 ↓</a></div></div><div className="keywordHeroSide"><span>{insurance?'🛡️':'🤰'}</span><b>{insurance?'상담 전 먼저 확인':'증상은 개인차가 있습니다'}</b><small>{insurance?'보장·조건·약관 중심으로 정리합니다.':'일반 정보이며 진단을 대신하지 않습니다.'}</small></div></div></section>
-  {isEnrollmentTiming&&<style>{`@media(max-width:720px){.enrollmentTimingHero{background-image:linear-gradient(180deg,rgba(247,250,255,.92) 0%,rgba(247,250,255,.78) 48%,rgba(247,250,255,.18) 100%),url('/images/insurance/enrollment-timing/hero-mobile.webp')!important;background-position:center center!important;background-size:cover!important}}`}</style>}
+  <section className={`keywordHero ${insurance?'keywordHeroInsurance':'keywordHeroPregnancy'} ${customHeroClass}`} style={hasCustomHero?{backgroundImage:`linear-gradient(90deg,rgba(247,250,255,.94) 0%,rgba(247,250,255,.82) 42%,rgba(247,250,255,.25) 72%,rgba(247,250,255,.08) 100%),url('${heroImage}')`,backgroundSize:'cover',backgroundPosition:'center'}:undefined}><div className="wrap keywordHeroInner"><div><span className="insuranceBadge">{insurance?'올바른 보험 가이드':'임신·출산 정보'}</span><h1>{page.title.split('|')[0].trim()}</h1><p>{page.intro}</p><div className="keywordHeroLinks"><Link href="/태아보험">태아보험 메인 보기 →</Link><a href="#핵심내용">핵심 내용 보기 ↓</a></div></div><div className="keywordHeroSide"><span>{insurance?'🛡️':'🤰'}</span><b>{insurance?'상담 전 먼저 확인':'증상은 개인차가 있습니다'}</b><small>{insurance?'보장·조건·약관 중심으로 정리합니다.':'일반 정보이며 진단을 대신하지 않습니다.'}</small></div></div></section>
+  {hasCustomHero&&<style>{`@media(max-width:720px){.${customHeroClass}{background-image:linear-gradient(180deg,rgba(247,250,255,.92) 0%,rgba(247,250,255,.78) 48%,rgba(247,250,255,.18) 100%),url('${heroMobileImage}')!important;background-position:center center!important;background-size:cover!important}}`}</style>}
   <div className="insuranceCrumb"><div className="wrap breadcrumbs"><Link href="/">⌂ 홈</Link><span>›</span><Link href="/태아보험">올바른 보험</Link><span>›</span><b>{page.slug}</b></div></div>
   <InsuranceImageTopics items={imageItems(page)} title={`${page.slug}, 무엇부터 확인할까요?`}/>
   {page.notice&&<section className="keywordNotice"><div className="wrap"><div><b>꼭 확인하세요</b><p>{page.notice}</p></div></div></section>}
