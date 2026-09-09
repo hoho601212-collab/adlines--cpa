@@ -6,8 +6,13 @@ import {site} from '@/lib/site';
 
 const insuranceKeywordPaths=['/현대해상태아보험','/태아보험가입시기','/태아보험비교사이트순위','/태아보험순위비교','/임신초기증상','/임신극초기증상','/임신5-14주차증상','/임산부선물'];
 
+function normalizePathname(pathname:string){
+ try{return decodeURIComponent(pathname)}catch{return pathname}
+}
+
 export function isInsurancePath(pathname:string){
- return pathname.startsWith('/태아보험')||insuranceKeywordPaths.some(p=>pathname===p);
+ const normalized=normalizePathname(pathname);
+ return normalized.startsWith('/태아보험')||insuranceKeywordPaths.some(p=>normalized===p);
 }
 
 export function InsuranceHeader(){
