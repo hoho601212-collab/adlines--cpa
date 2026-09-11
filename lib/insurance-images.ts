@@ -44,7 +44,8 @@ function hash(text:string){let n=0;for(let i=0;i<text.length;i++)n=(n*31+text.ch
 
 export function getInsuranceImages(region?:Region,city?:City):InsuranceImageItem[]{
   const label=city?.name||region?.name;
-  const folder=!region?'main':city?`${region.slug}/${city.slug}`:region.slug;
+  const isBusanHub=region?.slug==='부산태아보험'&&!city;
+  const folder=!region?'main':isBusanHub?'busan-fetal-insurance':city?`${region.slug}/${city.slug}`:region.slug;
   const seed=hash(`${region?.slug||'main'}/${city?.slug||'hub'}`);
   const keywords=!label?hubKeywords:keywordSets[seed%keywordSets.length].map(k=>`${label} ${k}`);
   const scenes=sceneSets[seed%sceneSets.length];
