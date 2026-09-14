@@ -5,6 +5,7 @@ import './support-context.css';
 import './regional-a11y.css';
 import './release-polish.css';
 import './main-hero.css';
+import './busan-district-images.css';
 import InsuranceEditorialStandards from '@/components/InsuranceEditorialStandards';
 import {InsuranceHeader} from '@/components/SiteHeader';
 import {InsuranceFooter} from '@/components/SiteFooter';
