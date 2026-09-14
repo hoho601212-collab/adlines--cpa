@@ -12,35 +12,16 @@ import {getBusanDistrictFaqs} from '@/lib/busan-district-faqs';
 import {getBusanRelatedDistricts} from '@/lib/busan-related-districts';
 import InsuranceInquiryForm from './InsuranceInquiryForm';
 
-const busanDistrictImageFolders:Record<string,string>={
- '서구태아보험':'seo-gu',
- '동구태아보험':'dong-gu'
-};
+const busanDistrictImageFolders:Record<string,string>={'서구태아보험':'seo-gu','동구태아보험':'dong-gu'};
+const imageDescriptions=['우리 아이의 첫 보험을 준비할 때 확인할 핵심 내용을 살펴보세요.','출생 후 필요한 신생아 보장 범위와 조건을 차분히 확인하세요.','임신 기간에 확인할 보험 준비사항과 상담 포인트를 정리했습니다.','보험과 별도로 확인해야 할 지역 출산·육아 지원정보를 살펴보세요.','가입 전 보장범위·특약·계약조건을 다시 한번 확인하세요.'];
 
 export default function BusanDistrictPage({district:rawDistrict}:{district:BusanDistrict}){
- const district=withBusanDistrictEvidence(rawDistrict);
- const keyword=`${district.name} 태아보험`;
- const districtMap=new Map(busanDistricts.map(d=>[d.slug,d]));
- const relatedDistricts=getBusanRelatedDistricts(district.slug);
- const evidence=getBusanEvidenceState(district);
- const seoIntent=getBusanSeoIntent(district);
- const seo=getBusanSeoCopy(district);
- const flow=getBusanPageFlow(district);
- const focusNotes=getBusanFocusNotes(district);
- const supportNotes=getBusanSupportNotes(district);
- const topicFaq=getBusanTopicFaq(district);
- const faq=[topicFaq,...getBusanDistrictFaqs(district)];
- const imageFolder=busanDistrictImageFolders[district.slug];
- const imageKeywords=[keyword,`${district.name} 신생아 보장 확인`,`${district.name} 임신 중 보험 준비`,`${district.name} 출산지원 정보`,`${district.name} 태아보험 가입 체크`];
- const canonical=`${site.baseUrl}/태아보험/부산태아보험/${district.slug}`;
- const webPageSchema={"@context":"https://schema.org","@type":"WebPage","@id":`${canonical}#webpage`,name:seo.schemaName,description:seo.description,url:canonical,isPartOf:{"@id":`${site.baseUrl}#website`},inLanguage:'ko-KR',dateModified:site.contentReviewedAt,about:['태아보험','부산 출산지원',`${district.name} 출산·육아 지원`,...seoIntent.related],publisher:{"@type":"Organization",name:site.insuranceName,url:site.baseUrl}};
- const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:faq.map(x=>({"@type":"Question",name:x.q,acceptedAnswer:{"@type":"Answer",text:x.a}}))};
- const breadcrumbSchema={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[['홈',site.baseUrl],['태아보험',`${site.baseUrl}/태아보험`],['부산 태아보험',`${site.baseUrl}/태아보험/부산태아보험`],[keyword,canonical]].map(([name,item],i)=>({"@type":"ListItem",position:i+1,name,item}))};
- return <main className="insurancePage">
-  {[webPageSchema,faqSchema,breadcrumbSchema].map((schema,i)=><script key={i} type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/>)}
+ const district=withBusanDistrictEvidence(rawDistrict);const keyword=`${district.name} 태아보험`;const districtMap=new Map(busanDistricts.map(d=>[d.slug,d]));const relatedDistricts=getBusanRelatedDistricts(district.slug);const evidence=getBusanEvidenceState(district);const seoIntent=getBusanSeoIntent(district);const seo=getBusanSeoCopy(district);const flow=getBusanPageFlow(district);const focusNotes=getBusanFocusNotes(district);const supportNotes=getBusanSupportNotes(district);const topicFaq=getBusanTopicFaq(district);const faq=[topicFaq,...getBusanDistrictFaqs(district)];const imageFolder=busanDistrictImageFolders[district.slug];const imageKeywords=[keyword,`${district.name} 신생아 보장 확인`,`${district.name} 임신 중 보험 준비`,`${district.name} 출산지원 정보`,`${district.name} 태아보험 가입 체크`];const canonical=`${site.baseUrl}/태아보험/부산태아보험/${district.slug}`;
+ const webPageSchema={"@context":"https://schema.org","@type":"WebPage","@id":`${canonical}#webpage`,name:seo.schemaName,description:seo.description,url:canonical,isPartOf:{"@id":`${site.baseUrl}#website`},inLanguage:'ko-KR',dateModified:site.contentReviewedAt,about:['태아보험','부산 출산지원',`${district.name} 출산·육아 지원`,...seoIntent.related],publisher:{"@type":"Organization",name:site.insuranceName,url:site.baseUrl}};const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:faq.map(x=>({"@type":"Question",name:x.q,acceptedAnswer:{"@type":"Answer",text:x.a}}))};const breadcrumbSchema={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[['홈',site.baseUrl],['태아보험',`${site.baseUrl}/태아보험`],['부산 태아보험',`${site.baseUrl}/태아보험/부산태아보험`],[keyword,canonical]].map(([name,item],i)=>({"@type":"ListItem",position:i+1,name,item}))};
+ return <main className="insurancePage">{[webPageSchema,faqSchema,breadcrumbSchema].map((schema,i)=><script key={i} type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/>)}
   <section className="insuranceHero approvedHero"><div className="wrap"><span className="insuranceBadge">부산 16개 구·군 태아보험</span><h1>{district.name} 태아보험 상담<br/><em>{district.theme}</em></h1><p>{district.intro}</p><div className="heroActions"><a className="btn btnPrimary btnLift" href="#보험상담-primary">상담 전 내 조건 확인하기 →</a><a className="btn btnGhost" href="#지역체크">{district.name} 체크포인트 →</a></div></div></section>
-  <div className="insuranceCrumb"><div className="wrap breadcrumbs"><Link href="/">⌂ 홈</Link><span>›</span><Link href="/태아보험">태아보험</Link><span>›</span><Link href="/태아보험/부산태아보험">부산 태아보험</Link><span>›</span><b>{district.name} 태아보험</b></div></div>
-  {imageFolder&&<section className="section insuranceImageTopics"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">{district.name} 태아보험 이미지 가이드</span><h2>{district.name}에서 확인할 핵심 주제</h2></div><div className="imageTopicGrid">{imageKeywords.map((item,i)=><article className="imageTopicCard" key={item}><div className="imageTopicMedia"><Image src={`/images/insurance/busan-districts/${imageFolder}/${String(i+1).padStart(2,'0')}.webp`} alt={`${item} 정보 이미지`} width={1536} height={1024} sizes="(max-width: 760px) 100vw, 33vw"/></div><h3>{item}</h3></article>)}</div></div></section>}
+  <div className="insuranceCrumb"><div className="wrap breadcrumbs"><Link href="/">⌂ 홈</Link><span>›</span><Link href="/태아보험">태아보험</Link><span>›</span><Link href="/태아보험/부산태아보험">부산 태아보험</Link><span>›</span><b>{keyword}</b></div></div>
+  {imageFolder&&<section className="busanImageGuide"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">{district.name} 태아보험 이미지 가이드</span><h2>{district.name}에서 확인할 핵심 주제</h2><p>보험 준비부터 신생아 보장, 출산지원 정보까지 필요한 내용을 5가지로 정리했습니다.</p></div><div className="busanTopicGrid">{imageKeywords.map((item,i)=><article className="busanTopicCard" key={item}><div className="busanTopicMedia"><Image src={`/images/insurance/busan-districts/${imageFolder}/${String(i+1).padStart(2,'0')}.webp`} alt={`${item} 정보 이미지`} width={1536} height={1024} sizes="(max-width:760px) 82vw,(max-width:1100px) 33vw,20vw"/></div><div className="busanTopicBody"><span className="busanTopicNum">{String(i+1).padStart(2,'0')}</span><h3>{item}</h3><p>{imageDescriptions[i]}</p><span className="busanTopicMore">핵심 내용 확인 →</span></div></article>)}</div><div className="busanImageCta"><div><strong>{district.name}에서 태아보험 상담을 준비하고 계신가요?</strong><span>보장 범위와 가입조건을 상담 전에 비교하고 필요한 질문을 정리해 보세요.</span></div><a className="btn btnPrimary" href="#보험상담-primary">상담 전 내 조건 확인하기 →</a></div></div></section>}
   <section className="section editorialGuide"><div className="wrap editorialGuideGrid"><div><span className="insuranceBadge">이 페이지의 보험 주제</span><h2>{district.name}에서는 ‘{district.theme}’를 중심으로 봅니다</h2></div><div><p>16개 구·군 페이지가 지역명만 바뀐 복제 페이지가 되지 않도록, 이 페이지는 <b>{district.theme}</b>을 독립적인 보험 비교 소재로 사용합니다. 공공지원은 보험상품과 분리해 공식자료 기준으로 확인합니다.</p><p><b>함께 보는 검색 주제:</b> {seoIntent.related.join(' · ')}</p></div></div></section>
   <InsuranceInquiryForm position="primary" label={district.name}/>
   <section className="section sectionAlt" id="보험체크"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">보험 상담 전 체크</span><h2>{flow.checkHeading}</h2><p>{seoIntent.descriptionLead}</p></div><div className="facts">{district.insuranceFocus.map((item,i)=><div className="fact" key={item}><span className="factIcon">{String(i+1).padStart(2,'0')}</span><b>{item}</b><p>{focusNotes[i]}</p></div>)}</div></div></section>
@@ -48,7 +29,6 @@ export default function BusanDistrictPage({district:rawDistrict}:{district:Busan
   <section className="section localInfo"><div className="wrap infoSplit"><div className="infoPanel"><span className="insuranceBadge">{district.name} 보험·지원 구분</span><h2>{flow.localHeading}</h2><p>태아보험 자체를 {district.name} 전용 상품처럼 설명하지 않습니다. 보험은 보험회사·상품·피보험자 상태에 따라 판단하고, 부산시와 {district.name}의 공공지원은 주민등록과 신청시점을 기준으로 별도 확인합니다.</p></div><div className="infoPanel infoPanelAccent"><span>💡</span><h3>{district.name} 페이지 고유 소재</h3><h2>{district.theme}</h2><p>{district.intro}</p></div></div></section>
   <section className="section nearbySection"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">관련 부산 지역 가이드</span><h2>{district.name}와 함께 비교할 부산 지역</h2><p>모든 구·군을 한꺼번에 나열하지 않고, 현재 페이지의 보험 주제·지원방식·거주조건과 연결되는 지역을 먼저 제안합니다.</p></div><div className="nearbyLinks">{relatedDistricts.map(item=>{const d=districtMap.get(item.slug);if(!d)return null;return <Link key={item.slug} href={`/태아보험/부산태아보험/${item.slug}`}><span><b>{d.name} 태아보험</b><small>{item.reason}</small></span><b>비교하기 →</b></Link>})}</div><div className="notice" role="note"><b>부산 16개 구·군 전체를 보려면</b><br/>관심사별로 정리한 부산 태아보험 허브에서 나머지 지역까지 확인할 수 있습니다. <Link className="source" href="/태아보험/부산태아보험">부산 16개 구·군 전체 보기 →</Link></div></div></section>
   <section className="section faqSection"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">FAQ</span><h2>{district.name} 태아보험 상담 전 자주 묻는 질문</h2></div><div className="faqList">{faq.map(x=><details key={x.q}><summary>{x.q}</summary><p>{x.a}</p></details>)}</div></div></section>
-  <InsuranceInquiryForm position="secondary" label={district.name}/>
-  <section className="section finalCta"><div className="wrap"><h2>{flow.finalTitle}</h2><p>{flow.finalBody}</p><a className="btn ctaWhite" href="#보험상담-secondary">{flow.ctaLabel}</a></div></section>
- </main>
+  <InsuranceInquiryForm position="secondary" label={district.name}/><section className="section finalCta"><div className="wrap"><h2>{flow.finalTitle}</h2><p>{flow.finalBody}</p><a className="btn ctaWhite" href="#보험상담-secondary">{flow.ctaLabel}</a></div></section>
+ </main>;
 }
