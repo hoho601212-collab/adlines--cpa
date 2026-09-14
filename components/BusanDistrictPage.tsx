@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import {site} from '@/lib/site';
 import {busanDistricts,type BusanDistrict} from '@/lib/busan-insurance';
@@ -10,6 +11,11 @@ import {getBusanSupportNotes} from '@/lib/busan-support-notes';
 import {getBusanDistrictFaqs} from '@/lib/busan-district-faqs';
 import {getBusanRelatedDistricts} from '@/lib/busan-related-districts';
 import InsuranceInquiryForm from './InsuranceInquiryForm';
+
+const busanDistrictImageFolders:Record<string,string>={
+ '서구태아보험':'seo-gu',
+ '동구태아보험':'dong-gu'
+};
 
 export default function BusanDistrictPage({district:rawDistrict}:{district:BusanDistrict}){
  const district=withBusanDistrictEvidence(rawDistrict);
@@ -24,6 +30,8 @@ export default function BusanDistrictPage({district:rawDistrict}:{district:Busan
  const supportNotes=getBusanSupportNotes(district);
  const topicFaq=getBusanTopicFaq(district);
  const faq=[topicFaq,...getBusanDistrictFaqs(district)];
+ const imageFolder=busanDistrictImageFolders[district.slug];
+ const imageKeywords=[keyword,`${district.name} 신생아 보장 확인`,`${district.name} 임신 중 보험 준비`,`${district.name} 출산지원 정보`,`${district.name} 태아보험 가입 체크`];
  const canonical=`${site.baseUrl}/태아보험/부산태아보험/${district.slug}`;
  const webPageSchema={"@context":"https://schema.org","@type":"WebPage","@id":`${canonical}#webpage`,name:seo.schemaName,description:seo.description,url:canonical,isPartOf:{"@id":`${site.baseUrl}#website`},inLanguage:'ko-KR',dateModified:site.contentReviewedAt,about:['태아보험','부산 출산지원',`${district.name} 출산·육아 지원`,...seoIntent.related],publisher:{"@type":"Organization",name:site.insuranceName,url:site.baseUrl}};
  const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:faq.map(x=>({"@type":"Question",name:x.q,acceptedAnswer:{"@type":"Answer",text:x.a}}))};
@@ -32,6 +40,7 @@ export default function BusanDistrictPage({district:rawDistrict}:{district:Busan
   {[webPageSchema,faqSchema,breadcrumbSchema].map((schema,i)=><script key={i} type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/>)}
   <section className="insuranceHero approvedHero"><div className="wrap"><span className="insuranceBadge">부산 16개 구·군 태아보험</span><h1>{district.name} 태아보험 상담<br/><em>{district.theme}</em></h1><p>{district.intro}</p><div className="heroActions"><a className="btn btnPrimary btnLift" href="#보험상담-primary">상담 전 내 조건 확인하기 →</a><a className="btn btnGhost" href="#지역체크">{district.name} 체크포인트 →</a></div></div></section>
   <div className="insuranceCrumb"><div className="wrap breadcrumbs"><Link href="/">⌂ 홈</Link><span>›</span><Link href="/태아보험">태아보험</Link><span>›</span><Link href="/태아보험/부산태아보험">부산 태아보험</Link><span>›</span><b>{district.name} 태아보험</b></div></div>
+  {imageFolder&&<section className="section insuranceImageTopics"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">{district.name} 태아보험 이미지 가이드</span><h2>{district.name}에서 확인할 핵심 주제</h2></div><div className="imageTopicGrid">{imageKeywords.map((item,i)=><article className="imageTopicCard" key={item}><div className="imageTopicMedia"><Image src={`/images/insurance/busan-districts/${imageFolder}/${String(i+1).padStart(2,'0')}.webp`} alt={`${item} 정보 이미지`} width={1536} height={1024} sizes="(max-width: 760px) 100vw, 33vw"/></div><h3>{item}</h3></article>)}</div></div></section>}
   <section className="section editorialGuide"><div className="wrap editorialGuideGrid"><div><span className="insuranceBadge">이 페이지의 보험 주제</span><h2>{district.name}에서는 ‘{district.theme}’를 중심으로 봅니다</h2></div><div><p>16개 구·군 페이지가 지역명만 바뀐 복제 페이지가 되지 않도록, 이 페이지는 <b>{district.theme}</b>을 독립적인 보험 비교 소재로 사용합니다. 공공지원은 보험상품과 분리해 공식자료 기준으로 확인합니다.</p><p><b>함께 보는 검색 주제:</b> {seoIntent.related.join(' · ')}</p></div></div></section>
   <InsuranceInquiryForm position="primary" label={district.name}/>
   <section className="section sectionAlt" id="보험체크"><div className="wrap"><div className="sectionHead"><span className="insuranceBadge">보험 상담 전 체크</span><h2>{flow.checkHeading}</h2><p>{seoIntent.descriptionLead}</p></div><div className="facts">{district.insuranceFocus.map((item,i)=><div className="fact" key={item}><span className="factIcon">{String(i+1).padStart(2,'0')}</span><b>{item}</b><p>{focusNotes[i]}</p></div>)}</div></div></section>
