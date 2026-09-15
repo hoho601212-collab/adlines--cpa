@@ -5,8 +5,12 @@ import {isInsurancePath} from '@/components/SiteHeader';
 export function InsuranceFooter(){
  return <footer className="footer"><div className="wrap">
   <a href="/태아보험" className="insuranceFooterLogo" aria-label="올바른 보험 홈" style={{display:'inline-flex',alignItems:'center',marginBottom:'10px'}}><img src="/images/insurance/olbareun-insurance-logo.webp" alt="올바른 보험" width="220" height="60" style={{display:'block',width:'clamp(165px,17vw,220px)',height:'auto',maxHeight:'60px',objectFit:'contain',objectPosition:'left center'}} /></a>
-  <p>생활에 필요한 비교와 상담 정보를 한 곳에서 확인할 수 있도록 돕는 정보 플랫폼입니다.</p>
   <p>보험 영역은 보험상품을 직접 판매하는 페이지가 아닌 정보 제공 및 제휴 상담 연결을 목적으로 합니다. 실제 상품·보장·보험료·인수 여부는 보험회사 및 상담 주체의 심사와 약관에 따라 달라질 수 있습니다.</p>
+  <div className="insuranceBusinessInfo" style={{marginTop:'18px',paddingTop:'18px',borderTop:'1px solid rgba(148,163,184,.28)',lineHeight:1.8}}>
+   <b>보험 분석 비교 플랫폼 [ 올바른 ]</b>
+   <p style={{margin:'6px 0 0'}}>상호: 올바른 &nbsp; 대표자: 박자영 &nbsp; 사업자 번호: 808-66-00808</p>
+   <p style={{margin:'2px 0 0'}}>Tel. 010-4780-1200 &nbsp; Fax. 0508-956-6109</p>
+  </div>
  </div></footer>;
 }
 
