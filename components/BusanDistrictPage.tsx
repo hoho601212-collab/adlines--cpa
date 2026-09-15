@@ -12,7 +12,7 @@ import {getBusanDistrictFaqs} from '@/lib/busan-district-faqs';
 import {getBusanRelatedDistricts} from '@/lib/busan-related-districts';
 import InsuranceInquiryForm from './InsuranceInquiryForm';
 
-const busanDistrictImageFolders:Record<string,string>={'서구태아보험':'seo-gu','동구태아보험':'dong-gu','사상구태아보험':'sasang-gu','수영구태아보험':'suyeong-gu','금정구태아보험':'geumjeong-gu','강서구태아보험':'gangseo-gu','중구태아보험':'jung-gu'};
+const busanDistrictImageFolders:Record<string,string>={'서구태아보험':'seo-gu','동구태아보험':'dong-gu','사상구태아보험':'sasang-gu','수영구태아보험':'suyeong-gu','금정구태아보험':'geumjeong-gu','강서구태아보험':'gangseo-gu','중구태아보험':'jung-gu','기장군태아보험':'gijang-gun'};
 const imageDescriptions=['우리 아이의 첫 보험을 준비할 때 확인할 핵심 내용을 살펴보세요.','출생 후 필요한 신생아 보장 범위와 조건을 차분히 확인하세요.','임신 기간에 확인할 보험 준비사항과 상담 포인트를 정리했습니다.','보험과 별도로 확인해야 할 지역 출산·육아 지원정보를 살펴보세요.','가입 전 보장범위·특약·계약조건을 다시 한번 확인하세요.'];
 
 export default function BusanDistrictPage({district:rawDistrict}:{district:BusanDistrict}){
