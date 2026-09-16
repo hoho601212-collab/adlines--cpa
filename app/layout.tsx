@@ -17,6 +17,7 @@ export const metadata = {
   title: { default: site.title, template: `%s | ${site.name}` },
   description: site.description,
   alternates: { canonical: '/' },
+  verification: { other: { 'naver-site-verification': '70c2ac3120cb3b6f7d4b5bd2db14da1b31583cf1' } },
   openGraph: { siteName: site.name, locale: 'ko_KR', type: 'website' }
 };
 
