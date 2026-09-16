@@ -15,7 +15,19 @@ export function generateStaticParams(){return [{slug:[]},...regions.map(r=>({slu
 const privateRobots={index:false,follow:false,nocache:true};
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const{slug=[]}=await params;
- if(!slug.length){const seo=getLocalizedInsuranceSeo();return{title:seo.title,description:seo.description,alternates:{canonical:'/태아보험'},robots:{index:true,follow:true},openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:'/태아보험',type:'website'},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription}};}
+ if(!slug.length){
+  const title='태아보험 | 가입시기·보장·특약 비교 가이드 | 올바른 보험';
+  const description='태아보험 가입 전 확인해야 할 가입시기, 보장 범위, 특약, 보험료와 가입조건을 정리했습니다. 임신·출산 준비 과정에서 필요한 태아보험 비교 기준과 상담 전 체크사항을 확인하세요.';
+  const image='/images/insurance/hero-fetal-insurance-family.webp';
+  return{
+   title:{absolute:title},
+   description,
+   alternates:{canonical:'/태아보험'},
+   robots:{index:true,follow:true},
+   openGraph:{title,description,url:'/태아보험',type:'website',siteName:'올바른 보험',locale:'ko_KR',images:[{url:image,alt:'태아보험 가입시기·보장·특약 비교 가이드'}]},
+   twitter:{card:'summary_large_image',title,description,images:[image]}
+  };
+ }
  const r=findRegion(slug[0]);if(!r)return{};
  if(r.slug==='부산태아보험'&&slug[1]){const raw=findBusanDistrict(slug[1]);if(!raw)return{};const d=withBusanDistrictEvidence(raw);const seo=getBusanSeoCopy(d);const canonical=`/태아보험/부산태아보험/${d.slug}`;return{title:seo.title,description:seo.description,alternates:{canonical},robots:privateRobots,openGraph:{title:seo.title,description:seo.description,url:canonical,type:'website'},twitter:{card:'summary_large_image',title:seo.title,description:seo.description}};}
  const c=slug[1]?findCity(r,slug[1]):undefined;if(slug[1]&&!c)return{};const canonical=`/태아보험/${r.slug}${c?`/${c.slug}`:''}`;const seo=getLocalizedInsuranceSeo(r,c);return{title:seo.title,description:seo.description,alternates:{canonical},robots:privateRobots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website'},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription}};
