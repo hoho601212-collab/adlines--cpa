@@ -6,6 +6,9 @@ import {site} from '@/lib/site';
 
 export default function sitemap():MetadataRoute.Sitemap{
  const reviewedAt=new Date(`${site.contentReviewedAt}T00:00:00+09:00`);
+ if(!site.allowIndexing){
+  return [{url:`${site.baseUrl}/태아보험`,lastModified:reviewedAt,changeFrequency:'weekly',priority:1}];
+ }
  return[
   {url:site.baseUrl,lastModified:reviewedAt,changeFrequency:'weekly',priority:1},
   {url:`${site.baseUrl}/태아보험`,lastModified:reviewedAt,changeFrequency:'weekly',priority:.95},
