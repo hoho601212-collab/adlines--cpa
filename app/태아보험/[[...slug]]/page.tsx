@@ -30,7 +30,9 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  }
  const r=findRegion(slug[0]);if(!r)return{};
  if(r.slug==='부산태아보험'&&slug[1]){const raw=findBusanDistrict(slug[1]);if(!raw)return{};const d=withBusanDistrictEvidence(raw);const seo=getBusanSeoCopy(d);const canonical=`/태아보험/부산태아보험/${d.slug}`;return{title:seo.title,description:seo.description,alternates:{canonical},robots:privateRobots,openGraph:{title:seo.title,description:seo.description,url:canonical,type:'website'},twitter:{card:'summary_large_image',title:seo.title,description:seo.description}};}
- const c=slug[1]?findCity(r,slug[1]):undefined;if(slug[1]&&!c)return{};const canonical=`/태아보험/${r.slug}${c?`/${c.slug}`:''}`;const seo=getLocalizedInsuranceSeo(r,c);return{title:seo.title,description:seo.description,alternates:{canonical},robots:privateRobots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website'},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription}};
+ const c=slug[1]?findCity(r,slug[1]):undefined;if(slug[1]&&!c)return{};const canonical=`/태아보험/${r.slug}${c?`/${c.slug}`:''}`;const seo=getLocalizedInsuranceSeo(r,c);
+ const regionImage=!c&&r.slug==='서울태아보험'?'/images/insurance/seoul/hero.webp':!c&&r.slug==='대구태아보험'?'/images/insurance/daegu/hero.webp':!c&&r.slug==='인천태아보험'?'/images/insurance/incheon/hero.webp':undefined;
+ return{title:seo.title,description:seo.description,alternates:{canonical},robots:privateRobots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website',siteName:'올바른 보험',locale:'ko_KR',...(regionImage?{images:[{url:regionImage,alt:`${r.name} 태아보험 가이드`}]}:{})},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription,...(regionImage?{images:[regionImage]}:{})}};
 }
 export default async function Page({params}:Props){
  const{slug=[]}=await params;if(!slug.length)redirect('/');if(slug.length>2)return notFound();const region=findRegion(slug[0]);if(!region)return notFound();
