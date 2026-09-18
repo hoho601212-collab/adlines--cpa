@@ -1,5 +1,6 @@
 import type {MetadataRoute} from 'next';
 import {site} from '@/lib/site';
+import {busanDistricts} from '@/lib/busan-insurance';
 
 const indexReadyRegionSlugs=[
  '서울태아보험',
@@ -20,6 +21,12 @@ export default function sitemap():MetadataRoute.Sitemap{
    lastModified:reviewedAt,
    changeFrequency:'weekly' as const,
    priority:.85
+  })),
+  ...busanDistricts.map(d=>({
+   url:`${site.baseUrl}/태아보험/부산태아보험/${d.slug}`,
+   lastModified:reviewedAt,
+   changeFrequency:'weekly' as const,
+   priority:.8
   }))
  ];
 }
