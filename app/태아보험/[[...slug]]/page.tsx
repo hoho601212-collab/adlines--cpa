@@ -24,6 +24,10 @@ const regionHeroFolders:Record<string,string>={
  '울산태아보험':'ulsan',
  '세종태아보험':'sejong'
 };
+const busanHeroFolders:Record<string,string>={
+ '서구태아보험':'seo-gu','동구태아보험':'dong-gu','사상구태아보험':'sasang-gu','수영구태아보험':'suyeong-gu','금정구태아보험':'geumjeong-gu','강서구태아보험':'gangseo-gu','중구태아보험':'jung-gu','기장군태아보험':'gijang-gun','해운대구태아보험':'haeundae-gu','부산진구태아보험':'busanjin-gu','동래구태아보험':'dongnae-gu','연제구태아보험':'yeonje-gu','남구태아보험':'nam-gu','북구태아보험':'buk-gu','사하구태아보험':'saha-gu','영도구태아보험':'yeongdo-gu'
+};
+const busanHeroReady=new Set(['동구태아보험','사상구태아보험','수영구태아보험','기장군태아보험','부산진구태아보험','동래구태아보험','연제구태아보험','남구태아보험','북구태아보험','사하구태아보험','영도구태아보험']);
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const{slug=[]}=await params;
  if(!slug.length){
@@ -40,7 +44,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   };
  }
  const r=findRegion(slug[0]);if(!r)return{};
- if(r.slug==='부산태아보험'&&slug[1]){const raw=findBusanDistrict(slug[1]);if(!raw)return{};const d=withBusanDistrictEvidence(raw);const seo=getBusanSeoCopy(d);const canonical=`/태아보험/부산태아보험/${d.slug}`;return{title:seo.title,description:seo.description,alternates:{canonical},robots:privateRobots,openGraph:{title:seo.title,description:seo.description,url:canonical,type:'website'},twitter:{card:'summary_large_image',title:seo.title,description:seo.description}};}
+ if(r.slug==='부산태아보험'&&slug[1]){const raw=findBusanDistrict(slug[1]);if(!raw)return{};const d=withBusanDistrictEvidence(raw);const seo=getBusanSeoCopy(d);const canonical=`/태아보험/부산태아보험/${d.slug}`;const folder=busanHeroFolders[d.slug];const image=folder&&busanHeroReady.has(d.slug)?`/images/insurance/busan-districts/${folder}/hero.webp`:undefined;return{title:seo.title,description:seo.description,alternates:{canonical},robots:publicRobots,openGraph:{title:seo.title,description:seo.description,url:canonical,type:'website',siteName:'올바른 보험',locale:'ko_KR',...(image?{images:[{url:image,alt:`부산 ${d.name} 태아보험 가이드`}]}:{})},twitter:{card:'summary_large_image',title:seo.title,description:seo.description,...(image?{images:[image]}:{})}};}
  const c=slug[1]?findCity(r,slug[1]):undefined;if(slug[1]&&!c)return{};const canonical=`/태아보험/${r.slug}${c?`/${c.slug}`:''}`;const seo=getLocalizedInsuranceSeo(r,c);
  const regionImage=!c&&regionHeroFolders[r.slug]?`/images/insurance/${regionHeroFolders[r.slug]}/hero.webp`:undefined;
  const robots=!c&&indexReadyRegions.has(r.slug)?publicRobots:privateRobots;
