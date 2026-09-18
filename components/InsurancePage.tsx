@@ -33,7 +33,7 @@ export default function InsurancePage({region,city}:{region?:Region;city?:City})
  const localEditorial=getLocalEditorial(region,city);
  const seo=getLocalizedInsuranceSeo(region,city);
  const lead=label?localEditorial.intro:'임신부터 출산까지 든든하게, 우리 아이의 첫 보험 준비. 보장과 지역별 출산·육아 지원정보를 한눈에 확인하세요.';
- const customRegionImageFolder=region&&!city?({'서울태아보험':'seoul','대구태아보험':'daegu','인천태아보험':'incheon','광주태아보험':'gwangju','대전태아보험':'daejeon'} as Record<string,string>)[region.slug]:undefined;
+ const customRegionImageFolder=region&&!city?({'서울태아보험':'seoul','대구태아보험':'daegu','인천태아보험':'incheon','광주태아보험':'gwangju','대전태아보험':'daejeon','울산태아보험':'ulsan'} as Record<string,string>)[region.slug]:undefined;
  const displayImageItems=customRegionImageFolder?imageItems.map((item,index)=>({...item,src:`/images/insurance/${customRegionImageFolder}/${String(index+1).padStart(2,'0')}.webp`})):imageItems;
  const heroImage=customRegionImageFolder?`/images/insurance/${customRegionImageFolder}/hero.webp`:displayImageItems[0]?.src;
  const guide=getUniqueGuide(region,city);
