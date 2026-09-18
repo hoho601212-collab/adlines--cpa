@@ -1,5 +1,5 @@
 import type {Metadata} from 'next';
-import {notFound} from 'next/navigation';
+import {notFound,redirect} from 'next/navigation';
 import InsurancePage from '@/components/InsurancePage';
 import BusanDistrictPage from '@/components/BusanDistrictPage';
 import BusanDistrictDirectory from '@/components/BusanDistrictDirectory';
@@ -22,9 +22,9 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   return{
    title:{absolute:title},
    description,
-   alternates:{canonical:'/태아보험'},
+   alternates:{canonical:'/'},
    robots:{index:true,follow:true},
-   openGraph:{title,description,url:'/태아보험',type:'website',siteName:'올바른 보험',locale:'ko_KR',images:[{url:image,alt:'태아보험 가입시기·보장·특약 비교 가이드'}]},
+   openGraph:{title,description,url:'/',type:'website',siteName:'올바른 보험',locale:'ko_KR',images:[{url:image,alt:'태아보험 가입시기·보장·특약 비교 가이드'}]},
    twitter:{card:'summary_large_image',title,description,images:[image]}
   };
  }
@@ -33,7 +33,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  const c=slug[1]?findCity(r,slug[1]):undefined;if(slug[1]&&!c)return{};const canonical=`/태아보험/${r.slug}${c?`/${c.slug}`:''}`;const seo=getLocalizedInsuranceSeo(r,c);return{title:seo.title,description:seo.description,alternates:{canonical},robots:privateRobots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website'},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription}};
 }
 export default async function Page({params}:Props){
- const{slug=[]}=await params;if(!slug.length)return <div className="rootInsuranceLanding"><InsurancePage/></div>;if(slug.length>2)return notFound();const region=findRegion(slug[0]);if(!region)return notFound();
+ const{slug=[]}=await params;if(!slug.length)redirect('/');if(slug.length>2)return notFound();const region=findRegion(slug[0]);if(!region)return notFound();
  if(region.slug==='부산태아보험'&&slug[1]){const district=findBusanDistrict(slug[1]);if(!district)return notFound();return <BusanDistrictPage district={district}/>;}
  const city=slug[1]?findCity(region,slug[1]):undefined;if(slug[1]&&!city)return notFound();
  if(region.slug==='부산태아보험'&&!city)return <><InsurancePage region={region}/><BusanDistrictDirectory/></>;
