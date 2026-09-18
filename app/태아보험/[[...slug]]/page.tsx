@@ -13,6 +13,17 @@ import {site} from '@/lib/site';
 type Props={params:Promise<{slug?:string[]}>};
 export function generateStaticParams(){return [{slug:[]},...regions.map(r=>({slug:[r.slug]})),...regions.flatMap(r=>r.cities.map(c=>({slug:[r.slug,c.slug]}))),...busanDistricts.map(d=>({slug:['부산태아보험',d.slug]}))]}
 const privateRobots={index:false,follow:false,nocache:true};
+const publicRobots={index:true,follow:true};
+const indexReadyRegions=new Set(['서울태아보험','대구태아보험','인천태아보험','광주태아보험','대전태아보험','울산태아보험','세종태아보험']);
+const regionHeroFolders:Record<string,string>={
+ '서울태아보험':'seoul',
+ '대구태아보험':'daegu',
+ '인천태아보험':'incheon',
+ '광주태아보험':'gwangju',
+ '대전태아보험':'daejeon',
+ '울산태아보험':'ulsan',
+ '세종태아보험':'sejong'
+};
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const{slug=[]}=await params;
  if(!slug.length){
@@ -31,8 +42,9 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  const r=findRegion(slug[0]);if(!r)return{};
  if(r.slug==='부산태아보험'&&slug[1]){const raw=findBusanDistrict(slug[1]);if(!raw)return{};const d=withBusanDistrictEvidence(raw);const seo=getBusanSeoCopy(d);const canonical=`/태아보험/부산태아보험/${d.slug}`;return{title:seo.title,description:seo.description,alternates:{canonical},robots:privateRobots,openGraph:{title:seo.title,description:seo.description,url:canonical,type:'website'},twitter:{card:'summary_large_image',title:seo.title,description:seo.description}};}
  const c=slug[1]?findCity(r,slug[1]):undefined;if(slug[1]&&!c)return{};const canonical=`/태아보험/${r.slug}${c?`/${c.slug}`:''}`;const seo=getLocalizedInsuranceSeo(r,c);
- const regionImage=!c&&r.slug==='서울태아보험'?'/images/insurance/seoul/hero.webp':!c&&r.slug==='대구태아보험'?'/images/insurance/daegu/hero.webp':!c&&r.slug==='인천태아보험'?'/images/insurance/incheon/hero.webp':undefined;
- return{title:seo.title,description:seo.description,alternates:{canonical},robots:privateRobots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website',siteName:'올바른 보험',locale:'ko_KR',...(regionImage?{images:[{url:regionImage,alt:`${r.name} 태아보험 가이드`}]}:{})},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription,...(regionImage?{images:[regionImage]}:{})}};
+ const regionImage=!c&&regionHeroFolders[r.slug]?`/images/insurance/${regionHeroFolders[r.slug]}/hero.webp`:undefined;
+ const robots=!c&&indexReadyRegions.has(r.slug)?publicRobots:privateRobots;
+ return{title:seo.title,description:seo.description,alternates:{canonical},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website',siteName:'올바른 보험',locale:'ko_KR',...(regionImage?{images:[{url:regionImage,alt:`${r.name} 태아보험 가이드`}]}:{})},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription,...(regionImage?{images:[regionImage]}:{})}};
 }
 export default async function Page({params}:Props){
  const{slug=[]}=await params;if(!slug.length)redirect('/');if(slug.length>2)return notFound();const region=findRegion(slug[0]);if(!region)return notFound();
