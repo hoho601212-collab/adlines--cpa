@@ -4,6 +4,7 @@ import {busanDistricts} from '@/lib/busan-insurance';
 
 const indexReadyRegionSlugs=[
  '서울태아보험',
+ '부산태아보험',
  '대구태아보험',
  '인천태아보험',
  '광주태아보험',
