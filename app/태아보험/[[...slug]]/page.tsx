@@ -27,7 +27,7 @@ const regionHeroFolders:Record<string,string>={
 const busanHeroFolders:Record<string,string>={
  '서구태아보험':'seo-gu','동구태아보험':'dong-gu','사상구태아보험':'sasang-gu','수영구태아보험':'suyeong-gu','금정구태아보험':'geumjeong-gu','강서구태아보험':'gangseo-gu','중구태아보험':'jung-gu','기장군태아보험':'gijang-gun','해운대구태아보험':'haeundae-gu','부산진구태아보험':'busanjin-gu','동래구태아보험':'dongnae-gu','연제구태아보험':'yeonje-gu','남구태아보험':'nam-gu','북구태아보험':'buk-gu','사하구태아보험':'saha-gu','영도구태아보험':'yeongdo-gu'
 };
-const busanHeroReady=new Set(['동구태아보험','사상구태아보험','수영구태아보험','기장군태아보험','부산진구태아보험','동래구태아보험','연제구태아보험','남구태아보험','북구태아보험','사하구태아보험','영도구태아보험']);
+const busanHeroReady=new Set(['동구태아보험','사상구태아보험','수영구태아보험','기장군태아보험','부산진구태아보험','동래구태아보험','연제구태아보험','남구태아보험','북구태아보험','사하구태아보험','영도구태아보험','중구태아보험','해운대구태아보험']);
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const{slug=[]}=await params;
  if(!slug.length){
