@@ -12,9 +12,7 @@ import {site} from '@/lib/site';
 
 type Props={params:Promise<{slug?:string[]}>};
 export function generateStaticParams(){return [{slug:[]},...regions.map(r=>({slug:[r.slug]})),...regions.flatMap(r=>r.cities.map(c=>({slug:[r.slug,c.slug]}))),...busanDistricts.map(d=>({slug:['부산태아보험',d.slug]}))]}
-const privateRobots={index:false,follow:false,nocache:true};
 const publicRobots={index:true,follow:true};
-const indexReadyRegions=new Set(['서울태아보험','부산태아보험','대구태아보험','인천태아보험','광주태아보험','대전태아보험','울산태아보험','세종태아보험']);
 const regionHeroFolders:Record<string,string>={
  '서울태아보험':'seoul',
  '대구태아보험':'daegu',
