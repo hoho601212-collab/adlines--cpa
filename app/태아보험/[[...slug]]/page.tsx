@@ -47,7 +47,9 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  if(r.slug==='부산태아보험'&&slug[1]){const raw=findBusanDistrict(slug[1]);if(!raw)return{};const d=withBusanDistrictEvidence(raw);const seo=getBusanSeoCopy(d);const canonical=`/태아보험/부산태아보험/${d.slug}`;const folder=busanHeroFolders[d.slug];const image=folder&&busanHeroReady.has(d.slug)?`/images/insurance/busan-districts/${folder}/hero.webp`:undefined;return{title:seo.title,description:seo.description,alternates:{canonical},robots:publicRobots,openGraph:{title:seo.title,description:seo.description,url:canonical,type:'website',siteName:'올바른 보험',locale:'ko_KR',...(image?{images:[{url:image,alt:`부산 ${d.name} 태아보험 가이드`}]}:{})},twitter:{card:'summary_large_image',title:seo.title,description:seo.description,...(image?{images:[image]}:{})}};}
  const c=slug[1]?findCity(r,slug[1]):undefined;if(slug[1]&&!c)return{};const canonical=`/태아보험/${r.slug}${c?`/${c.slug}`:''}`;const seo=getLocalizedInsuranceSeo(r,c);
  const regionImage=!c&&regionHeroFolders[r.slug]?`/images/insurance/${regionHeroFolders[r.slug]}/hero.webp`:undefined;
- const robots=!c&&indexReadyRegions.has(r.slug)?publicRobots:privateRobots;
+ // Existing Naver-visible pages keep their metadata untouched above. Other completed
+ // regional/city pages are now indexable so their differentiated local content can be discovered.
+ const robots=publicRobots;
  return{title:seo.title,description:seo.description,alternates:{canonical},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website',siteName:'올바른 보험',locale:'ko_KR',...(regionImage?{images:[{url:regionImage,alt:`${r.name} 태아보험 가이드`}]}:{})},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription,...(regionImage?{images:[regionImage]}:{})}};
 }
 export default async function Page({params}:Props){
