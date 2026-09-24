@@ -1,7 +1,7 @@
 import type {Region,City} from './insurance-data';
 import {getInsuranceSeo,getLocalEditorial,type InsuranceSeoCopy} from './insurance-content';
 
-type SeoIntent={titleTail:string;h1Accent:string;ogTail:string};
+type SeoIntent={titleTail:string;h1Accent:string;ogTail:string;titleMode:'guide'|'check'|'timing'|'support'|'compare'};
 
 const REGION_SEO_OVERRIDES:Record<string,{title:string;description:string;h1Accent:string;ogTitle:string}>={
  '서울태아보험':{
@@ -55,15 +55,15 @@ const REGION_SEO_OVERRIDES:Record<string,{title:string;description:string;h1Acce
 };
 
 function getSeoIntent(text:string):SeoIntent{
- if(/주거|주택|대출/.test(text))return {titleTail:'주거지원·가입시기·보장 비교',h1Accent:'주거지원과 가입조건을 함께 확인하세요',ogTail:'주거·출산지원 체크'};
- if(/교통/.test(text))return {titleTail:'교통지원·가입시기·보장 비교',h1Accent:'교통지원과 가입시기를 함께 확인하세요',ogTail:'교통·출산지원 체크'};
- if(/건강관리|산후조리|산후|보건소/.test(text))return {titleTail:'산후지원·가입시기·보장 비교',h1Accent:'산후지원과 보장조건을 함께 확인하세요',ogTail:'산후·출산지원 체크'};
- if(/바우처|지역화폐|여민전|꾸러미/.test(text))return {titleTail:'바우처·가입시기·보장 비교',h1Accent:'바우처 지원과 보장조건을 구분해 확인하세요',ogTail:'바우처·출산지원 체크'};
- if(/분할|회차|월별|장기|계속 거주/.test(text))return {titleTail:'분할지원·가입시기·보장 비교',h1Accent:'지급회차와 가입조건을 함께 확인하세요',ogTail:'분할·출산지원 체크'};
- if(/신청기한|신청기간|거주기간|거주요건|선행 거주/.test(text))return {titleTail:'거주요건·신청기한·보장 비교',h1Accent:'거주요건과 가입시기를 먼저 확인하세요',ogTail:'거주요건·출산지원 체크'};
- if(/출생순위|첫째|둘째|셋째|다자녀/.test(text))return {titleTail:'출생순위별 지원·가입시기·보장 비교',h1Accent:'출생순위별 지원과 보장을 함께 확인하세요',ogTail:'출생순위·지원 체크'};
- if(/재확인|시행기준|예산|최신 공고/.test(text))return {titleTail:'2026 지원확인·가입시기·보장 비교',h1Accent:'2026 시행정보와 가입조건을 확인하세요',ogTail:'2026 지원정보 체크'};
- return {titleTail:'2026 출산지원·가입시기·보장 비교',h1Accent:'지역 지원과 가입조건을 함께 확인하세요',ogTail:'2026 출산지원 체크'};
+ if(/주거|주택|대출/.test(text))return {titleTail:'주거지원과 가입 전 확인사항',h1Accent:'주거지원과 보험 가입조건을 따로 확인하세요',ogTail:'주거·출산지원 체크',titleMode:'guide'};
+ if(/교통/.test(text))return {titleTail:'임신기 교통지원과 가입시기',h1Accent:'임신 중 지원과 가입 가능시기를 확인하세요',ogTail:'교통·출산지원 체크',titleMode:'timing'};
+ if(/건강관리|산후조리|산후|보건소/.test(text))return {titleTail:'산후지원과 보장 체크리스트',h1Accent:'산후지원과 보험 보장을 구분해 살펴보세요',ogTail:'산후·출산지원 체크',titleMode:'check'};
+ if(/바우처|지역화폐|여민전|꾸러미/.test(text))return {titleTail:'바우처 지원과 특약 확인',h1Accent:'지역 바우처와 보험 특약을 구분해 확인하세요',ogTail:'바우처·출산지원 체크',titleMode:'support'};
+ if(/분할|회차|월별|장기|계속 거주/.test(text))return {titleTail:'장기 출산지원과 보장 비교',h1Accent:'분할 지원조건과 보험 보장을 함께 살펴보세요',ogTail:'분할·출산지원 체크',titleMode:'compare'};
+ if(/신청기한|신청기간|거주기간|거주요건|선행 거주/.test(text))return {titleTail:'거주요건·신청기한과 가입 준비',h1Accent:'지역 신청기한과 보험 가입시기를 먼저 확인하세요',ogTail:'거주요건·출산지원 체크',titleMode:'timing'};
+ if(/출생순위|첫째|둘째|셋째|다자녀/.test(text))return {titleTail:'출생순위별 지원과 보장 확인',h1Accent:'자녀 순위별 지원과 필요한 보장을 살펴보세요',ogTail:'출생순위·지원 체크',titleMode:'support'};
+ if(/재확인|시행기준|예산|최신 공고/.test(text))return {titleTail:'2026 지역지원과 가입 전 체크',h1Accent:'최신 지역지원과 가입조건을 각각 확인하세요',ogTail:'2026 지원정보 체크',titleMode:'check'};
+ return {titleTail:'출산지원과 태아보험 준비 가이드',h1Accent:'지역 지원과 보험 가입조건을 구분해 확인하세요',ogTail:'2026 출산지원 체크',titleMode:'guide'};
 }
 
 export function finalizeInsuranceSeoDescription(description:string){
@@ -89,12 +89,21 @@ export function getLocalizedInsuranceSeo(region?:Region,city?:City):InsuranceSeo
    h1Accent:regionOverride.h1Accent
   };
  }
+ const titleByMode={
+  guide:`${label} 태아보험 가이드 | ${intent.titleTail}`,
+  check:`${label} 태아보험 체크리스트 | ${intent.titleTail}`,
+  timing:`${label} 태아보험 가입시기 | ${intent.titleTail}`,
+  support:`${label} 태아보험 보장 확인 | ${intent.titleTail}`,
+  compare:`${label} 태아보험 비교 | ${intent.titleTail}`
+ } as const;
+ const localDescription=`${local.intro} 태아보험은 임신 주수에 따른 가입 가능시기와 보장·특약을 별도로 비교하고, ${local.checkpoints[0]}도 함께 확인해 보세요.`;
  return {
   ...base,
-  description,
-  title:`${label} 태아보험 상담 | ${intent.titleTail}`,
+  description:localDescription,
+  title:titleByMode[intent.titleMode],
   ogTitle:`${label} 태아보험 ${intent.ogTail} | 올바른 보험`,
-  h1:`${label} 태아보험 상담`,
+  ogDescription:localDescription,
+  h1:`${label} 태아보험 ${intent.titleMode==='timing'?'가입 준비':'확인 가이드'}`,
   h1Accent:intent.h1Accent
  };
 }
