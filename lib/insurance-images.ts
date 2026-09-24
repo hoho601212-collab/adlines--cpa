@@ -49,8 +49,12 @@ export function getInsuranceImages(region?:Region,city?:City):InsuranceImageItem
   const seed=hash(`${region?.slug||'main'}/${city?.slug||'hub'}`);
   const keywords=!label?hubKeywords:keywordSets[seed%keywordSets.length].map(k=>`${label} ${k}`);
   const scenes=sceneSets[seed%sceneSets.length];
+  // Only pages with an uploaded local image set should point at a regional folder.
+  // Other regional/city pages use the verified shared insurance visuals until their
+  // dedicated WebP set is uploaded, preventing broken images on otherwise complete pages.
+  const localImageReady=isBusanHub;
   return keywords.map((keyword,index)=>({
-    src:!label?hubImages[index]:`/images/insurance/${folder}/${String(index+1).padStart(2,'0')}.webp`,
+    src:!label||!localImageReady?hubImages[index]:`/images/insurance/${folder}/${String(index+1).padStart(2,'0')}.webp`,
     keyword,
     alt:label?`${label} ${scenes[index]} - ${keyword}`:`${scenes[index]} - ${keyword}`,
     tags:!label?hubTags[index]:tagSets[(index+seed)%tagSets.length].map(t=>`${label} ${t}`)
