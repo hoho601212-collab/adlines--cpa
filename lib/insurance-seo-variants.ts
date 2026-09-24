@@ -3,6 +3,57 @@ import {getInsuranceSeo,getLocalEditorial,type InsuranceSeoCopy} from './insuran
 
 type SeoIntent={titleTail:string;h1Accent:string;ogTail:string};
 
+const REGION_SEO_OVERRIDES:Record<string,{title:string;description:string;h1Accent:string;ogTitle:string}>={
+ '서울태아보험':{
+  title:'서울 태아보험 | 가입시기·산후조리경비·교통비 확인',
+  description:'서울 태아보험 가입시기와 보장·특약을 확인하고, 서울시 산후조리경비·임산부 교통비와 자치구별 출산지원의 신청조건을 함께 정리했습니다.',
+  h1Accent:'산후조리경비와 가입조건을 함께 확인하세요',
+  ogTitle:'서울 태아보험 가입시기·출산지원 확인 | 올바른 보험'
+ },
+ '부산태아보험':{
+  title:'부산 태아보험 | 구·군별 출산지원·가입조건 비교',
+  description:'부산 태아보험 가입 전 보장·특약과 가입조건을 살펴보고, 해운대·부산진·동래 등 16개 구·군별 출산지원과 산모·신생아 지원 확인사항을 안내합니다.',
+  h1Accent:'16개 구·군 지원과 가입조건을 확인하세요',
+  ogTitle:'부산 태아보험 구·군별 출산지원 가이드 | 올바른 보험'
+ },
+ '대구태아보험':{
+  title:'대구 태아보험 | 다자녀 지원·가입시기·특약 확인',
+  description:'대구 태아보험 가입시기와 보장·특약을 확인하고, 출생순위에 따라 달라질 수 있는 다자녀 지원과 구·군별 임신·출산 사업을 함께 살펴보세요.',
+  h1Accent:'다자녀 지원과 가입시기를 함께 확인하세요',
+  ogTitle:'대구 태아보험 다자녀·출산지원 확인 | 올바른 보험'
+ },
+ '인천태아보험':{
+  title:'인천 태아보험 | 천사지원금·임산부 교통비·가입시기',
+  description:'인천 태아보험 가입조건과 보장·특약을 확인하고, 천사지원금의 거주요건과 임산부 교통비, 군·구별 출산지원 신청조건을 구분해 정리했습니다.',
+  h1Accent:'천사지원금과 가입조건을 구분해 확인하세요',
+  ogTitle:'인천 태아보험 천사지원금·교통비 확인 | 올바른 보험'
+ },
+ '광주태아보험':{
+  title:'광주 태아보험 | 임신·출산 지원과 가입조건 확인',
+  description:'광주 태아보험 가입시기와 보장·특약을 살펴보고, 광주광역시 임신·출산 지원과 직장맘·소상공인 대상 사업, 자치구 추가지원을 함께 확인하세요.',
+  h1Accent:'임신·출산 지원과 가입조건을 확인하세요',
+  ogTitle:'광주 태아보험 임신·출산 지원 가이드 | 올바른 보험'
+ },
+ '대전태아보험':{
+  title:'대전 태아보험 | 양육 기본수당·가입시기·보장 확인',
+  description:'대전 태아보험 가입시기와 보장·특약을 확인하고, 대전형 양육 기본수당의 연령·거주요건과 자치구별 출산·육아 지원을 함께 정리했습니다.',
+  h1Accent:'양육 기본수당과 가입조건을 확인하세요',
+  ogTitle:'대전 태아보험 양육지원·가입조건 확인 | 올바른 보험'
+ },
+ '울산태아보험':{
+  title:'울산 태아보험 | 구·군별 출산지원·가입조건 확인',
+  description:'울산 태아보험 가입시기와 보장·특약을 살펴보고, 중구·남구·동구·북구·울주군의 출생순위별 출산지원과 산후지원 차이를 함께 확인하세요.',
+  h1Accent:'거주 구·군 지원과 가입조건을 확인하세요',
+  ogTitle:'울산 태아보험 구·군별 출산지원 가이드 | 올바른 보험'
+ },
+ '세종태아보험':{
+  title:'세종 태아보험 | 출산축하금·가입시기·보장 확인',
+  description:'세종 태아보험 가입시기와 보장·특약을 확인하고, 세종시 출산축하금의 지급방식과 지역화폐 여부, 산모·신생아 건강관리 지원을 함께 살펴보세요.',
+  h1Accent:'출산축하금과 가입조건을 함께 확인하세요',
+  ogTitle:'세종 태아보험 출산축하금·가입조건 확인 | 올바른 보험'
+ }
+};
+
 function getSeoIntent(text:string):SeoIntent{
  if(/주거|주택|대출/.test(text))return {titleTail:'주거지원·가입시기·보장 비교',h1Accent:'주거지원과 가입조건을 함께 확인하세요',ogTail:'주거·출산지원 체크'};
  if(/교통/.test(text))return {titleTail:'교통지원·가입시기·보장 비교',h1Accent:'교통지원과 가입시기를 함께 확인하세요',ogTail:'교통·출산지원 체크'};
@@ -26,6 +77,18 @@ export function getLocalizedInsuranceSeo(region?:Region,city?:City):InsuranceSeo
  const label=city?.name||region.name;
  const local=getLocalEditorial(region,city);
  const intent=getSeoIntent(local.checkpoints.join(' '));
+ const regionOverride=!city?REGION_SEO_OVERRIDES[region.slug]:undefined;
+ if(regionOverride){
+  return {
+   ...base,
+   title:regionOverride.title,
+   description:regionOverride.description,
+   ogTitle:regionOverride.ogTitle,
+   ogDescription:regionOverride.description,
+   h1:`${label} 태아보험`,
+   h1Accent:regionOverride.h1Accent
+  };
+ }
  return {
   ...base,
   description,
