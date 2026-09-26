@@ -35,6 +35,7 @@ export function getSupportContext(region:Region|undefined,city:City|undefined,it
    ctaNote:`${city.name} 자체 지원은 최신 공고를 확인하고, 보험 상담은 지역지원과 별도로 가입시기·보장조건을 기준으로 비교하세요.`
   };
  }
+ if(city&&hasVerifiedCitySupport)return null;
  const caution=items.some(item=>getPolicyEvidence(item).tone==='watch');
  const nonCash=hasNonCashSupport(items);
  if(caution&&nonCash){
