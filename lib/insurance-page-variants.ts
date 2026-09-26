@@ -71,7 +71,7 @@ const keywordLinks:RelatedLink[]=[
 export function getRelatedLinks(region?:Region,city?:City):RelatedLink[]{
  const seed=hash(`${region?.slug||'national'}/${city?.slug||'hub'}`);const picked:RelatedLink[]=[];
  for(let i=0;i<keywordLinks.length&&picked.length<3;i++){const item=keywordLinks[(seed+i*2)%keywordLinks.length];if(!picked.some(x=>x.href===item.href))picked.push(item);}
- if(region&&city)picked.unshift({href:`/태아보험/${region.slug}`,title:`${region.name} 태아보험 전체`,description:`${region.name} 공통 출산·육아 지원과 주요 도시 정보를 함께 봅니다.`});
+ if(region&&city)picked.unshift({href:`/태아보험/${region.slug}`,title:`${region.name} 태아보험 전체`,description:''});
  else if(region)picked.unshift({href:'/태아보험',title:'전국 태아보험 가이드',description:'전국 공통 가입정보와 17개 광역지역 정보를 확인합니다.'});
  return picked.slice(0,4);
 }
