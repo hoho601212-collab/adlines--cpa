@@ -50,7 +50,7 @@ function modeFaq(mode:HeadingMode,label:string):FaqItem|null{
 
 export function getContextualFaq(region?:Region,city?:City):FaqItem[]{
  if(!region)return [];
- const label=city?.name||region.name;const wanted=city?3:2;const result:FaqItem[]=[];
+ const label=city?.name||region.name;const wanted=city?1:2;const result:FaqItem[]=[];
  const specific=modeFaq(headingMode(region,city),label);if(specific)result.push(specific);
  const seed=hash(`${region.slug}/${city?.slug||'hub'}`);const used=new Set<number>();
  for(let step=0;step<faqPools.length&&result.length<wanted;step++){
@@ -114,6 +114,6 @@ function checklistMessage(item:string,place:string,index:number){
  if(/가입|보험|보장|특약|갱신/.test(item))return `🛡️ 지역지원과 태아보험은 별개입니다. 임신 주수, 가입 가능시기, 보장기간, 특약의 보장범위와 면책·감액조건을 상품 설명서와 약관 기준으로 확인하세요.`;
  if(/출생|출산|다자녀|출생순위/.test(item))return `👨‍👩‍👧 출생순위와 다자녀 기준은 사업별로 다를 수 있습니다. 첫째·둘째·셋째 이상 금액과 다태아 산정방식, 후속 지급조건을 ${place} 공고에서 확인하세요.`;
  if(/지원|수당|장려|축하|급여/.test(item))return `🎁 현금성 지원은 총액보다 지급 횟수와 계속 거주조건을 먼저 확인하세요. 일시금인지 월·연차 분할인지, 다음 회차 지급 때도 ${place} 거주를 유지해야 하는지까지 살펴보는 것이 좋습니다.`;
- const fallback=[`📌 ${place} 공식자료의 대상·신청기한·지급방식을 함께 확인하세요.`,`🔎 보험 준비와 지역지원 신청조건은 서로 다른 기준으로 확인하는 것이 좋습니다.`,`🗂️ 출산 전후 일정에 맞춰 필요한 서류와 신청창구를 미리 정리하세요.`];return fallback[index%fallback.length];
+ return '';
 }
 export function getChecklistDetail(item:string,index:number,label?:string){const place=label||'거주 지역';return checklistMessage(item,place,index);}
