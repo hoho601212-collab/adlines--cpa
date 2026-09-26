@@ -14,7 +14,7 @@ type Props={params:Promise<{slug?:string[]}>};
 export function generateStaticParams(){return [{slug:[]},...regions.map(r=>({slug:[r.slug]})),...regions.flatMap(r=>r.cities.map(c=>({slug:[r.slug,c.slug]}))),...busanDistricts.map(d=>({slug:['부산태아보험',d.slug]}))]}
 const privateRobots={index:false,follow:true};
 const publicRobots={index:true,follow:true};
-const completedRegionHubs=new Set(['서울태아보험','부산태아보험','대구태아보험','인천태아보험','광주태아보험','대전태아보험','울산태아보험','세종태아보험','경기태아보험']);
+const completedRegionHubs=new Set(['서울태아보험','부산태아보험','대구태아보험','인천태아보험','광주태아보험','대전태아보험','울산태아보험','세종태아보험','경기태아보험','강원태아보험','충북태아보험','충남태아보험','전북태아보험','전남태아보험','경북태아보험','경남태아보험','제주태아보험']);
 const regionHeroFolders:Record<string,string>={
  '서울태아보험':'seoul',
  '대구태아보험':'daegu',
