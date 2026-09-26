@@ -57,7 +57,7 @@ export function getInsuranceImages(region?:Region,city?:City):InsuranceImageItem
   const isSeongnamCity=region?.slug==='경기태아보험'&&city?.slug==='성남태아보험';
   const localImageReady=isBusanHub||isSuwonCity||isSeongnamCity;
   return keywords.map((keyword,index)=>({
-    src:!label||!localImageReady?hubImages[index]:`/images/insurance/${folder}/${String(index+1).padStart(2,'0')}.webp`,
+    src:!label||!localImageReady?hubImages[index]:isSeongnamCity?`/images/insurance/seongnam/seongnam-fetal-insurance-${String(index+1).padStart(2,'0')}.webp`:isSuwonCity?`/images/insurance/suwon/suwon-fetal-insurance-${String(index+1).padStart(2,'0')}.webp`:`/images/insurance/${folder}/${String(index+1).padStart(2,'0')}.webp`,
     keyword,
     alt:label?`${label} ${scenes[index]} - ${keyword}`:`${scenes[index]} - ${keyword}`,
     tags:!label?hubTags[index]:tagSets[(index+seed)%tagSets.length].map(t=>`${label} ${t}`)
