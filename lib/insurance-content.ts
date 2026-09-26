@@ -92,8 +92,7 @@ export function getLocalEditorial(region?:Region,city?:City):LocalEditorial{
   const cityKey=regionSlug&&city?.slug?`${regionSlug}/${city.slug}`:undefined;
   if(cityKey&&CITY_PROFILES[cityKey])return profileToEditorial(CITY_PROFILES[cityKey]);
   if(regionSlug&&REGION_PROFILES[regionSlug])return profileToEditorial(REGION_PROFILES[regionSlug]);
-  const label=city?.name||region?.name||'전국';
-  return {intro:`${label}에서 태아보험을 알아볼 때는 민간보험 보장과 공공 출산지원을 같은 혜택으로 혼동하지 않는 것이 중요합니다. 보험 가입조건은 상품 기준으로, 지역 지원은 주민등록 주소지와 신청시점을 기준으로 따로 확인하세요.`,checkpoints:[`${label} 최신 출산·육아 지원`,`임신 주수와 상품별 가입 가능시기`,`보장기간·특약·면책 및 감액조건`],supportNote:`${label} 지원사업은 거주기간과 출생순위, 신청기한에 따라 달라질 수 있으므로 공식 출처의 최신 기준을 확인하세요.`};
+  return {intro:'',checkpoints:[],supportNote:''};
 }
 
 export function getInsuranceSeo(region?:Region,city?:City):InsuranceSeoCopy{
