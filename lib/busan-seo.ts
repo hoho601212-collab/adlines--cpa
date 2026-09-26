@@ -3,11 +3,31 @@ import {getBusanSeoIntent} from './busan-page-context';
 
 export type BusanSeoCopy={title:string;description:string;schemaName:string};
 
+const overrides:Record<string,{title:string;description:string}>={
+ '해운대구태아보험':{title:'해운대구 태아보험 | 가입시기·산모특약·출산지원',description:'해운대구 태아보험 가입시기와 산모특약을 확인하고, 2026 해운대구 출산지원과 부산시 공통지원을 출생순위별로 구분해 정리했습니다.'},
+ '부산진구태아보험':{title:'부산진구 태아보험 | 신생아보장·가입시기·계약전환',description:'부산진구 태아보험 준비 시 임신 초기·중기 가입조건, 신생아 입원·수술 보장 확인사항과 출생 후 자녀정보 등록·계약전환 절차를 살펴보세요.'},
+ '동래구태아보험':{title:'동래구 태아보험 | 산모특약·가입주수·출산장려금',description:'동래구 태아보험의 산모특약과 가입 가능 주수, 장기 보장기간을 비교하고 2026 동래구 출산장려금의 신청기한과 주민등록 요건을 확인하세요.'},
+ '수영구태아보험':{title:'수영구 태아보험 | 정액형보장·바우처·보험료 비교',description:'수영구 태아보험의 정액형·실손형 보장 차이와 보험료를 살펴보고, 임산부 친환경농산물 등 지역 바우처를 보험금과 구분해 안내합니다.'},
+ '남구태아보험':{title:'부산 남구 태아보험 | 보장기간·갱신조건·산후지원',description:'부산 남구 태아보험의 보장기간과 갱신 여부, 장기 보험료 구조를 확인하고 오륙도페이 출산장려금과 산후조리비 지원을 별도로 정리했습니다.'},
+ '연제구태아보험':{title:'연제구 태아보험 | 고지사항·심사조건·준비서류',description:'연제구 태아보험 상담 전 임신 주수와 검사·치료 이력, 고지사항과 청약 심사조건을 정리하고 연제구 출산·보건 지원 확인 경로를 안내합니다.'},
+ '금정구태아보험':{title:'금정구 태아보험 | 산모특약·출산축하금·보장유지',description:'금정구 태아보험의 산모특약과 출생 후 보장 유지조건을 확인하고, 금정구 출산축하금과 부산시 공통 출산지원을 서로 구분해 살펴보세요.'},
+ '북구태아보험':{title:'부산 북구 태아보험 | 보험료·분할지원·거주조건',description:'부산 북구 태아보험의 장기 보험료와 중복 특약을 점검하고, 둘째·셋째 이상 출산장려금의 분할지급과 계속 거주조건을 함께 확인하세요.'},
+ '사하구태아보험':{title:'사하구 태아보험 | 필수보장·보험료·납입면제 확인',description:'사하구 태아보험의 필수보장과 선택특약, 월 보험료와 납입면제 조건을 비교하고 2026 사하구 출산지원금 신청기한도 함께 확인하세요.'},
+ '사상구태아보험':{title:'사상구 태아보험 | 갱신조건·면책기간·설계안 비교',description:'사상구 태아보험 설계안을 가입금액·보장기간·갱신주기·면책기간 기준으로 비교하고, 임산부 생활지원은 보험 조건과 분리해 안내합니다.'},
+ '강서구태아보험':{title:'부산 강서구 태아보험 | 주소변경·거주요건·자녀등록',description:'부산 강서구 태아보험 가입 전 이사 계획이 있다면 계약 주소변경과 출생 후 자녀등록을 확인하고, 출산지원금의 주민등록·신청기한을 따로 살펴보세요.'},
+ '기장군태아보험':{title:'기장군 태아보험 | 민간보험·군민안전보험 차이 확인',description:'기장군 태아보험과 자동가입 공공보험의 보장 목적을 구분하고, 가입금액·면책조건·중복 가능성과 기장군 출산지원 확인사항을 정리했습니다.'},
+ '서구태아보험':{title:'부산 서구 태아보험 | 신생아보장·선천성 약관·청구서류',description:'부산 서구 태아보험에서 신생아 입원·수술과 선천성 관련 약관 범위, 보험금 청구서류를 확인하고 2026 서구 출산지원금도 별도로 살펴보세요.'},
+ '동구태아보험':{title:'부산 동구 태아보험 | 보장공백·납입면제·출산축하금',description:'부산 동구 태아보험은 특약 개수보다 질병·상해·수술 보장공백과 납입면제를 먼저 확인하고, 출생순위별 동구 출산축하금을 구분해 안내합니다.'},
+ '중구태아보험':{title:'부산 중구 태아보험 | 장기보험·분할지원·계속거주',description:'부산 중구 태아보험의 장기 납입기간과 보장개시일을 확인하고, 1~7세 분할 출산축하금의 지급회차와 계속 거주요건을 별도로 정리했습니다.'},
+ '영도구태아보험':{title:'영도구 태아보험 | 보험료·보장기간·출산축하용품',description:'영도구 태아보험의 월 보험료와 보장·납입기간을 비교하고, 기저귀 등 출산축하용품과 부산시 출산지원을 민간보험과 구분해 확인하세요.'}
+};
+
 export function getBusanSeoCopy(district:BusanDistrict):BusanSeoCopy{
  const intent=getBusanSeoIntent(district);
+ const override=overrides[district.slug];
  return{
-  title:`${district.name} 태아보험 상담 | ${intent.titleTail}`,
-  description:`${district.name} 태아보험 상담 전 ${intent.descriptionLead} 2026 부산시·${district.name} 출산·육아 지원은 보험 보장과 구분해 공식자료 기준으로 확인하세요.`,
-  schemaName:`${district.name} 태아보험 상담 ${district.theme}`
+  title:override?.title||`${district.name} 태아보험 | ${intent.titleTail}`,
+  description:override?.description||`${district.name} 태아보험 가입 전 ${intent.descriptionLead} 부산시·${district.name} 출산지원은 보험 보장과 구분해 공식자료 기준으로 확인하세요.`,
+  schemaName:`${district.name} 태아보험 ${district.theme}`
  };
 }
