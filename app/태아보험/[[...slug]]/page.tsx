@@ -49,7 +49,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  const regionImage=!c&&regionHeroFolders[r.slug]?`/images/insurance/${regionHeroFolders[r.slug]}/hero.webp`:undefined;
  // Publish only reviewed pages. City pages are opened region-by-region after their
  // local copy/support data is complete; unfinished regions remain followable but noindex.
- const completedCityRegions=new Set(['경기태아보험','강원태아보험','충북태아보험','충남태아보험']);
+ const completedCityRegions=new Set(['경기태아보험','강원태아보험','충북태아보험','충남태아보험','전북태아보험','전남태아보험','경북태아보험','경남태아보험','제주태아보험']);
  const completedCityPage=Boolean(c&&completedCityRegions.has(r.slug));
  const robots=(!c&&completedRegionHubs.has(r.slug))||completedCityPage?publicRobots:privateRobots;
  return{title:seo.title,description:seo.description,alternates:{canonical},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website',siteName:'올바른 보험',locale:'ko_KR',...(regionImage?{images:[{url:regionImage,alt:`${r.name} 태아보험 가이드`}]}:{})},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription,...(regionImage?{images:[regionImage]}:{})}};
