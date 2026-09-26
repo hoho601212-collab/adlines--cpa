@@ -35,7 +35,7 @@ export default function InsurancePage({region,city}:{region?:Region;city?:City})
  const lead=label?localEditorial.intro:'태아보험 가입 전 가입시기, 보장 범위, 특약과 보험료 조건을 확인하고 지역별 출산·육아 지원정보도 함께 살펴보세요.';
  const customRegionImageFolder=region&&!city?({'서울태아보험':'seoul','대구태아보험':'daegu','인천태아보험':'incheon','광주태아보험':'gwangju','대전태아보험':'daejeon','울산태아보험':'ulsan','세종태아보험':'sejong'} as Record<string,string>)[region.slug]:undefined;
  const displayImageItems=customRegionImageFolder?imageItems.map((item,index)=>({...item,src:`/images/insurance/${customRegionImageFolder}/${String(index+1).padStart(2,'0')}.webp`})):imageItems;
- const customCityImageFolder=region?.slug==='경기태아보험'&&city?.slug==='수원태아보험'?'suwon':undefined;
+ const customCityImageFolder=region?.slug==='경기태아보험'&&city?.slug==='수원태아보험'?'suwon':region?.slug==='경기태아보험'&&city?.slug==='성남태아보험'?'seongnam':undefined;
  const heroImage=customCityImageFolder?`/images/insurance/${customCityImageFolder}/hero.webp`:customRegionImageFolder?`/images/insurance/${customRegionImageFolder}/hero.webp`:displayImageItems[0]?.src;
  const guide=getUniqueGuide(region,city);
  const hasLocalEditorial=Boolean(localEditorial.intro&&localEditorial.checkpoints.length);
