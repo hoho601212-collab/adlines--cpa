@@ -9,12 +9,12 @@ import {withBusanDistrictEvidence} from '@/lib/busan-district-evidence';
 import {getBusanSeoCopy} from '@/lib/busan-seo';
 import {getLocalizedInsuranceSeo} from '@/lib/insurance-seo-variants';
 import {site} from '@/lib/site';
+import {isReviewedRegion,isReviewedCityRegion} from '@/lib/insurance-indexing';
 
 type Props={params:Promise<{slug?:string[]}>};
 export function generateStaticParams(){return [{slug:[]},...regions.map(r=>({slug:[r.slug]})),...regions.flatMap(r=>r.cities.map(c=>({slug:[r.slug,c.slug]}))),...busanDistricts.map(d=>({slug:['부산태아보험',d.slug]}))]}
 const privateRobots={index:false,follow:true};
 const publicRobots={index:true,follow:true};
-const completedRegionHubs=new Set(['서울태아보험','부산태아보험','대구태아보험','인천태아보험','광주태아보험','대전태아보험','울산태아보험','세종태아보험','경기태아보험','강원태아보험','충북태아보험','충남태아보험','전북태아보험','전남태아보험','경북태아보험','경남태아보험','제주태아보험']);
 const regionHeroFolders:Record<string,string>={
  '서울태아보험':'seoul',
  '대구태아보험':'daegu',
@@ -49,9 +49,8 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
  const regionImage=!c&&regionHeroFolders[r.slug]?`/images/insurance/${regionHeroFolders[r.slug]}/hero.webp`:undefined;
  // Publish only reviewed pages. City pages are opened region-by-region after their
  // local copy/support data is complete; unfinished regions remain followable but noindex.
- const completedCityRegions=new Set(['경기태아보험','강원태아보험','충북태아보험','충남태아보험','전북태아보험','전남태아보험','경북태아보험','경남태아보험','제주태아보험']);
- const completedCityPage=Boolean(c&&completedCityRegions.has(r.slug));
- const robots=(!c&&completedRegionHubs.has(r.slug))||completedCityPage?publicRobots:privateRobots;
+ const completedCityPage=Boolean(c&&isReviewedCityRegion(r.slug));
+ const robots=(!c&&isReviewedRegion(r.slug))||completedCityPage?publicRobots:privateRobots;
  return{title:seo.title,description:seo.description,alternates:{canonical},robots,openGraph:{title:seo.ogTitle,description:seo.ogDescription,url:canonical,type:'website',siteName:'올바른 보험',locale:'ko_KR',...(regionImage?{images:[{url:regionImage,alt:`${r.name} 태아보험 가이드`}]}:{})},twitter:{card:'summary_large_image',title:seo.ogTitle,description:seo.ogDescription,...(regionImage?{images:[regionImage]}:{})}};
 }
 export default async function Page({params}:Props){
