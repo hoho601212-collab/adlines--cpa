@@ -7,7 +7,7 @@ export const reviewedRegionSlugs=new Set([
 // reviewed city-level support evidence. Regions still falling back to broad
 // provincial data remain followable but noindex until that audit is complete.
 export const reviewedCityRegionSlugs=new Set([
- '충북태아보험','충남태아보험','전북태아보험','전남태아보험','경북태아보험'
+ '충북태아보험','충남태아보험','전북태아보험','전남태아보험','경북태아보험','경남태아보험'
 ]);
 
 export const isReviewedRegion=(slug:string)=>reviewedRegionSlugs.has(slug);
