@@ -53,7 +53,8 @@ export function getInsuranceImages(region?:Region,city?:City):InsuranceImageItem
   // Other regional/city pages use the verified shared insurance visuals until their
   // dedicated WebP set is uploaded, preventing broken images on otherwise complete pages.
   const isSuwonCity=region?.slug==='경기태아보험'&&city?.slug==='수원태아보험';
-  const localImageReady=isBusanHub||isSuwonCity;
+  const isSeongnamCity=region?.slug==='경기태아보험'&&city?.slug==='성남태아보험';
+  const localImageReady=isBusanHub||isSuwonCity||isSeongnamCity;
   return keywords.map((keyword,index)=>({
     src:!label||!localImageReady?hubImages[index]:`/images/insurance/${folder}/${String(index+1).padStart(2,'0')}.webp`,
     keyword,
