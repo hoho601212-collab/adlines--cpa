@@ -1,35 +1,33 @@
 import type {MetadataRoute} from 'next';
 import {site} from '@/lib/site';
+import {regions} from '@/lib/insurance-data';
 import {busanDistricts} from '@/lib/busan-insurance';
-
-
-
-const indexReadyRegionSlugs=[
- '서울태아보험',
- '부산태아보험',
- '대구태아보험',
- '인천태아보험',
- '광주태아보험',
- '대전태아보험',
- '울산태아보험',
- '세종태아보험'
-];
+import {isReviewedRegion,isReviewedCityRegion} from '@/lib/insurance-indexing';
 
 export default function sitemap():MetadataRoute.Sitemap{
  const reviewedAt=new Date(`${site.contentReviewedAt}T00:00:00+09:00`);
+ const regionPages=regions.filter(r=>isReviewedRegion(r.slug)).map(r=>({
+  url:`${site.baseUrl}/태아보험/${r.slug}`,
+  lastModified:reviewedAt,
+  changeFrequency:'weekly' as const,
+  priority:.85
+ }));
+ const cityPages=regions.filter(r=>isReviewedCityRegion(r.slug)).flatMap(r=>r.cities.map(c=>({
+  url:`${site.baseUrl}/태아보험/${r.slug}/${c.slug}`,
+  lastModified:reviewedAt,
+  changeFrequency:'weekly' as const,
+  priority:.8
+ })));
+ const busanPages=busanDistricts.map(d=>({
+  url:`${site.baseUrl}/태아보험/부산태아보험/${d.slug}`,
+  lastModified:reviewedAt,
+  changeFrequency:'weekly' as const,
+  priority:.8
+ }));
  return[
   {url:site.baseUrl,lastModified:reviewedAt,changeFrequency:'weekly',priority:1},
-  ...indexReadyRegionSlugs.map(slug=>({
-   url:`${site.baseUrl}/태아보험/${slug}`,
-   lastModified:reviewedAt,
-   changeFrequency:'weekly' as const,
-   priority:.85
-  })),
-  ...busanDistricts.map(d=>({
-   url:`${site.baseUrl}/태아보험/부산태아보험/${d.slug}`,
-   lastModified:reviewedAt,
-   changeFrequency:'weekly' as const,
-   priority:.8
-  }))
+  ...regionPages,
+  ...cityPages,
+  ...busanPages
  ];
 }
