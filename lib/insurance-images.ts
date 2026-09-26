@@ -45,7 +45,7 @@ function hash(text:string){let n=0;for(let i=0;i<text.length;i++)n=(n*31+text.ch
 export function getInsuranceImages(region?:Region,city?:City):InsuranceImageItem[]{
   const label=city?.name||region?.name;
   const isBusanHub=region?.slug==='부산태아보험'&&!city;
-  const customCityFolder=region?.slug==='경기태아보험'&&city?.slug==='수원태아보험'?'suwon':region?.slug==='경기태아보험'&&city?.slug==='성남태아보험'?'seongnam':undefined;
+  const customCityFolder=region?.slug==='경기태아보험'&&city?.slug==='수원태아보험'?'suwon':region?.slug==='경기태아보험'&&city?.slug==='성남태아보험'?'seongnam':region?.slug==='경기태아보험'&&city?.slug==='용인태아보험'?'yongin':undefined;
   const folder=!region?'main':isBusanHub?'busan-fetal-insurance':city?(customCityFolder||`${region.slug}/${city.slug}`):region.slug;
   const seed=hash(`${region?.slug||'main'}/${city?.slug||'hub'}`);
   const keywords=!label?hubKeywords:keywordSets[seed%keywordSets.length].map(k=>`${label} ${k}`);
@@ -55,9 +55,10 @@ export function getInsuranceImages(region?:Region,city?:City):InsuranceImageItem
   // dedicated WebP set is uploaded, preventing broken images on otherwise complete pages.
   const isSuwonCity=region?.slug==='경기태아보험'&&city?.slug==='수원태아보험';
   const isSeongnamCity=region?.slug==='경기태아보험'&&city?.slug==='성남태아보험';
-  const localImageReady=isBusanHub||isSuwonCity||isSeongnamCity;
+  const isYonginCity=region?.slug==='경기태아보험'&&city?.slug==='용인태아보험';
+  const localImageReady=isBusanHub||isSuwonCity||isSeongnamCity||isYonginCity;
   return keywords.map((keyword,index)=>({
-    src:!label||!localImageReady?hubImages[index]:isSeongnamCity?`/images/insurance/seongnam/seongnam-fetal-insurance-${String(index+1).padStart(2,'0')}.webp`:isSuwonCity?`/images/insurance/suwon/suwon-fetal-insurance-${String(index+1).padStart(2,'0')}.webp`:`/images/insurance/${folder}/${String(index+1).padStart(2,'0')}.webp`,
+    src:!label||!localImageReady?hubImages[index]:isYonginCity?`/images/insurance/yongin/yongin-fetal-insurance-${String(index+1).padStart(2,'0')}.webp`:isSeongnamCity?`/images/insurance/seongnam/seongnam-fetal-insurance-${String(index+1).padStart(2,'0')}.webp`:isSuwonCity?`/images/insurance/suwon/suwon-fetal-insurance-${String(index+1).padStart(2,'0')}.webp`:`/images/insurance/${folder}/${String(index+1).padStart(2,'0')}.webp`,
     keyword,
     alt:label?`${label} ${scenes[index]} - ${keyword}`:`${scenes[index]} - ${keyword}`,
     tags:!label?hubTags[index]:tagSets[(index+seed)%tagSets.length].map(t=>`${label} ${t}`)
