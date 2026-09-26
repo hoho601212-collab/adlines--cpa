@@ -11,6 +11,13 @@ const DATA:Record<string,RegionalSupportItem[]>={
     {title:'춘천 임산부 검진·영양·유축기 지원',summary:'춘천 거주 임산부에게 출생순위별 검진비 쿠폰과 엽산·철분제, 유축기 대여 등을 지원합니다.',benefit:'검진비 쿠폰 첫째 1장 · 둘째 2장 · 셋째 이상 3장, 엽산·철분제 지급, 유축기 대여',eligibility:'주민등록상 춘천 거주 임산부',apply:'신분증과 임신확인서를 준비해 보건소 등 공식 안내에 따라 신청',sourceName:'춘천시 복지포털 임신장려시책',sourceUrl:'https://www.chuncheon.go.kr/new-welfare/life/pregnancy-birth/encouragement-policy/',verifiedAt:'2026-09-26'},
     {title:'춘천 산후 건강관리 지원',summary:'강원도 내 거주요건을 충족한 춘천 산모의 산후 건강관리 비용을 출생순위에 따라 지원합니다.',benefit:'첫째 15만원 · 둘째 20만원 · 셋째 이상 30만원 한도',eligibility:'신청일 기준 강원도 내 6개월 이상 거주자',apply:'춘천시 임신장려시책의 최신 신청방법과 구비서류 확인 후 신청',sourceName:'춘천시 복지포털 임신장려시책',sourceUrl:'https://www.chuncheon.go.kr/new-welfare/life/pregnancy-birth/encouragement-policy/',verifiedAt:'2026-09-26'}
   ],
+  강릉태아보험:[
+    {title:'강릉시 산후조리비 지원',summary:'신생아 출생일 기준 강릉시에 계속 거주하고 출생등록한 가정의 산후조리 관련 업종 사용액을 강릉페이로 지원합니다.',benefit:'산후조리 관련 업종 사용액 50만원 한도 · 강릉페이 지급',eligibility:'신생아 출생일 기준 강릉시에 6개월 이상 계속 거주 중이며 신생아를 강릉시에 출생등록한 산모 등',apply:'신생아 출생일 기준 6개월 이내 서부건강생활지원센터 모자보건실 방문 신청',sourceName:'강릉시보건소 산후조리비지원',sourceUrl:'https://www.gn.go.kr/phc/contents.do?key=6784',verifiedAt:'2026-09-26'},
+    {title:'강릉 산후 건강관리 의료비 지원',summary:'출산 후 산모에게 발생한 의료비와 처방 약제비를 출생순위에 따라 실비 지원합니다.',benefit:'첫째 최대 15만원 · 둘째 최대 20만원 · 셋째 이상 최대 30만원',eligibility:'신청일 기준 주민등록등본상 강원특별자치도 내 6개월 이상 거주한 산모',apply:'출산일로부터 6개월 이내 서부건강생활지원센터 모자보건실 방문 신청',sourceName:'강릉시보건소 산후 건강관리 지원',sourceUrl:'https://www.gn.go.kr/phc/contents.do?key=5967',verifiedAt:'2026-09-26'}
+  ],
+  동해태아보험:[
+    {title:'동해시 출산장려금',summary:'동해시는 출산 또는 입양 당시 시내에 주민등록을 두고 거주하는 영아의 부 또는 모에게 출생순위별 장려금을 월 단위로 분할 지급합니다.',benefit:'첫째 60만원(10만원×6개월) · 둘째 120만원(10만원×12개월) · 셋째 이상 180만원(10만원×18개월)',eligibility:'출산일 또는 입양일 현재 동해시에 주민등록을 두고 거주하는 영아의 부 또는 모(법정대리인 포함)',apply:'10개 동 행정복지센터 방문 신청 · 월 10만원씩 매월 지급',sourceName:'복지로 동해시 출산장려금 지원',sourceUrl:'https://www.bokjiro.go.kr/ssis-tbu/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00003777',verifiedAt:'2026-09-26'}
+  ],
   청주태아보험:[
     {title:'청주 결혼·출산가정 주택자금 대출이자 지원',summary:'2026년 청주시가 결혼·출산가정의 주거비 부담을 줄이기 위해 운영하는 이자 지원입니다.',benefit:'연 최대 50만원 · 최대 5년간 총 250만원',eligibility:'주민등록상 청주시 거주 결혼·출산가정 중 기준중위소득 180% 이하 등 사업요건 충족 가정',apply:'2026년 5월 이후 공고에 따라 온라인 또는 오프라인 신청',sourceName:'청주시 2026 청년·가족정책',sourceUrl:'https://www.cheongju.go.kr/www/contents.do?key=22710',verifiedAt:'2026-09-03'},
     {title:'청주 다태아 조제분유 지원',summary:'쌍둥이 등 다태아 출산가정의 양육비 부담을 줄이기 위해 조제분유 구입비를 지원합니다.',benefit:'영아 1명당 월 최대 10만원 · 쌍둥이 연 최대 240만원',eligibility:'청주시에 주민등록을 둔 기준중위소득 120% 이하 다태아 출산가정의 12개월 이하 영아',apply:'충북 가치자람 온라인 또는 청주시 여성가족과 방문 신청',sourceName:'청주시 2026 가족정책',sourceUrl:'https://www.cheongju.go.kr/www/contents.do?key=22710',verifiedAt:'2026-09-03'}
