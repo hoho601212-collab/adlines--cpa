@@ -108,12 +108,15 @@ export function getInsuranceFaq(region?:Region,city?:City):FaqItem[]{
   const label=city?.name||region?.name;
   const prefix=label?`${label}에서 `:'';
   const local=getLocalEditorial(region,city);
-  return [
-    {question:`${label?`${label} `:''}태아보험은 언제 알아보는 것이 좋나요?`,answer:`가입 가능 시기와 인수 기준은 상품마다 다를 수 있습니다. ${prefix}태아보험을 알아본다면 임신 주수와 현재 건강상태를 기준으로 실제 가입 가능 여부와 보장 시작시점·제한사항을 함께 확인하는 것이 좋습니다.`},
-    {question:'태아보험과 어린이보험은 어떻게 연결되나요?',answer:'태아 시기에 가입한 계약이 출생 후 어린이보험 형태로 이어지는 구조가 많습니다. 다만 상품마다 보장기간과 특약 구조가 다르므로 출생 전후 보장 내용과 계약조건을 약관에서 확인해야 합니다.'},
-    {question:`${label?`${label} `:''}산모보험이나 산모특약도 함께 확인해야 하나요?`,answer:'산모 관련 보장이 필요한지는 개인 상황에 따라 다릅니다. 임신·출산 관련 보장범위, 면책사항, 가입 가능시점과 보험료를 별도로 확인한 뒤 필요한 특약만 선택하는 방식이 좋습니다.'},
-    {question:`${label?`${label} `:''}출산지원금과 태아보험은 같은 제도인가요?`,answer:`아닙니다. 태아보험은 민간 보험상품이고 출산지원금·부모급여·첫만남이용권 등은 공공지원 제도입니다. ${local.supportNote}`},
-    {question:'상담을 신청하면 바로 보험에 가입되는 건가요?',answer:'아닙니다. 상담 신청은 정보 확인과 제휴 상담 연결 단계입니다. 실제 가입 여부, 보험료, 보장 내용은 보험회사 심사와 상품설명서·약관 확인 후 결정됩니다.'}
+  const common:FaqItem[]=[
+    {question:'태아보험과 어린이보험은 어떻게 연결되나요?',answer:'태아 시기에 가입한 계약이 출생 후 어린이보험 형태로 이어지는 구조가 많습니다. 상품마다 보장기간과 특약 구조가 다르므로 출생 전후 보장 내용과 계약조건을 약관에서 확인하세요.'},
+    {question:'상담을 신청하면 바로 보험에 가입되는 건가요?',answer:'아닙니다. 상담 신청은 정보 확인과 제휴 상담 연결 단계입니다. 실제 가입 여부와 조건은 보험회사 심사와 상품설명서·약관 확인 후 결정됩니다.'}
+  ];
+  if(!label)return common;
+  const localFaq:FaqItem={question:`${label} 출산지원금과 태아보험은 같은 제도인가요?`,answer:`아닙니다. 태아보험은 민간 보험상품이고 지역 출산지원은 공공제도입니다.${local.supportNote?` ${local.supportNote}`:''}`};
+  return city?[localFaq,...common]:[
+    {question:`${label} 태아보험은 언제 알아보는 것이 좋나요?`,answer:`가입 가능 시기와 인수 기준은 상품마다 다를 수 있습니다. 임신 주수와 현재 건강상태를 기준으로 가입 가능 여부와 제한사항을 확인하세요.`},
+    localFaq,...common
   ];
 }
 
