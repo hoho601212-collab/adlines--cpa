@@ -46,7 +46,7 @@ export function getInsuranceImages(region?:Region,city?:City):InsuranceImageItem
   const label=city?.name||region?.name;
   const isBusanHub=region?.slug==='부산태아보험'&&!city;
   const customCityFolder=region?.slug==='경기태아보험'&&city?.slug==='수원태아보험'?'suwon':region?.slug==='경기태아보험'&&city?.slug==='성남태아보험'?'seongnam':undefined;
-  const folder=!region?'main':isBusanHub?'busan-fetal-insurance':customCityFolder||city?customCityFolder||`${region.slug}/${city.slug}`:region.slug;
+  const folder=!region?'main':isBusanHub?'busan-fetal-insurance':city?(customCityFolder||`${region.slug}/${city.slug}`):region.slug;
   const seed=hash(`${region?.slug||'main'}/${city?.slug||'hub'}`);
   const keywords=!label?hubKeywords:keywordSets[seed%keywordSets.length].map(k=>`${label} ${k}`);
   const scenes=sceneSets[seed%sceneSets.length];
