@@ -144,7 +144,7 @@ export function getLocalizedInsuranceSeo(region?:Region,city?:City):InsuranceSeo
   support:`${label} 태아보험 보장 확인 | ${intent.titleTail}`,
   compare:`${label} 태아보험 비교 | ${intent.titleTail}`
  } as const;
- const localDescription=`${local.intro} 태아보험은 임신 주수에 따른 가입 가능시기와 보장·특약을 별도로 비교하고, ${local.checkpoints[0]}도 함께 확인해 보세요.`;
+ const localDescription=local.intro&&local.checkpoints[0]?`${local.intro} 가입 전에는 임신 주수별 가입 가능시기와 보장·특약을 따로 비교하고, ${local.checkpoints[0]}도 확인하세요.`:description;
  return {
   ...base,
   description:localDescription,
