@@ -16,6 +16,13 @@ export const metadata = {
   metadataBase: new URL(site.baseUrl),
   title: { default: site.title, template: `%s | ${site.name}` },
   description: site.description,
+  icons: {
+    icon: [
+      {url:'/images/insurance/favicon-16x16.png',sizes:'16x16',type:'image/png'},
+      {url:'/images/insurance/favicon-32x32.png',sizes:'32x32',type:'image/png'}
+    ],
+    apple: [{url:'/images/insurance/apple-icon.png',type:'image/png'}]
+  },
   alternates: { canonical: '/' },
   verification: {
     google: 'cw7bNhRAJo6vhTK5CV9jFQgoVcCsv_RPzd-7oHSgJ4k',
