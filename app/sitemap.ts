@@ -5,8 +5,11 @@ import {busanDistricts} from '@/lib/busan-insurance';
 import {isReviewedRegion,isReviewedCityRegion} from '@/lib/insurance-indexing';
 
 const pageLastModified:Record<string,string>={
- '/태아보험/경기태아보험/성남태아보험':'2026-09-26',
- '/태아보험/경기태아보험/용인태아보험':'2026-09-27'
+ '/태아보험/경기태아보험/수원태아보험':'2026-09-28',
+ '/태아보험/경기태아보험/성남태아보험':'2026-09-28',
+ '/태아보험/경기태아보험/용인태아보험':'2026-09-28',
+ '/태아보험/경기태아보험/고양태아보험':'2026-09-28',
+ '/태아보험/경기태아보험/화성태아보험':'2026-09-28'
 };
 
 function lastModified(path=''){
